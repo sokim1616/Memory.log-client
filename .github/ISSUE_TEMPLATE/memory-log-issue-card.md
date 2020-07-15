@@ -29,5 +29,5 @@ assignees: ''
 ### Labels
 - Estimated time: `E: 1h`
 - Group : `client`, `server`
-- Spring: `Sprint__NUMBER__`
+- Sprint: `Sprint__NUMBER__`
 - Urgency: `High`, `Middle`, `Low`
