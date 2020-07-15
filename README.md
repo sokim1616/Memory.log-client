@@ -41,4 +41,3 @@
 2. Server
   - Python (django)
   - SQlite
-  - 낼름..
