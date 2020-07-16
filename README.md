@@ -39,6 +39,7 @@
   - Typescript
   - Redux + saga
   - Expo
+  - Recoil
 
 2. Server
   - Python (django)
