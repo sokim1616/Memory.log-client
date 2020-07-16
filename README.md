@@ -37,9 +37,7 @@
 1. Client
   - React Native
   - Typescript
-  - Redux + saga
-  - Expo
-  - Recoil
+  - Redux
 
 2. Server
   - Python (django)
