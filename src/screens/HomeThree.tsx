@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
-import {HomeParamProps} from './HomeParamList';
+import {HomeParamProps} from '../utils/HomeParamList';
 
 const HomeThree = ({navigation}: HomeParamProps<'HomeThree'>) => {
   return (

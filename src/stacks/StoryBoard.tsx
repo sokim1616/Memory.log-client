@@ -2,13 +2,13 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {white} from 'react-native-paper/lib/typescript/src/styles/colors';
 
-// declare const global: {HermesInternal: null | {}};
+//TODO: <Stack.Navigator> 만들기
 
-const Map: React.FC<{}> = () => {
+const StoryBoard: React.FC<{}> = () => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={{color: 'black', fontWeight: 'bold'}}>Map</Text>
+        <Text style={{color: 'black', fontWeight: 'bold'}}>StoryBoard</Text>
       </View>
     </>
   );
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Map;
+export default StoryBoard;

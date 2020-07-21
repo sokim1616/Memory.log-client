@@ -5,9 +5,9 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
-import HomeStack from './src/screens/HomeStack';
-import Map from './src/screens/Map';
-import StoryBoard from './src/screens/StoryBoard';
+import HomeStack from './src/stacks/HomeStack';
+import Map from './src/stacks/Map';
+import StoryBoard from './src/stacks/StoryBoard';
 
 // declare const global: {HermesInternal: null | {}};
 
