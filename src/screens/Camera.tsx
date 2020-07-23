@@ -35,9 +35,13 @@ const Camera: React.FC<CameraProps> = ({navigation}) => {
           maximumAge: 3000,
           enableHighAccuracy: true,
         };
-        Geolocation.getCurrentPosition(async (position) => {
-          await setLocation(position.coords);
-        });
+        Geolocation.getCurrentPosition(
+          async (position) => {
+            await setLocation(position.coords);
+          },
+          () => console.error(error),
+          geoOptions,
+        );
         console.log(location);
         const photoOptions = {
           quality: 1,

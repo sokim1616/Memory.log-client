@@ -6,12 +6,10 @@ import {
   View,
   TextInput,
   StyleSheet,
-  Button,
-  Animated,
-  Easing,
   Alert,
 } from 'react-native';
 import Toast from '../components/Toast';
+import {emailCheck} from '../utils/emailCheck';
 
 interface LoginProps {
   loginStatus: boolean;
@@ -19,28 +17,29 @@ interface LoginProps {
 
 const Signin: React.FC<LoginProps> = ({loginProps}) => {
   const {changeLogin, navigation} = loginProps;
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
 
-  let usernameFieldRef: Ref = React.createRef();
+  let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
 
-  const handleSubmit: () => null = () => {
-    let body = JSON.stringify({username, password});
-    if (!username.length || !password.length) {
+  //username ==>
+  const handleSubmit: () => void = () => {
+    let body = JSON.stringify({email, password});
+    if (!email.length || !password.length) {
       Alert.alert(
         'Empty Fields',
-        'You must provide both username and password to log in',
+        'You must provide both email and password to log in',
         {
           text: 'OK',
           onPress: () => console.log('hi'),
         },
         {cancelable: false},
       );
-      !username.length
-        ? usernameFieldRef.current.focus()
+      !email.length
+        ? emailFieldRef.current.focus()
         : passwordFieldRef.current.focus();
       return;
     } else if (password.length < 8) {
@@ -56,17 +55,16 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       passwordFieldRef.current.clear();
       passwordFieldRef.current.focus();
       return;
-    } else if (username.match(/[^\s-_a-zA-Z0-9]/)) {
+    } else if (!email.match(emailCheck)) {
       Alert.alert(
-        'Invalid Username',
-        'Username can only contain alphanumeric characters.',
+        'Invalid E-mail Adress',
+        'Please input a correct e-mail address',
         {text: 'OK', onPress: () => console.log('hi')},
         {cancelable: false},
       );
       return;
     }
-    usernameFieldRef.current.blur();
-    passwordFieldRef.current.blur();
+    blurAll();
     fetch('http://localhost:4000/user/signin', {
       method: 'POST',
       headers: {
@@ -75,7 +73,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       },
       body,
     }).then((resp) => {
-      if (resp.status === 205) {
+      if (resp.status === 200) {
         setToastMessage('Success! Press To Continue');
         setTimeout(() => changeLogin('true'), 1000);
       } else {
@@ -91,8 +89,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
     inputType,
   ) => {
     switch (inputType) {
-      case 'username':
-        setUsername(input);
+      case 'email':
+        setEmail(input);
         break;
       case 'password':
         setPassword(input);
@@ -101,27 +99,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
 
   const blurAll = () => {
     passwordFieldRef.current.blur();
-    usernameFieldRef.current.blur();
+    emailFieldRef.current.blur();
   };
-
-  // TODO: Animationa implementation
-  // const [labelOpacity, setOpacity] = useState(new Animated.Value(1));
-
-  // const fadeOut = () => {
-  //   Animated.timing(labelOpacity, {
-  //     toValue: 0,
-  //     easing: Easing.back(),
-  //     duration: 200,
-  //   }).start();
-  // };
-
-  // const fadeIn = () => {
-  //   Animated.timing(labelOpacity, {
-  //     toValue: 1,
-  //     easing: Easing.back(),
-  //     duration: 200,
-  //   }).start();
-  // };
 
   return (
     <SafeAreaView onTouchStart={blurAll} style={styles.container}>
@@ -129,23 +108,25 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       <View style={styles.inputContainer}>
         <Text
           style={
-            inputInFocus === 'username'
+            inputInFocus === 'email'
               ? styles.inputLabelFocused
               : styles.inputLabelBlurred
           }>
           Username
         </Text>
         <TextInput
-          ref={usernameFieldRef}
+          ref={emailFieldRef}
           style={styles.inputField}
-          onFocus={() => setInputInFocus('username')}
+          onFocus={() => setInputInFocus('email')}
           onBlur={() => setInputInFocus('')}
-          placeholder="Username"
-          onChangeText={(input) => handleInput(input, 'username')}
+          placeholder="E-mail"
+          onChangeText={(input) => handleInput(input, 'email')}
           selectTextOnFocus={true}
-          textContentType="username"
+          textContentType="emailAddress"
           selectionColor="lightgreen"
           clearButtonMode="unless-editing"
+          autoCapitalize="none"
+          keyboardType="email-address"
         />
       </View>
       <View style={styles.inputContainer}>
@@ -169,6 +150,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           textContentType="password"
           selectionColor="lightgreen"
           clearButtonMode="unless-editing"
+          autoCapitalize="none"
         />
       </View>
       <View
@@ -180,13 +162,18 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
         <Text style={styles.logInButton}>Log In!</Text>
       </View>
       <View style={styles.signupButton}>
-        <Text onPress={() => navigation.navigate('Sign up')}>Sign Up?</Text>
+        <Text onPress={() => navigation.navigate('Signup')}>Sign Up?</Text>
+      </View>
+      <View
+        onTouchStart={() => changeLogin(true)}
+        style={styles.devLoginButton}>
+        <Text>개발용 로그인</Text>
       </View>
       {toastMessage ? (
         <Toast
           handlePress={() => {
             setToastMessage('');
-            usernameFieldRef.current.clear();
+            emailFieldRef.current.clear();
             passwordFieldRef.current.clear();
           }}
           message={toastMessage}
@@ -204,21 +191,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    flex: 0.2,
-    paddingTop: 130,
+    flex: 0.1,
+    paddingTop: 50,
     paddingHorizontal: 30,
     textAlignVertical: 'bottom',
     fontSize: 35,
+    // borderWidth: 3,
   },
   inputContainer: {
-    flex: 0.14,
+    flex: 0.2,
     marginTop: 10,
     // borderWidth: 3,
   },
   inputLabelFocused: {
     flex: 0.2,
     marginLeft: 25,
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 5,
     minHeight: 20,
     maxHeight: 20,
@@ -230,7 +218,7 @@ const styles = StyleSheet.create({
   inputLabelBlurred: {
     flex: 0.2,
     marginLeft: 25,
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 5,
     minHeight: 20,
     maxHeight: 20,
@@ -242,10 +230,10 @@ const styles = StyleSheet.create({
   inputField: {
     flex: 1,
     textAlign: 'left',
-    paddingLeft: 20,
+    paddingLeft: 15,
     marginLeft: 20,
     marginRight: 20,
-    maxHeight: 50,
+    maxHeight: 60,
     borderWidth: 0.5,
     borderColor: 'grey',
     borderRadius: 30,
@@ -269,6 +257,14 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     marginTop: 20,
+  },
+  devLoginButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    backgroundColor: 'lightblue',
+    width: 50,
+    height: 50,
   },
 });
 

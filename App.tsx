@@ -10,6 +10,7 @@ MaterialCommunityIcons.loadFont();
 import HomeStack from './src/stacks/HomeStack';
 import Map from './src/screens/Map';
 
+import ConfigStackContainer from './src/containers/ConfigStackContainer';
 import StoryBoard from './src/stacks/StoryBoard';
 import LoginStack from './src/stacks/LoginStack';
 
@@ -36,7 +37,7 @@ const App: React.FC<AppProps> = ({loginStatus}) => {
               name="Home"
               component={HomeStack}
               options={{
-                tabBarColor: 'black',
+                tabBarColor: '#838383',
                 tabBarBadge: true,
                 tabBarLabel: 'Home',
                 tabBarIcon: ({color}) => (
@@ -48,7 +49,7 @@ const App: React.FC<AppProps> = ({loginStatus}) => {
               name="Map"
               component={Map}
               options={{
-                tabBarColor: 'darkviolet',
+                tabBarColor: '#d9adad',
                 tabBarLabel: 'Map',
                 tabBarIcon: ({color}) => (
                   <MaterialCommunityIcons name="map" color={color} size={26} />
@@ -59,7 +60,7 @@ const App: React.FC<AppProps> = ({loginStatus}) => {
               name="StoryBoard"
               component={StoryBoard}
               options={{
-                tabBarColor: 'darkgreen',
+                tabBarColor: '#ad9d9d',
                 tabBarLabel: 'StoryBoard',
                 tabBarIcon: ({color}) => (
                   <MaterialCommunityIcons
@@ -67,6 +68,17 @@ const App: React.FC<AppProps> = ({loginStatus}) => {
                     color={color}
                     size={26}
                   />
+                ),
+              }}
+            />
+            <AppTab.Screen
+              name="Config"
+              component={ConfigStackContainer}
+              options={{
+                tabBarColor: '#838383',
+                tabBarLabel: 'Config',
+                tabBarIcon: ({color}) => (
+                  <MaterialCommunityIcons name="cog" color={color} size={26} />
                 ),
               }}
             />

@@ -23,7 +23,6 @@ const HomeTwo: React.FC<HomeTwoProps> = (navigation) => {
         groupName: 'MemoryLog',
         include: ['location'],
       });
-      // console.log(Dimensions.get('window').width / 4 - 12);
       for (let photo of camPhotos.edges) {
         console.log(photo.node.location);
       }

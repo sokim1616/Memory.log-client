@@ -1,18 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  SafeAreaView,
   Dimensions,
   Text,
   View,
   TextInput,
   StyleSheet,
-  Button,
-  Animated,
-  Easing,
   Alert,
+  Keyboard,
 } from 'react-native';
 import Toast from '../components/Toast';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {emailCheck} from '../utils/emailCheck';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface SignupProps {
   loginProps: {
@@ -28,6 +27,20 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
   const [email, setEmail] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
+  const [keyboardUp, setKeyboardUp] = useState(false);
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardWillShow', () => {
+      setKeyboardUp(true);
+    });
+    Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardUp(false);
+    });
+    return () => {
+      Keyboard.removeAllListeners('keyboardWillShow');
+      Keyboard.removeAllListeners('keyboardDidHide');
+    };
+  });
 
   let usernameFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
@@ -35,11 +48,11 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
 
   //TODO: handle e-mail
   const handleSubmit: () => null = () => {
-    let body = JSON.stringify({username, password});
-    if (!username.length || !password.length) {
+    let body = JSON.stringify({username, password, email});
+    if (!username.length || !password.length || !email.length) {
       Alert.alert(
         'Empty Fields',
-        'You must provide both username and password to log in',
+        'All fields must be filled in',
         {
           text: 'OK',
           onPress: () => console.log('hi'),
@@ -71,10 +84,18 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
         {cancelable: false},
       );
       return;
+    } else if (!email.match(emailCheck)) {
+      Alert.alert(
+        'Invalid E-mail Adress',
+        'Please input a correct e-mail address',
+        {text: 'OK', onPress: () => console.log('hi')},
+        {cancelable: false},
+      );
+      return;
     }
     usernameFieldRef.current.blur();
     passwordFieldRef.current.blur();
-    fetch('http://localhost:4000/user/signin', {
+    fetch('http://localhost:4000/user/signup', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -82,9 +103,8 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
       },
       body,
     }).then((resp) => {
-      if (resp.status === 201) {
-        setToastMessage('Success! Press To Continue');
-        setTimeout(() => changeLogin('true'), 1000);
+      if (resp.status === 200) {
+        setToastMessage('Success! Press To Log In');
       } else {
         setToastMessage(
           'Unathorized. Please check your username and password.',
@@ -106,6 +126,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
         break;
       case 'email':
         setEmail(input);
+        break;
     }
   };
 
@@ -117,89 +138,106 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
 
   return (
     <SafeAreaView onTouchStart={blurAll} style={styles.container}>
-      <Text style={styles.header}>Memory.Log Sign Up?</Text>
-      <View style={styles.inputContainer}>
-        <Text
-          style={
-            inputInFocus === 'username'
-              ? styles.inputLabelFocused
-              : styles.inputLabelBlurred
-          }>
-          Username
-        </Text>
-        <TextInput
-          ref={usernameFieldRef}
-          style={styles.inputField}
-          onFocus={() => setInputInFocus('username')}
-          onBlur={() => setInputInFocus('')}
-          placeholder="Username"
-          onChangeText={(input) => handleInput(input, 'username')}
-          selectTextOnFocus={true}
-          textContentType="username"
-          selectionColor="lightgreen"
-          clearButtonMode="unless-editing"
-        />
+      <View style={keyboardUp ? {display: 'none'} : styles.header}>
+        <Text style={styles.headerText}>Please sign up!</Text>
       </View>
-      <View style={styles.inputContainer}>
-        <Text
-          style={
-            inputInFocus === 'password'
-              ? styles.inputLabelFocused
-              : styles.inputLabelBlurred
-          }>
-          Password
-        </Text>
-        <TextInput
-          ref={passwordFieldRef}
-          style={styles.inputField}
-          onFocus={() => setInputInFocus('password')}
-          onBlur={() => setInputInFocus('')}
-          placeholder="Password"
-          onChangeText={(input) => handleInput(input, 'password')}
-          selectTextOnFocus={true}
-          secureTextEntry={true}
-          textContentType="password"
-          selectionColor="lightgreen"
-          clearButtonMode="unless-editing"
-        />
+      <View style={styles.inputSection}>
+        <View style={styles.inputContainer}>
+          <View
+            style={
+              inputInFocus === 'username'
+                ? styles.inputLabelFocused
+                : styles.inputLabelBlurred
+            }>
+            <Text>Name</Text>
+          </View>
+          <TextInput
+            ref={usernameFieldRef}
+            style={styles.inputField}
+            onFocus={() => setInputInFocus('username')}
+            onBlur={() => setInputInFocus('')}
+            placeholder="Username"
+            onChangeText={(input) => handleInput(input, 'username')}
+            selectTextOnFocus={true}
+            textContentType="username"
+            selectionColor="lightgreen"
+            clearButtonMode="unless-editing"
+            enablesReturnKeyAutomatically={true}
+            autoCapitalize="none"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <View
+            style={
+              inputInFocus === 'email'
+                ? styles.inputLabelFocused
+                : styles.inputLabelBlurred
+            }>
+            <Text>Email</Text>
+          </View>
+
+          <TextInput
+            ref={emailFieldRef}
+            style={styles.inputField}
+            onFocus={() => setInputInFocus('email')}
+            onBlur={() => setInputInFocus('')}
+            placeholder="Email"
+            onChangeText={(input) => handleInput(input, 'email')}
+            selectTextOnFocus={true}
+            textContentType="emailAddress"
+            selectionColor="lightgreen"
+            clearButtonMode="unless-editing"
+            enablesReturnKeyAutomatically={true}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <View
+            style={
+              inputInFocus === 'password'
+                ? styles.inputLabelFocused
+                : styles.inputLabelBlurred
+            }>
+            <Text>Password</Text>
+          </View>
+          <TextInput
+            ref={passwordFieldRef}
+            style={styles.inputField}
+            onFocus={() => setInputInFocus('password')}
+            onBlur={() => setInputInFocus('')}
+            placeholder="Password"
+            onChangeText={(input) => handleInput(input, 'password')}
+            selectTextOnFocus={true}
+            secureTextEntry={true}
+            textContentType="password"
+            selectionColor="lightgreen"
+            clearButtonMode="unless-editing"
+            enablesReturnKeyAutomatically={true}
+          />
+        </View>
       </View>
-      <View style={styles.inputContainer}>
-        <Text
-          style={
-            inputInFocus === 'email'
-              ? styles.inputLabelFocused
-              : styles.inputLabelBlurred
-          }>
-          Email
-        </Text>
-        <TextInput
-          ref={emailFieldRef}
-          style={styles.inputField}
-          onFocus={() => setInputInFocus('email')}
-          onBlur={() => setInputInFocus('')}
-          placeholder="Email"
-          onChangeText={(input) => handleInput(input, 'email')}
-          selectTextOnFocus={true}
-          textContentType="emailAddress"
-          selectionColor="lightgreen"
-          clearButtonMode="unless-editing"
-        />
-      </View>
-      <View
-        style={styles.logInButtonContainer}
-        onTouchEnd={() => {
-          handleSubmit();
-        }}>
-        <Text style={styles.logInButton}>Log In!</Text>
-      </View>
-      <View style={styles.signupButton}>
-        <Text onPress={() => navigation.navigate('Sign up')}>Sign Up?</Text>
+
+      <View style={styles.buttonSection}>
+        <View
+          style={styles.logInButtonContainer}
+          onTouchEnd={() => {
+            handleSubmit();
+          }}>
+          <Text style={styles.logInButton}>Sign Up!</Text>
+        </View>
+        <View style={styles.signupButton}>
+          <Text onPress={() => navigation.navigate('Signin')}>
+            Already have an account?
+          </Text>
+        </View>
       </View>
       {toastMessage ? (
         <Toast
           handlePress={() => {
             setToastMessage('');
             blurAll();
+            changeLogin(true);
           }}
           message={toastMessage}
         />
@@ -216,47 +254,49 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    flex: 0.2,
-    paddingTop: 130,
+    flex: 0.3,
+    paddingTop: 50,
     paddingHorizontal: 30,
-    textAlignVertical: 'bottom',
-    fontSize: 35,
+    alignItems: 'center',
+    fontSize: 30,
+    // borderWidth: 4,
+  },
+  headerText: {
+    fontSize: 30,
+    // borderWidth: 3,
+  },
+  inputSection: {
+    flex: 1,
+    // borderWidth: 3,
   },
   inputContainer: {
-    flex: 0.14,
+    flex: 1,
     // borderWidth: 3,
   },
   inputLabelFocused: {
-    flex: 0.2,
-    marginLeft: 25,
-    marginTop: 10,
+    flex: 2 / 10,
+    justifyContent: 'center',
     marginBottom: 5,
-    minHeight: 20,
-    maxHeight: 20,
     fontSize: 14,
     color: 'black',
     minWidth: Dimensions.get('window').width - 90,
     // borderWidth: 3,
   },
   inputLabelBlurred: {
-    flex: 0.2,
-    marginLeft: 25,
-    marginTop: 10,
+    flex: 2 / 10,
+    justifyContent: 'center',
     marginBottom: 5,
-    minHeight: 20,
-    maxHeight: 20,
     fontSize: 14,
     color: 'transparent',
     minWidth: Dimensions.get('window').width - 90,
     // borderWidth: 3,
   },
+
   inputField: {
-    flex: 1,
+    flex: 6 / 10,
     textAlign: 'left',
-    paddingLeft: 20,
-    marginLeft: 20,
-    marginRight: 20,
     maxHeight: 50,
+    paddingLeft: 15,
     borderWidth: 0.5,
     borderColor: 'grey',
     borderRadius: 30,
@@ -265,7 +305,12 @@ const styles = StyleSheet.create({
     minWidth: Dimensions.get('window').width - 90,
     // borderWidth: 3,
   },
+  buttonSection: {
+    flex: 1,
+    // borderWidth: 3,
+  },
   logInButtonContainer: {
+    alignItems: 'center',
     marginTop: 20,
     borderWidth: 0.5,
     borderRadius: 30,
@@ -280,6 +325,14 @@ const styles = StyleSheet.create({
   },
   signupButton: {
     marginTop: 20,
+  },
+  devLoginButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    backgroundColor: 'lightblue',
+    width: 50,
+    height: 50,
   },
 });
 
