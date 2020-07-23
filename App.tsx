@@ -8,7 +8,10 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
-import Map from './src/stacks/Map';
+
+import HomeStack from './src/stacks/HomeStack';
+import Map from './src/screens/Map';
+
 import StoryBoard from './src/stacks/StoryBoard';
 import HomeStack from './src/stacks/HomeStack';
 import LoginStack from './src/stacks/LoginStack';
