@@ -6,7 +6,7 @@ const HomeThree = ({navigation}: HomeParamProps<'HomeThree'>) => {
   return (
     <View style={styles.container}>
       <Text style={{fontSize: 50, fontWeight: 'bold'}}>HomeThree</Text>
-      <Button title="homeOne" onPress={() => navigation.navigate('HomeOne')} />
+      <Button title="Camera" onPress={() => navigation.navigate('Camera')} />
       <Button title="homeTwo" onPress={() => navigation.navigate('HomeTwo')} />
     </View>
   );

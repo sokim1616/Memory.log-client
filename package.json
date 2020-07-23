@@ -10,6 +10,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/cameraroll": "^4.0.0",
+    "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/material-bottom-tabs": "^5.2.14",
     "@react-navigation/native": "^5.7.1",
@@ -17,7 +19,9 @@
     "@types/react-native-vector-icons": "^6.4.5",
     "react": "16.13.1",
     "react-native": "0.63.0",
+    "react-native-camera": "^3.32.0",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-image-picker": "^2.3.3",
     "react-native-paper": "^4.0.1",
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.1.1",
