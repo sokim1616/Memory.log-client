@@ -13,6 +13,8 @@ import Map from './src/screens/Map';
 import ConfigStackContainer from './src/containers/ConfigStackContainer';
 import StoryBoard from './src/stacks/StoryBoard';
 import LoginStack from './src/stacks/LoginStack';
+//! 밑에 mapping import 는 테스트 용입니다
+import Mapping from './src/screens/Mapping'
 
 const AppTab = createMaterialBottomTabNavigator();
 

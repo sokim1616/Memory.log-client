@@ -11,7 +11,7 @@ interface Action {
 }
 
 const initialState = {
-  loginStatus: false,
+  loginStatus: true,
 };
 
 const loginReducer: Reducer<State, Action> = (state = initialState, action) => {
