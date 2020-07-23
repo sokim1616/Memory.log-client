@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Camera from '../screens/Camera';
-import HomeTwo from '../screens/HomeTwo';
+import Map from '../screens/Map';
 import HomeThree from '../screens/HomeThree';
 
 const HomeStackNav = createStackNavigator();
@@ -18,7 +18,7 @@ const HomeStack: React.FC<{}> = () => {
         },
       }}>
       <HomeStackNav.Screen name="Camera" component={Camera} />
-      <HomeStackNav.Screen name="HomeTwo" component={HomeTwo} />
+      <HomeStackNav.Screen name="HomeTwo" component={Map} />
       <HomeStackNav.Screen name="HomeThree" component={HomeThree} />
     </HomeStackNav.Navigator>
   );

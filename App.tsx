@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {connect} from 'react-redux';
 import {StyleSheet} from 'react-native';
@@ -8,12 +7,10 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
-
 import HomeStack from './src/stacks/HomeStack';
 import Map from './src/screens/Map';
 
 import StoryBoard from './src/stacks/StoryBoard';
-import HomeStack from './src/stacks/HomeStack';
 import LoginStack from './src/stacks/LoginStack';
 
 const AppTab = createMaterialBottomTabNavigator();
@@ -77,7 +74,6 @@ const App: React.FC<AppProps> = ({loginStatus}) => {
         )}
       </NavigationContainer>
     </>
-
   );
 };
 
