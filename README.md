@@ -38,6 +38,7 @@
   - React Native
   - Typescript
   - Redux
+  - React Navigation
 
 2. Server
   - Python (django)
