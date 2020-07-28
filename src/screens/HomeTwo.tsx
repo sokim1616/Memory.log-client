@@ -70,7 +70,7 @@ const HomeTwo: React.FC<HomeTwoProps> = (navigation) => {
         title="homeThree"
         onPress={() => navigation.navigate('HomeThree')}
       /> */}
-      <Button title="get photos" onPress={() => fetchPhotos()} />
+      {/* <Button title="get photos" onPress={() => fetchPhotos()} /> */}
     </SafeAreaView>
   );
 };
@@ -92,19 +92,21 @@ const styles = StyleSheet.create({
   photoView: {
     flex: 0.25,
     flexDirection: 'row',
-    minWidth: Dimensions.get('window').width / 4 - 12,
+    minWidth: Dimensions.get('window').width / 4,
     maxWidth: 93,
     minHeight: Dimensions.get('window').height / 7 - 12,
     maxHeight: 104,
     justifyContent: 'space-around',
     alignItems: 'center',
+    borderWidth: 5,
+    borderColor: 'yellow',
   },
   photo: {
     flex: 1,
     margin: 2,
-    minWidth: Dimensions.get('window').width / 4 - 12 - 2,
+    minWidth: Dimensions.get('window').width / 4 - 6,
     maxWidth: 100 - 10,
-    minHeight: Dimensions.get('window').height / 7 - 12 - 2,
+    minHeight: Dimensions.get('window').height / 7 - 14 - 2,
     maxHeight: 104 - 2,
   },
 });

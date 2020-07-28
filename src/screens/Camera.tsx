@@ -1,23 +1,39 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native';
-import {RNCamera} from 'react-native-camera';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import {RNCamera, TakePictureResponse} from 'react-native-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import {StatusBar} from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation, {
+  GeolocationResponse,
+} from '@react-native-community/geolocation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import PhotoPreviewModal from '../components/PhotoPreviewModal';
 MaterialCommunityIcons.loadFont();
 
 interface CameraProps {
   navigation: {};
 }
 
-const Camera: React.FC<CameraProps> = ({navigation}) => {
+const Camera: React.FC<CameraProps> = ({navigation, camProps}) => {
+  const {changeButtonsVisibilityStatus} = camProps;
   let camera: RNCamera;
+  const [flashStatus, setFlashStatus] = useState(
+    RNCamera.Constants.FlashMode.off,
+  );
+  const [cameraType, toggleCameraType] = useState(RNCamera.Constants.Type.back);
+  const [previewMode, setPreviewMode] = useState(false);
+  const [currentImageData, setCurrentImageData] = useState({});
   const [pointOfInterest, setAutoFocusPointOfInterest] = useState({
     x: 0.5,
     y: 0.5,
   });
-  const [cameraType, toggleCameraType] = useState(RNCamera.Constants.Type.back);
   const [location, setLocation] = useState({
     accuracy: 0,
     altitude: 0,
@@ -28,21 +44,25 @@ const Camera: React.FC<CameraProps> = ({navigation}) => {
     speed: 0,
   });
 
+  const getLocation = () => {
+    let geoOptions = {
+      maximumAge: 3000,
+      enableHighAccuracy: true,
+    };
+    Geolocation.getCurrentPosition(
+      async (position: GeolocationResponse) => {
+        await setLocation(position.coords);
+      },
+      () => console.error(error),
+      geoOptions,
+    );
+    console.log(location);
+  };
+
   const takePicture = async () => {
     if (camera) {
       try {
-        let geoOptions = {
-          maximumAge: 3000,
-          enableHighAccuracy: true,
-        };
-        Geolocation.getCurrentPosition(
-          async (position) => {
-            await setLocation(position.coords);
-          },
-          () => console.error(error),
-          geoOptions,
-        );
-        console.log(location);
+        getLocation();
         const photoOptions = {
           quality: 1,
           base64: true,
@@ -56,14 +76,29 @@ const Camera: React.FC<CameraProps> = ({navigation}) => {
           pauseAfterCapture: 'true',
         };
         const data = await camera.takePictureAsync(photoOptions);
-        console.log(Object.keys(data));
-        CameraRoll.save(data.uri, {album: 'MemoryLog'}).then(() =>
-          console.log('complete'),
-        );
+        console.log(data);
+        setCurrentImageData(data);
+        changeButtonsVisibilityStatus(false);
+        setPreviewMode(true);
       } catch (e) {
         console.log(e);
       }
     }
+  };
+
+  const savePicture: (data: TakePictureResponse) => void = async ({
+    uri,
+    height,
+    width,
+  }) => {
+    let saved = await CameraRoll.save(uri, {album: 'MemoryLog'});
+    console.log('saved: ', saved);
+  };
+
+  const toggleFlash = () => {
+    flashStatus === RNCamera.Constants.FlashMode.off
+      ? setFlashStatus(RNCamera.Constants.FlashMode.on)
+      : setFlashStatus(RNCamera.Constants.FlashMode.off);
   };
 
   const handleToggle = () => {
@@ -83,48 +118,63 @@ const Camera: React.FC<CameraProps> = ({navigation}) => {
           y: nativeEvent.pageY,
         });
       }}>
-      <StatusBar barStyle="light-content" />
-      <RNCamera
-        onTap={() => camera.resumePreview()}
-        ref={(ref) => {
-          camera = ref;
-        }}
-        useNativeZoom={true}
-        style={styles.camera}
-        type={cameraType}
-        flashMode={RNCamera.Constants.FlashMode.off}
-        captureAudio={false}
-        autoFocusPointOfInterest={pointOfInterest}>
-        <View style={styles.reverseCameraButton}>
-          <MaterialCommunityIcons
-            name="camera-front-variant"
-            style={{fontSize: 40}}
-            title="Reverse"
-            onPress={() => handleToggle()}
+      <View style={styles.headerContainer}>
+        <StatusBar barStyle="light-content" />
+      </View>
+      {previewMode ? null : (
+        <View style={styles.cameraContainer}>
+          <RNCamera
+            // onTap={() => camera.resumePreview()}
+            ref={(ref) => (camera = ref)}
+            useNativeZoom={true}
+            style={styles.camera}
+            type={cameraType}
+            flashMode={flashStatus}
+            captureAudio={false}
+            autoFocusPointOfInterest={pointOfInterest}
           />
         </View>
-        <View style={styles.catpureContainer}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('HomeTwo')}
-            style={styles.capture}>
-            <Text style={{fontSize: 14}}> Home2 </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => takePicture()}
-            style={styles.capture}>
-            <MaterialCommunityIcons
-              name="circle-slice-8"
-              color={'darkred'}
-              size={80}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('HomeThree')}
-            style={styles.capture}>
-            <Text style={{fontSize: 14}}> Home3 </Text>
-          </TouchableOpacity>
-        </View>
-      </RNCamera>
+      )}
+      <View style={styles.footerContainer}>
+        {previewMode ? (
+          <PhotoPreviewModal
+            camera={camera}
+            savePicture={savePicture}
+            changeButtonsVisibilityStatus={changeButtonsVisibilityStatus}
+            currentImageData={currentImageData}
+            handleModalVisibility={setPreviewMode}
+          />
+        ) : (
+          <>
+            <View style={styles.captureContainer}>
+              <View onTouchEnd={toggleFlash} style={styles.flashLightButton}>
+                <MaterialCommunityIcons
+                  name={flashStatus ? 'flash' : 'flash-off'}
+                  style={styles.flashStatusIcon}
+                  color={'white'}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => takePicture()}
+                style={styles.capture}>
+                <MaterialCommunityIcons
+                  name="circle-slice-8"
+                  color={'darkred'}
+                  size={80}
+                />
+              </TouchableOpacity>
+              <View style={styles.reverseCameraButton}>
+                <MaterialCommunityIcons
+                  name="camera-front-variant"
+                  style={styles.cameraFrontVariantIcon}
+                  onPress={() => handleToggle()}
+                  color={'white'}
+                />
+              </View>
+            </View>
+          </>
+        )}
+      </View>
     </View>
   );
 };
@@ -133,19 +183,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'transparent',
+    backgroundColor: 'black',
+  },
+  headerContainer: {
+    flex: 0.5,
+    flexDirection: 'row',
+  },
+  flashLightButton: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingLeft: 30,
+  },
+  flashStatusIcon: {
+    fontSize: 30,
+  },
+  reverseCameraButton: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: 30,
+  },
+  cameraFrontVariantIcon: {
+    fontSize: 30,
+  },
+  cameraContainer: {
+    height: Dimensions.get('screen').width,
+    borderWidth: 3,
+    borderColor: '#2e2e2e',
   },
   camera: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  catpureContainer: {
+  footerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  captureContainer: {
     flex: 0,
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'stretch',
+    alignItems: 'center',
   },
   capture: {
     alignItems: 'center',
@@ -153,11 +234,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     alignSelf: 'center',
     margin: 10,
-  },
-  reverseCameraButton: {
-    position: 'absolute',
-    right: 15,
-    top: 15,
   },
 });
 

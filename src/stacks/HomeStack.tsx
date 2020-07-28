@@ -1,15 +1,15 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Camera from '../screens/Camera';
-import HomeTwo from '../screens/HomeTwo';
-import HomeThree from '../screens/HomeThree';
+import CameraContainer from '../containers/CameraContainer';
 
 const HomeStackNav = createStackNavigator();
 
-const HomeStack: React.FC<{}> = () => {
+const HomeStack: React.FC<{}> = ({homeStackProps}) => {
+  const {buttonsVisibilityStatus} = homeStackProps;
+
   return (
     <HomeStackNav.Navigator
-      initialRouteName="HomeOne"
+      initialRouteName="Camera"
       screenOptions={{
         headerStyle: {backgroundColor: '#838383'},
         headerTintColor: 'black',
@@ -17,9 +17,22 @@ const HomeStack: React.FC<{}> = () => {
           fontWeight: 'bold',
         },
       }}>
-      <HomeStackNav.Screen name="Camera" component={Camera} />
-      <HomeStackNav.Screen name="HomeTwo" component={HomeTwo} />
-      <HomeStackNav.Screen name="HomeThree" component={HomeThree} />
+      <HomeStackNav.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: 'black',
+            shadowOpacity: 0,
+          },
+          headerTitle: 'Memory.Log',
+          headerTintColor: buttonsVisibilityStatus ? 'white' : 'black',
+          headerTitleStyle: {
+            fontFamily: 'Lobster-Regular',
+            fontSize: 24,
+          },
+        }}
+        name="Camera"
+        component={CameraContainer}
+      />
     </HomeStackNav.Navigator>
   );
 };
