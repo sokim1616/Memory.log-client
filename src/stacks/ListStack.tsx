@@ -1,26 +1,23 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { white } from 'react-native-paper/lib/typescript/src/styles/colors';
+/*
+* TODO: 
+* 이 파일에서는 스크린 폴더에 있는 친구목록에 관련한
+* 모든 파일들을 불러와준 뒤, 스택 별로 뿌려줍니다. 
+* 
+* 친구리스트에 필요한 기본 화면 1개, 스크린화면 4개
+* 
+*/
+import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack';
+import FriendList from '../screens/FriendList'
 
-//TODO: <Stack.Navigator> 만들기
+const Stack = createStackNavigator();
 
-const ListStack: React.FC<{}> = () => {
+const ListStack = () => {
     return (
-        <>
-            <View style={styles.container}>
-                <Text style={{ color: 'black', fontWeight: 'bold' }}>Following_List</Text>
-            </View>
-        </>
+        <Stack.Navigator>
+            <Stack.Screen name="FriendList" component={FriendList} />
+        </Stack.Navigator>
     );
-};
+}
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'lightblue',
-    },
-});
-
-export default ListStack;
+export default ListStack; 
