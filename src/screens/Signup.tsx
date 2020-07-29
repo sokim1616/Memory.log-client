@@ -105,10 +105,10 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
     }).then((resp) => {
       if (resp.status === 200) {
         setToastMessage('Success! Press To Log In');
+      } else if (resp.status === 409) {
+        setToastMessage('User already exists. Please try another e-mail.');
       } else {
-        setToastMessage(
-          'Unathorized. Please check your username and password.',
-        );
+        setToastMessage('Sorry cannot process your request now');
       }
     });
   };

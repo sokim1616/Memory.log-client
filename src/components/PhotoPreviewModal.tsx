@@ -33,11 +33,15 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
   const memoField: Ref = React.createRef();
 
   const modalButtonTouchHandler = async (val) => {
+    let ans = '';
     if (val === 'save') {
-      await savePicture(currentImageData, photoDescription);
+      ans = savePicture(currentImageData, photoDescription);
     }
-    changeButtonsVisibilityStatus(true);
-    handleModalVisibility(false);
+    let wait = ans === 'OK' ? 0 : 1500;
+    setTimeout(() => {
+      changeButtonsVisibilityStatus(true);
+      handleModalVisibility(false);
+    }, wait);
   };
 
   const handleKeyboardIconPress = () => {

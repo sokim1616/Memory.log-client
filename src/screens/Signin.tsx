@@ -112,7 +112,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
               ? styles.inputLabelFocused
               : styles.inputLabelBlurred
           }>
-          Username
+          E-mail
         </Text>
         <TextInput
           ref={emailFieldRef}
@@ -165,7 +165,11 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
         <Text onPress={() => navigation.navigate('Signup')}>Sign Up?</Text>
       </View>
       <View
-        onTouchStart={() => changeLogin(true)}
+        onTouchStart={() => {
+          setEmail('z1@gmail.com');
+          setPassword('12345678');
+          handleSubmit();
+        }}
         style={styles.devLoginButton}>
         <Text>개발용 로그인</Text>
       </View>

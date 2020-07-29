@@ -7,7 +7,7 @@ interface SignoutProps {}
 const Signout: React.FC<SignoutProps> = ({loginProps}) => {
   const {changeLogin} = loginProps;
 
-  const requestSignout: () => void = () => {
+  const requestSignout: () => void = async () => {
     console.log(Server.server);
     let url = `http://${Server.server}/user/signout`;
     let options = {
@@ -15,8 +15,8 @@ const Signout: React.FC<SignoutProps> = ({loginProps}) => {
       mode: 'cors',
       credentials: 'include',
     };
-    fetch(url, options).then((res) => {
-      if (res.status === 200) {
+    await fetch(url, options).then((res) => {
+      if (res.status === 200 || res.status === 400) {
         changeLogin(false);
       } else {
         throw new Error('bad signout request');
@@ -27,7 +27,7 @@ const Signout: React.FC<SignoutProps> = ({loginProps}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text>Signout</Text>
-      <Button onPress={requestSignout} title="signout" />
+      <Button onPress={async () => await requestSignout()} title="signout" />
     </SafeAreaView>
   );
 };

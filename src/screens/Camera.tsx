@@ -70,6 +70,7 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
   const takePicture = async () => {
     if (camera) {
       try {
+        getLocation;
         const photoOptions = {
           quality: 0.5,
           base64: false,
@@ -85,11 +86,10 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
     }
   };
 
-  const savePicture: (data: TakePictureResponse) => void = async (
+  const savePicture: (data: TakePictureResponse) => boolean = async (
     {uri},
     description,
   ) => {
-    await getLocation();
     await CameraRoll.save(uri, {album: 'MemoryLog'});
     let photo = await CameraRoll.getPhotos({
       first: 1,
@@ -108,26 +108,27 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
       body: formData,
     };
     let response = await fetch(url, options);
-    alertSaveSucess(response.status);
+    return alertSaveSucess(response.status);
   };
 
-  const alertSaveSucess = (status) => {
-    if (status === 201) {
-      Alert.alert(
-        'Picture upload success!',
-        'Thank you!',
-        {text: 'OK', onPress: () => console.log('hi')},
-        {cancelable: false},
-      );
-      return;
-    } else {
-      Alert.alert(
-        'Picture Upload Failed',
-        '😭',
-        {text: 'OK', onPress: () => console.log('hi')},
-        {cancelable: false},
-      );
-    }
+  const alertSaveSucess = async (status) => {
+    return new Promise((resolve, reject) => {
+      if (status === 200) {
+        return Alert.alert(
+          'Picture upload success!',
+          'Thank you!',
+          {text: 'OK', onPress: () => 'OK'},
+          {cancelable: false},
+        );
+      } else {
+        return Alert.alert(
+          'Picture Upload Failed',
+          '😭',
+          {text: 'OK', onPress: () => 'OK'},
+          {cancelable: false},
+        );
+      }
+    });
   };
 
   const createForm = (photo, description) => {
@@ -173,7 +174,6 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
       {previewMode ? null : (
         <View style={styles.cameraContainer}>
           <RNCamera
-            // onTap={() => camera.resumePreview()}
             ref={(ref) => (camera = ref)}
             useNativeZoom={true}
             style={styles.camera}

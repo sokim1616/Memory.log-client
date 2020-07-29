@@ -38,10 +38,13 @@ const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
         credentials: 'include',
       })
         .then((res) => res.json())
-        .then((res) => setData(res));
+        .then((res) => {
+          // console.log(res);
+          setData(res);
+        });
     };
     getData();
-  }, []);
+  }, [data]);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.photoScrollContainer}>

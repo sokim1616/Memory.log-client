@@ -8,9 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 MaterialCommunityIcons.loadFont();
 
 import HomeStackContainer from './src/containers/HomeStackContainer';
-import ConfigStackContainer from './src/containers/ConfigStackContainer';
 import Map from './src/screens/Map';
-
 
 import ConfigStackContainer from './src/containers/ConfigStackContainer';
 import StoryBoard from './src/screens/StoryBoard';
