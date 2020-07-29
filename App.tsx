@@ -11,7 +11,9 @@ import HomeStackContainer from './src/containers/HomeStackContainer';
 import ConfigStackContainer from './src/containers/ConfigStackContainer';
 import Map from './src/screens/Map';
 
-import StoryBoard from './src/stacks/StoryBoard';
+
+import ConfigStackContainer from './src/containers/ConfigStackContainer';
+import StoryBoard from './src/screens/StoryBoard';
 import LoginStack from './src/stacks/LoginStack';
 import ListStack from './src/stacks/ListStack';
 

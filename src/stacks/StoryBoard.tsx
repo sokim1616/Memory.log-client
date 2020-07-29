@@ -15,8 +15,7 @@ interface HomeTwoProps { }
 const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
   const [photos, getPhotos] = useState([]);
   
-  //!
-  // TODO: fetch 를 서버로 부터 받는것으로 수정해야합니다.
+  //! 18 - 34 는 없어지는 코드, ---> 서버에서 사진 가져오는 코드로 
   const fetchPhotos = async () => {
     try {
       let camPhotos = await CameraRoll.getPhotos({
@@ -33,7 +32,8 @@ const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
       console.error(e);
     }
   };
-
+  //!
+  // TODO: fetch 를 서버로 부터 받는것으로 수정해야합니다.
   useEffect(() => {
     const photoUpdate = async () => {
       let camPhotos = await CameraRoll.getPhotos({
@@ -53,6 +53,8 @@ const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.photoScrollContainer}>
+         {/* data mapping 여기서 */}
+        {/* // * data.map */}
         {photos.map((photo, i) => {
           return (
             <View style={styles.photoView}>
@@ -66,14 +68,6 @@ const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
           );
         })}
       </ScrollView>
-      {/* <Text style={{fontSize: 50, fontWeight: 'bold'}}>HomeTwo</Text>
-      <Button title="Camera" onPress={() => navigation.navigate('Camera')} />
-      <Button
-        title="homeThree"
-        onPress={() => navigation.navigate('HomeThree')}
-      /> */}
-      {/* //! get Photos 버튼삭제 */}
-      {/* <Button title="get photos" onPress={() => fetchPhotos()} /> */}
     </SafeAreaView>
   );
 };
@@ -114,30 +108,35 @@ const styles = StyleSheet.create({
 
 export default StoryBoard;
 
+// import React, { useEffect, useState } from 'react';
+// import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
-// import React from 'react';
-// import {StyleSheet, View, Text} from 'react-native';
-// import {white} from 'react-native-paper/lib/typescript/src/styles/colors';
+// const StoryBoard = () => {
+//   const [isLoading, setLoading] = useState(true);
+//   const [data, setData] = useState([]);
 
-// //TODO: <Stack.Navigator> 만들기
+//   useEffect(() => {
+//     fetch('https://localhost:4000/photo/rboard')
+//        method: 'get'
+//        body: {}
+//       .then((response) => response.json())
+//       .then((json) => setData(json.movies))
+//       .catch((error) => console.error(error))
+//       .finally(() => setLoading(false));
+//   }, []);
 
-// const StoryBoard: React.FC<{}> = () => {
 //   return (
-//     <>
-//       <View style={styles.container}>
-//         <Text style={{color: 'black', fontWeight: 'bold'}}>StoryBoard</Text>
-//       </View>
-//     </>
+//     <View style={{ flex: 1, padding: 24 }}>
+//       {isLoading ? <ActivityIndicator/> : (
+//         <FlatList
+//           data={data}
+//           keyExtractor={({ id }, index) => id}
+//           renderItem={({ item }) => (
+//             <Text>{item.title}, {item.releaseYear}</Text>
+//           )}
+//         />
+//       )}
+//     </View>
 //   );
 // };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: 'lightblue',
-//   },
-// });
-
-// export default StoryBoard;
+// export default StoryBoard
