@@ -1,8 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
-  Text,
-  Button,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
@@ -70,7 +68,7 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
   const takePicture = async () => {
     if (camera) {
       try {
-        getLocation;
+        getLocation();
         const photoOptions = {
           quality: 0.5,
           base64: false,
@@ -108,27 +106,26 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
       body: formData,
     };
     let response = await fetch(url, options);
-    return alertSaveSucess(response.status);
+    alertSaveSucess(response.status);
+    return true;
   };
 
   const alertSaveSucess = async (status) => {
-    return new Promise((resolve, reject) => {
-      if (status === 200) {
-        return Alert.alert(
-          'Picture upload success!',
-          'Thank you!',
-          {text: 'OK', onPress: () => 'OK'},
-          {cancelable: false},
-        );
-      } else {
-        return Alert.alert(
-          'Picture Upload Failed',
-          '😭',
-          {text: 'OK', onPress: () => 'OK'},
-          {cancelable: false},
-        );
-      }
-    });
+    if (status === 200) {
+      return Alert.alert(
+        'Picture upload success!',
+        'Thank you!',
+        {text: 'OK', onPress: () => 'OK'},
+        {cancelable: false},
+      );
+    } else {
+      return Alert.alert(
+        'Picture Upload Failed',
+        '😭',
+        {text: 'OK', onPress: () => 'OK'},
+        {cancelable: false},
+      );
+    }
   };
 
   const createForm = (photo, description) => {

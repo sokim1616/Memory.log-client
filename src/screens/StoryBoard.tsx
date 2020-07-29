@@ -1,50 +1,36 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   SafeAreaView,
   View,
   StyleSheet,
-  Button,
   Image,
   ScrollView,
   Dimensions,
 } from 'react-native';
-import CameraRoll from '@react-native-community/cameraroll';
+import {useFocusEffect} from '@react-navigation/native';
+
 interface HomeTwoProps {}
-const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
-  const [photos, getPhotos] = useState([]);
+const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   const [data, setData] = useState([]);
-  //! 18 - 34 는 없어지는 코드, ---> 서버에서 사진 가져오는 코드로
-  const fetchPhotos = async () => {
-    try {
-      let camPhotos = await CameraRoll.getPhotos({
-        first: 1000,
-        groupTypes: 'Album',
-        groupName: 'MemoryLog',
-        include: ['location'],
-      });
-      for (let photo of camPhotos.edges) {
-        console.log(photo.node.location);
-      }
-      getPhotos(camPhotos.edges);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  useEffect(() => {
-    const getData = async () => {
-      await fetch('http://localhost:4000/photo/sboard', {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          // console.log(res);
-          setData(res);
-        });
-    };
-    getData();
-  }, [data]);
+
+  useFocusEffect(
+    useCallback(
+      () => async () => {
+        await fetch('http://localhost:4000/photo/sboard', {
+          method: 'POST',
+          mode: 'cors',
+          credentials: 'include',
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            // console.log(res);
+            setData(res);
+          });
+      },
+      [data],
+    ),
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.photoScrollContainer}>
