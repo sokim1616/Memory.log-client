@@ -27,7 +27,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
 }) => {
   const [editModeStatus, setEditModeStatus] = useState(false);
   const [photoDescription, setPhotoDescription] = useState(
-    "What's on your mind..? ",
+    "What's on your mind? ",
   );
   const {uri} = currentImageData;
   const memoField: Ref = React.createRef();
@@ -89,12 +89,12 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           />
         </View>
         <TextInput
+          placeholder="What's on your mind?"
           ref={memoField}
           multiline={true}
           style={
             editModeStatus ? styles.noteRightSideEditMode : styles.noteRightSide
           }
-          defaultValue="What's on your mind..? "
           onTouchEnd={() => setEditModeStatus(true)}
           onChangeText={(text) => setPhotoDescription(text)}
         />

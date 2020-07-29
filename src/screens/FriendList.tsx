@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
 const data = [
     {
-        name: '리스트1',
+        name: 'friend',
     },
     {
         name: 'list2',
