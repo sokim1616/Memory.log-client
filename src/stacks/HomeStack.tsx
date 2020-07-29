@@ -23,7 +23,7 @@ const HomeStack: React.FC<{}> = ({homeStackProps}) => {
             backgroundColor: 'black',
             shadowOpacity: 0,
           },
-          headerTitle: 'Memory.Log',
+          headerTitle: 'Memory.log',
           headerTintColor: buttonsVisibilityStatus ? 'white' : 'black',
           headerTitleStyle: {
             fontFamily: 'Lobster-Regular',

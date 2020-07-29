@@ -70,7 +70,7 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
   const takePicture = async () => {
     if (camera) {
       try {
-        getLocation;
+        getLocation();
         const photoOptions = {
           quality: 0.5,
           base64: false,
