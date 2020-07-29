@@ -26,13 +26,15 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
   savePicture,
 }) => {
   const [editModeStatus, setEditModeStatus] = useState(false);
+  const [photoDescription, setPhotoDescription] = useState(
+    "What's on your mind..? ",
+  );
   const {uri} = currentImageData;
   const memoField: Ref = React.createRef();
 
   const modalButtonTouchHandler = async (val) => {
     if (val === 'save') {
-      const resp = savePicture(currentImageData);
-      console.log(resp, ' is resp');
+      await savePicture(currentImageData, photoDescription);
     }
     changeButtonsVisibilityStatus(true);
     handleModalVisibility(false);
@@ -88,8 +90,9 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           style={
             editModeStatus ? styles.noteRightSideEditMode : styles.noteRightSide
           }
-          defaultValue="What's on your mind... "
+          defaultValue="What's on your mind..? "
           onTouchEnd={() => setEditModeStatus(true)}
+          onChangeText={(text) => setPhotoDescription(text)}
         />
       </View>
       <View style={styles.buttonsContainer}>

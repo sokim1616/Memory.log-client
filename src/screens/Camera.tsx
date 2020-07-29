@@ -6,7 +6,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
+import Server from '../utils/Server';
 import {RNCamera, TakePictureResponse} from 'react-native-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import {StatusBar} from 'react-native';
@@ -19,9 +21,10 @@ MaterialCommunityIcons.loadFont();
 
 interface CameraProps {
   navigation: {};
+  camProps: {};
 }
 
-const Camera: React.FC<CameraProps> = ({navigation, camProps}) => {
+const Camera: React.FC<CameraProps> = ({camProps}) => {
   const {changeButtonsVisibilityStatus} = camProps;
   let camera: RNCamera;
   const [flashStatus, setFlashStatus] = useState(
@@ -44,39 +47,35 @@ const Camera: React.FC<CameraProps> = ({navigation, camProps}) => {
     speed: 0,
   });
 
-  const getLocation = () => {
-    let geoOptions = {
-      maximumAge: 3000,
-      enableHighAccuracy: true,
-    };
-    Geolocation.getCurrentPosition(
-      async (position: GeolocationResponse) => {
-        await setLocation(position.coords);
-      },
-      () => console.error(error),
-      geoOptions,
-    );
-    console.log(location);
+  const getLocation = async () => {
+    return new Promise((resolve, reject) => {
+      let geoOptions = {
+        maximumAge: 3000,
+        enableHighAccuracy: true,
+      };
+      Geolocation.getCurrentPosition(
+        async (position: GeolocationResponse) => {
+          await setLocation(position.coords);
+          resolve(true);
+        },
+        () => {
+          console.error(error);
+          reject(false);
+        },
+        geoOptions,
+      );
+    });
   };
 
   const takePicture = async () => {
     if (camera) {
       try {
-        getLocation();
         const photoOptions = {
-          quality: 1,
-          base64: true,
-          location,
-          writeExif: {
-            GPSLatitude: location.latitude,
-            GPSLongitude: location.longitude,
-            GPSAltitude: location.altitude,
-          },
-          exif: true,
+          quality: 0.5,
+          base64: false,
           pauseAfterCapture: 'true',
         };
         const data = await camera.takePictureAsync(photoOptions);
-        console.log(data);
         setCurrentImageData(data);
         changeButtonsVisibilityStatus(false);
         setPreviewMode(true);
@@ -86,13 +85,63 @@ const Camera: React.FC<CameraProps> = ({navigation, camProps}) => {
     }
   };
 
-  const savePicture: (data: TakePictureResponse) => void = async ({
-    uri,
-    height,
-    width,
-  }) => {
-    let saved = await CameraRoll.save(uri, {album: 'MemoryLog'});
-    console.log('saved: ', saved);
+  const savePicture: (data: TakePictureResponse) => void = async (
+    {uri},
+    description,
+  ) => {
+    await getLocation();
+    await CameraRoll.save(uri, {album: 'MemoryLog'});
+    let photo = await CameraRoll.getPhotos({
+      first: 1,
+      groupTypes: 'Album',
+      groupName: 'MemoryLog',
+    });
+    let formData = createForm(photo, description);
+    let url = `http://${Server.server}/photo/upload`;
+    let options = {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      credentials: 'include',
+      body: formData,
+    };
+    let response = await fetch(url, options);
+    alertSaveSucess(response.status);
+  };
+
+  const alertSaveSucess = (status) => {
+    if (status === 201) {
+      Alert.alert(
+        'Picture upload success!',
+        'Thank you!',
+        {text: 'OK', onPress: () => console.log('hi')},
+        {cancelable: false},
+      );
+      return;
+    } else {
+      Alert.alert(
+        'Picture Upload Failed',
+        '😭',
+        {text: 'OK', onPress: () => console.log('hi')},
+        {cancelable: false},
+      );
+    }
+  };
+
+  const createForm = (photo, description) => {
+    let formData = new FormData();
+    formData.append('img', {
+      uri: photo.edges[0].node.image.uri,
+      name: `${photo.edges[0].node.timestamp}.jpg`,
+      type: 'image/jpg',
+      size: 2,
+    });
+    formData.append('location', location.longitude);
+    formData.append('location', location.latitude);
+    formData.append('description', description);
+    return formData;
   };
 
   const toggleFlash = () => {
