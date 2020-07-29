@@ -8,14 +8,15 @@ const Signout: React.FC<SignoutProps> = ({loginProps}) => {
   const {changeLogin} = loginProps;
 
   const requestSignout: () => void = () => {
+    console.log(Server.server);
     let url = `http://${Server.server}/user/signout`;
     let options = {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
     };
-    fetch(url, options).then(() => {
-      if (res.status(200)) {
+    fetch(url, options).then((res) => {
+      if (res.status === 200) {
         changeLogin(false);
       } else {
         throw new Error('bad signout request');
