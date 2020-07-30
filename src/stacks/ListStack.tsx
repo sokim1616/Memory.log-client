@@ -9,28 +9,27 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import FriendList from '../screens/FriendList';
+import FriendSearch from '../screens/FriendSearch';
 
 const Stack = createStackNavigator();
 
 const ListStack = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        options={{
-          headerStyle: {
-            backgroundColor: 'black',
-            shadowOpacity: 0,
-          },
-          headerTitle: 'Memory.log',
-          headerTintColor: 'white',
-          headerTitleStyle: {
-            fontFamily: 'Lobster-Regular',
-            fontSize: 24,
-          },
-        }}
-        name="FriendList"
-        component={FriendList}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: 'black',
+          shadowOpacity: 0,
+        },
+        headerTitle: 'Memory.log',
+        headerTintColor: 'white',
+        headerTitleStyle: {
+          fontFamily: 'Lobster-Regular',
+          fontSize: 24,
+        },
+      }}>
+      <Stack.Screen name="FriendList" component={FriendList} />
+      {/* <Stack.Screen name="Search" component={FriendSearch} /> */}
     </Stack.Navigator>
   );
 };
