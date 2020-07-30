@@ -12,23 +12,27 @@ import {useFocusEffect} from '@react-navigation/native';
 interface HomeTwoProps {}
 const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   const [data, setData] = useState([]);
+  const [dataLength, setDataLength] = useState([]);
+
+  const fetchPhotos = async () => {
+    await fetch('http://localhost:4000/photo/sboard', {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log('aaaa', res);
+        setData(res);
+        setDataLength(res.length);
+      });
+  };
 
   useFocusEffect(
-    useCallback(
-      () => async () => {
-        await fetch('http://localhost:4000/photo/sboard', {
-          method: 'POST',
-          mode: 'cors',
-          credentials: 'include',
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            // console.log(res);
-            setData(res);
-          });
-      },
-      [data],
-    ),
+    useCallback(() => {
+      fetchPhotos();
+      console.log(dataLength, ' is length');
+    }, [dataLength]),
   );
 
   return (

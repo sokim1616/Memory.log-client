@@ -25,6 +25,7 @@ const Map = () => {
     longitudeDelta: 0.0421,
   });
   const [photoData, setPhotoData] = useState([]);
+  const [photoLength, setPhotoLength] = useState(0);
   const [autoLocationStatus, setAutoLocationStatus] = useState(null);
   const [calloutReverse, setCallOutReverse] = useState(false);
   const [location, setLocation] = useState<ILocation>({
@@ -32,25 +33,28 @@ const Map = () => {
     longitude: 127.024612,
   });
 
+  const fetchPhotos = async () => {
+    await fetch('http://localhost:4000/photo/sboard', {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log('aaaa', res);
+        setPhotoData(res);
+        setPhotoLength(res.length);
+      });
+  };
+
   useFocusEffect(
-    useCallback(
-      () => async () => {
-        await fetch('http://localhost:4000/photo/sboard', {
-          method: 'POST',
-          mode: 'cors',
-          credentials: 'include',
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            console.log('aaaa', res);
-            setPhotoData(res);
-          });
-      },
-      [],
-    ),
+    useCallback(() => {
+      fetchPhotos();
+      console.log(photoLength, ' is length');
+    }, [photoLength]),
   );
 
-  const getCurrentLocation = () => {
+  const getCurrentLocation = async () => {
     Geolocation.getCurrentPosition(
       (position) => {
         console.log(location);
@@ -58,6 +62,12 @@ const Map = () => {
         setLocation({
           latitude,
           longitude,
+        });
+        setRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
         });
       },
       (error) => {
@@ -72,7 +82,8 @@ const Map = () => {
     setRegion({...coords});
   };
 
-  const turnOnAutoLocation = () => {
+  const turnOnAutoLocation = async () => {
+    await getCurrentLocation();
     if (autoLocationStatus) {
       clearInterval(autoLocationStatus);
       setAutoLocationStatus(null);
@@ -81,12 +92,6 @@ const Map = () => {
         getCurrentLocation();
       }, 1000);
       setAutoLocationStatus(timer);
-      setRegion({
-        latitude: location.latitude,
-        longitude: location.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
     }
   };
 
