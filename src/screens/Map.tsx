@@ -4,6 +4,7 @@ import Geolocation from 'react-native-geolocation-service';
 import {View, StyleSheet, StatusBar, Image, Text} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {changeCameraScreenStatus} from 'src/actions';
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
@@ -24,6 +25,7 @@ const Map = () => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+  const [mapType, setMapType] = useState('mutedStandard');
   const [photoData, setPhotoData] = useState([]);
   const [photoLength, setPhotoLength] = useState(0);
   const [autoLocationStatus, setAutoLocationStatus] = useState(null);
@@ -47,10 +49,15 @@ const Map = () => {
       });
   };
 
+  const changeMapType = () => {
+    mapType === 'mutedStandard'
+      ? setMapType('satellite')
+      : setMapType('mutedStandard');
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchPhotos();
-      console.log(photoLength, ' is length');
     }, [photoLength]),
   );
 
@@ -77,9 +84,8 @@ const Map = () => {
     );
   };
 
-  const handleCalloutPress = (coords) => {
+  const handleCalloutPress = () => {
     setCallOutReverse(!calloutReverse);
-    setRegion({...coords});
   };
 
   const turnOnAutoLocation = async () => {
@@ -99,7 +105,9 @@ const Map = () => {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <MapView
-        mapType="mutedStandard"
+        showsScale={true}
+        showsBuildings={true}
+        mapType={mapType}
         showsCompass={true}
         compassOffset={{x: -10, y: 0}}
         style={{flex: 1}}
@@ -120,40 +128,53 @@ const Map = () => {
           // image={{uri: 'https://i.ibb.co/nnV730F/maxresdefault.png'}}
         />
         {photoData.map((el: PhotoDataElement, i) => {
+          const {latitude, longitude, createdAt, description, filepath} = el;
           return (
             // Math.random 제거해야됨
             <Marker
+              onSelect={() =>
+                setRegion({
+                  latitude,
+                  longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                })
+              }
               key={i}
               coordinate={{
-                latitude: Number(el.latitude) + Math.random() * 10,
-                longitude: Number(el.longitude) + Math.random() * 10,
+                latitude: Number(latitude),
+                longitude: Number(longitude),
               }}
               description={'map'}>
               <Callout
                 onPress={() =>
                   handleCalloutPress({
-                    latitude: Number(el.latitude) + Math.random() * 10,
-                    longitude: Number(el.longitude) + Math.random() * 10,
+                    latitude: Number(latitude),
+                    longitude: Number(longitude),
                   })
                 }
                 tooltip={false}
                 style={styles.markerCallout}>
                 {calloutReverse ? (
                   <>
-                    <Text>{el.description}</Text>
-                    <Text>{el.createdAt}</Text>
+                    <Text>{description}</Text>
+                    <Text>{createdAt}</Text>
                   </>
                 ) : (
-                  <Image
-                    style={styles.calloutImage}
-                    source={{uri: el.filepath}}
-                  />
+                  <Image style={styles.calloutImage} source={{uri: filepath}} />
                 )}
               </Callout>
             </Marker>
           );
         })}
       </MapView>
+      <View style={styles.changeMapTypeButtonContainer}>
+        <MaterialCommunityIcons
+          onPress={changeMapType}
+          name={mapType === 'mutedStandard' ? 'satellite-variant' : 'map'}
+          style={styles.changeMapTypeIcon}
+        />
+      </View>
       <View style={styles.autoLocationIconContainer}>
         <MaterialCommunityIcons
           onPress={turnOnAutoLocation}
@@ -173,16 +194,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  autoLocationIconContainer: {
-    position: 'absolute',
-    backgroundColor: 'black',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 40,
-    padding: 10,
-    bottom: 20,
-    right: 20,
-  },
   markerCallout: {
     width: 140,
     height: 140,
@@ -192,6 +203,30 @@ const styles = StyleSheet.create({
   calloutImage: {
     width: 140,
     height: 140,
+  },
+  changeMapTypeButtonContainer: {
+    position: 'absolute',
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 40,
+    padding: 10,
+    bottom: 20,
+    right: 80,
+  },
+  changeMapTypeIcon: {
+    color: 'white',
+    fontSize: 20,
+  },
+  autoLocationIconContainer: {
+    position: 'absolute',
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 40,
+    padding: 10,
+    bottom: 20,
+    right: 20,
   },
   autoLocationIconOn: {
     color: 'red',

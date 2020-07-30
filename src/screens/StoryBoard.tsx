@@ -31,7 +31,6 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   useFocusEffect(
     useCallback(() => {
       fetchPhotos();
-      console.log(dataLength, ' is length');
     }, [dataLength]),
   );
 
