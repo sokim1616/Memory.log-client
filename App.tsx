@@ -32,10 +32,13 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
           <LoginStack />
         ) : (
           <AppTab.Navigator
-            barStyle={{backgroundColor: 'black'}}
+            labeled={false}
+            barStyle={{
+              backgroundColor: 'black',
+            }}
             initialRouteName="Home"
-            inactiveColor={buttonsVisibilityStatus ? '#555555' : 'black'}
             shifting={true}
+            inactiveColor={buttonsVisibilityStatus ? '#555555' : 'black'}
             activeColor={buttonsVisibilityStatus ? 'white' : 'black'}>
             <AppTab.Screen
               name="ListStack"
@@ -53,24 +56,28 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               }}
             />
             <AppTab.Screen
-              name="Home"
-              component={HomeStackContainer}
+              name="Map"
+              component={Map}
               options={{
-                tabBarColor: 'black',
-                tabBarLabel: 'Home',
+                tabBarColor: 'lightblue',
+                tabBarLabel: 'Map',
                 tabBarIcon: ({color}) => (
-                  <MaterialCommunityIcons name="home" color={color} size={26} />
+                  <MaterialCommunityIcons name="map" color={color} size={26} />
                 ),
               }}
             />
             <AppTab.Screen
-              name="Map"
-              component={Map}
+              name="Home"
+              component={HomeStackContainer}
               options={{
-                tabBarColor: '#d9adad',
-                tabBarLabel: 'Map',
+                tabBarColor: 'black',
                 tabBarIcon: ({color}) => (
-                  <MaterialCommunityIcons name="map" color={color} size={26} />
+                  <MaterialCommunityIcons
+                    style={styles.mainButton}
+                    name="camera"
+                    color={color}
+                    size={40}
+                  />
                 ),
               }}
             />
@@ -113,6 +120,12 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  mainButton: {
+    alignContent: 'center',
+    textAlign: 'center',
+    width: 60,
+    height: 60,
   },
 });
 const mapStateToProps = (state: {

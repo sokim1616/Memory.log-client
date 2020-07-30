@@ -1,10 +1,17 @@
 import React, {useState, useCallback} from 'react';
 import MapView, {Marker, Callout} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import {View, StyleSheet, StatusBar, Image, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  Image,
+  Text,
+  Dimensions,
+} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {changeCameraScreenStatus} from 'src/actions';
+import {ScrollView} from 'react-native-gesture-handler';
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
@@ -43,7 +50,6 @@ const Map = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('aaaa', res);
         setPhotoData(res);
         setPhotoLength(res.length);
       });
@@ -55,6 +61,8 @@ const Map = () => {
       : setMapType('mutedStandard');
   };
 
+  const trimDate = (str: string) => str.substr(0, str.indexOf('T'));
+
   useFocusEffect(
     useCallback(() => {
       fetchPhotos();
@@ -64,7 +72,6 @@ const Map = () => {
   const getCurrentLocation = async () => {
     Geolocation.getCurrentPosition(
       (position) => {
-        console.log(location);
         const {latitude, longitude} = position.coords;
         setLocation({
           latitude,
@@ -130,7 +137,6 @@ const Map = () => {
         {photoData.map((el: PhotoDataElement, i) => {
           const {latitude, longitude, createdAt, description, filepath} = el;
           return (
-            // Math.random 제거해야됨
             <Marker
               onSelect={() =>
                 setRegion({
@@ -147,18 +153,21 @@ const Map = () => {
               }}
               description={'map'}>
               <Callout
-                onPress={() =>
-                  handleCalloutPress({
-                    latitude: Number(latitude),
-                    longitude: Number(longitude),
-                  })
-                }
-                tooltip={false}
-                style={styles.markerCallout}>
+                onPress={() => handleCalloutPress()}
+                tooltip={true}
+                style={
+                  calloutReverse
+                    ? styles.markerCalloutReverse
+                    : styles.markerCallout
+                }>
                 {calloutReverse ? (
                   <>
-                    <Text>{description}</Text>
-                    <Text>{createdAt}</Text>
+                    <Text style={styles.dateText}>{`Date: ${trimDate(
+                      createdAt,
+                    )}`}</Text>
+                    <View style={styles.descriptionTextView}>
+                      <Text style={styles.descriptionText}>{description}</Text>
+                    </View>
                   </>
                 ) : (
                   <Image style={styles.calloutImage} source={{uri: filepath}} />
@@ -195,14 +204,64 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   markerCallout: {
-    width: 140,
-    height: 140,
+    width: Dimensions.get('screen').width * 0.6,
+    height: Dimensions.get('screen').height * 0.3,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 3,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3.84,
   },
   calloutImage: {
-    width: 140,
-    height: 140,
+    width: Dimensions.get('screen').width * 0.6,
+    height: Dimensions.get('screen').height * 0.3,
+    borderRadius: 10,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 3,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3.84,
+  },
+  markerCalloutReverse: {
+    width: Dimensions.get('screen').width * 0.6,
+    height: Dimensions.get('screen').height * 0.3,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 3,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3.84,
+  },
+  dateText: {
+    margin: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'Lobster-Regular',
+    color: 'black',
+  },
+  descriptionTextView: {
+    width: Dimensions.get('screen').width * 0.6,
+    borderTopColor: 'black',
+    borderTopWidth: 1,
+    alignSelf: 'center',
+    flexWrap: 'wrap',
+  },
+  descriptionText: {
+    margin: 10,
+    fontSize: 20,
+    fontFamily: 'Lobster-Regular',
+    color: 'black',
   },
   changeMapTypeButtonContainer: {
     position: 'absolute',
@@ -213,6 +272,13 @@ const styles = StyleSheet.create({
     padding: 10,
     bottom: 20,
     right: 80,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3.84,
   },
   changeMapTypeIcon: {
     color: 'white',
@@ -227,6 +293,13 @@ const styles = StyleSheet.create({
     padding: 10,
     bottom: 20,
     right: 20,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3.84,
   },
   autoLocationIconOn: {
     color: 'red',
