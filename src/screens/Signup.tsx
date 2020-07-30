@@ -237,7 +237,6 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
           handlePress={() => {
             setToastMessage('');
             blurAll();
-            changeLogin(true);
           }}
           message={toastMessage}
         />

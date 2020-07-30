@@ -13,8 +13,8 @@ import {StatusBar} from 'react-native';
 import Geolocation, {
   GeolocationResponse,
 } from '@react-native-community/geolocation';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PhotoPreviewModal from '../components/PhotoPreviewModal';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
 interface CameraProps {
