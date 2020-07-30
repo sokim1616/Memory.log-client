@@ -64,6 +64,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           source={{uri}}
         />
       </View>
+      <Text style={styles.headerText}>Memory.Log</Text>
       <View
         style={
           editModeStatus ? styles.imageContainerEditMode : styles.imageContainer
@@ -83,7 +84,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           <MaterialCommunityIcons
             onPress={handleKeyboardIconPress}
             name={editModeStatus ? 'keyboard-off-outline' : 'keyboard-outline'}
-            color={'blue'}
+            color={'black'}
             size={35}
             style={{alignSelf: 'center'}}
           />
@@ -103,12 +104,12 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
         <View
           style={styles.cancelButton}
           onTouchEnd={() => modalButtonTouchHandler(null)}>
-          <Text>Cancel</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </View>
         <View
           style={styles.saveButton}
           onTouchEnd={() => modalButtonTouchHandler('save')}>
-          <Text>Save</Text>
+          <Text style={styles.buttonText}>Save</Text>
         </View>
       </View>
     </Modal>
@@ -121,6 +122,13 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  headerText: {
+    position: 'absolute',
+    color: 'white',
+    fontSize: 30,
+    top: 40,
+    fontFamily: 'Lobster-Regular',
   },
   blurBackground: {
     position: 'absolute',
@@ -147,56 +155,85 @@ const styles = StyleSheet.create({
   currentImage: {
     flex: 1,
     opacity: 1,
-    borderWidth: 1,
-    borderColor: 'grey',
+    shadowColor: '#222222',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 3,
   },
   noteContainer: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'lightyellow',
-    // borderWidth: 3,
     width: Dimensions.get('screen').width * 0.9,
+    borderRadius: 40,
   },
   noteContainerEditMode: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'lightyellow',
-    // borderWidth: 3,
     width: Dimensions.get('screen').width * 0.95,
     marginBottom: 20,
+    borderRadius: 40,
   },
   noteLeftSide: {
     flex: 0.2,
     backgroundColor: 'lightyellow',
     borderRightColor: 'red',
     borderRightWidth: 3,
+    borderTopLeftRadius: 15,
+    shadowColor: 'darkred',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 3.6,
   },
   noteRightSide: {
     flex: 0.8,
     backgroundColor: 'lightyellow',
     flexDirection: 'column',
-    // borderWidth: 3,
-    // borderColor: 'blue',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     paddingLeft: 10,
     paddingVertical: 30,
     fontSize: 24,
+    fontFamily: 'Lobster-Regular',
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    shadowColor: 'darkred',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 3.6,
   },
   noteRightSideEditMode: {
     flex: 0.8,
     backgroundColor: 'lightyellow',
     flexDirection: 'column',
-    // borderWidth: 3,
-    // borderColor: 'blue',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     paddingLeft: 10,
     paddingVertical: 30,
     fontSize: 24,
+    fontFamily: 'Lobster-Regular',
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    shadowColor: 'darkred',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 3.6,
   },
   buttonsContainer: {
-    flex: 1,
+    flex: 0.7,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'stretch',
@@ -204,23 +241,43 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     marginTop: 80,
-    flex: 0.3,
-    height: 80,
-    borderRadius: 40,
+    flex: 0.25,
+    height: 40,
+    borderRadius: 15,
     borderWidth: 3,
+    borderColor: 'lightblue',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'lightblue',
+    shadowColor: '#222222',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 3.6,
   },
   cancelButton: {
     marginTop: 80,
-    flex: 0.3,
-    height: 80,
-    borderRadius: 40,
+    flex: 0.25,
+    height: 40,
+    borderRadius: 15,
     borderWidth: 3,
+    borderColor: 'lightcoral',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'red',
+    backgroundColor: 'lightcoral',
+    shadowColor: '#222222',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 3.6,
+  },
+  buttonText: {
+    fontFamily: 'Lobster-Regular',
+    fontSize: 24,
   },
 });
 

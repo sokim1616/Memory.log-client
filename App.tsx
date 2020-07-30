@@ -44,7 +44,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               name="ListStack"
               component={ListStack}
               options={{
-                tabBarColor: '#ad9d9d',
+                // tabBarColor: '#ad9d9d',
                 tabBarLabel: 'list',
                 tabBarIcon: ({color}) => (
                   <MaterialCommunityIcons
@@ -59,7 +59,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               name="Map"
               component={Map}
               options={{
-                tabBarColor: 'lightblue',
+                // tabBarColor: 'lightblue',
                 tabBarLabel: 'Map',
                 tabBarIcon: ({color}) => (
                   <MaterialCommunityIcons name="map" color={color} size={26} />
@@ -85,7 +85,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               name="StoryBoard"
               component={StoryBoard}
               options={{
-                tabBarColor: '#ad9d9d',
+                // tabBarColor: '#ad9d9d',
                 tabBarLabel: 'StoryBoard',
                 tabBarIcon: ({color}) => (
                   <MaterialCommunityIcons
@@ -100,7 +100,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               name="Config"
               component={ConfigStackContainer}
               options={{
-                tabBarColor: '#838383',
+                // tabBarColor: '#838383',
                 tabBarLabel: 'Config',
                 tabBarIcon: ({color}) => (
                   <MaterialCommunityIcons name="cog" color={color} size={26} />

@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingLeft: 30,
+    shadowColor: '#ffffff',
   },
   flashStatusIcon: {
     fontSize: 30,
@@ -249,14 +250,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingRight: 30,
+    shadowColor: '#ffffff',
   },
   cameraFrontVariantIcon: {
     fontSize: 30,
   },
   cameraContainer: {
     height: Dimensions.get('screen').width,
-    borderWidth: 3,
-    borderColor: '#2e2e2e',
+    // borderWidth: 3,
+    // borderColor: '#2e2e2e',
+    shadowColor: '#ffffff',
+    shadowOffset: {
+      width: 0,
+      height: 0.5,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
   },
   camera: {
     flex: 1,
