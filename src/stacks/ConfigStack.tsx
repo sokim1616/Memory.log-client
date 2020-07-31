@@ -3,11 +3,8 @@ import SignoutContainer from '../containers/SignoutContainer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {StatusBar, StyleSheet, Dimensions} from 'react-native';
 import ConfigHome from '../screens/ConfigHome';
-
 interface ConfigStackProps {}
-
 const ConfigStackNav = createStackNavigator<ConfigStackParamList>();
-
 const ConfigStack: React.FC<ConfigStackProps> = ({configProps}) => {
   const {loginStatus, changeLogin} = configProps;
   return (
@@ -16,19 +13,20 @@ const ConfigStack: React.FC<ConfigStackProps> = ({configProps}) => {
       <ConfigStackNav.Navigator
         initialRouteName="ConfigHome"
         screenOptions={{
-          headerStyle: {backgroundColor: '#cf3c3c'},
-          headerTintColor: 'black',
+          headerStyle: {backgroundColor: 'black'},
+          headerTintColor: 'white',
           headerTitleStyle: {
             fontWeight: 'bold',
+            fontFamily: 'Lobster-Regular',
+            fontSize: 24
           },
         }}>
-        <ConfigStackNav.Screen name="ConfigHome" component={ConfigHome} />
+        <ConfigStackNav.Screen name="Memory.log" component={ConfigHome} />
         <ConfigStackNav.Screen name="SignOut" component={SignoutContainer} />
       </ConfigStackNav.Navigator>
     </>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -42,5 +40,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
   },
 });
-
 export default ConfigStack;
