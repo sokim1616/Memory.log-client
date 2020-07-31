@@ -6,11 +6,14 @@ import {
   ScrollView,
   SafeAreaView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
+import FriendSearch from '../screens/FriendSearch';
+import SearchBar from 'react-native-search-bar';
 
-const FriendList = () => {
+const FriendList = ({navigation}) => {
   const [userState, setUserState] = useState({
     id: 1,
     email: 'z1@gmail.com',
@@ -54,6 +57,14 @@ const FriendList = () => {
       statusmessage:
         '왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요?',
     },
+    {
+      id: 5,
+      userId: 3,
+      followId: 1,
+      username: 'choi',
+      profilepath: require('../assets/image/dafault_profile.jpg'),
+      statusmessage: '읭?',
+    },
   ]); // 로그인 사용자의 인싸력 테스트
 
   const getUserInfo = () => {
@@ -71,10 +82,10 @@ const FriendList = () => {
       .then((res) => setFollowerList(res))
       .catch((err) => console.error(err));
   };
-
-  const searchIcon = () => {
-    console.log('clicked search button');
-  };
+  
+  const onPressUnfollow = () => {
+    
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -86,6 +97,9 @@ const FriendList = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* 위뷰시작 */}
+      <View>
+        <Text style={styles.upperHeaderTitle}>My Profile</Text>
+      </View>
       <View style={styles.upperContainer}>
         <Image
           style={styles.userImage}
@@ -102,11 +116,10 @@ const FriendList = () => {
           <Text style={styles.lowerHeaderTitle}>Friends</Text>
           <Icon
             style={styles.lowerHeaderSearch}
-            onPress={searchIcon}
+            onPress={() => navigation.navigate(FriendSearch)}
             name="search"
             size={30}
-            color="black"
-          />
+            color="black"></Icon>
         </View>
         <ScrollView style={styles.lowerBody}>
           {followerList.map((ele, idx) => (
@@ -116,7 +129,9 @@ const FriendList = () => {
                 <Text style={styles.friendName}>{ele.username}</Text>
                 <Text style={styles.friendStatus}>{ele.statusmessage}</Text>
               </View>
-              <View>{true ? <Text>Unfollow</Text> : <Text>Accept</Text>}</View>
+              <TouchableOpacity style={styles.friendState}>
+                <Text onPress={onPressUnfollow}>Unfollow</Text>
+              </TouchableOpacity>
             </View>
           ))}
         </ScrollView>
@@ -133,10 +148,16 @@ const styles = StyleSheet.create({
     flex: 2.5,
     flexDirection: 'row',
   },
+  upperHeaderTitle: {
+    marginLeft: 20,
+    paddingTop: 8,
+    fontSize: 25,
+    backgroundColor: '#f3f3',
+  },
   userImage: {
-    flex: 4,
+    flex: 3,
     width: 50,
-    height: 180,
+    height: 170,
   },
   userContentContainer: {
     flex: 5,
@@ -145,12 +166,13 @@ const styles = StyleSheet.create({
   },
   userName: {
     flex: 5,
-    textAlign: 'center',
-    fontSize: 50,
+    //textAlign: 'center',
+    fontSize: 40,
+    paddingLeft: 10,
   },
   userStatus: {
     flex: 5,
-    textAlign: 'center',
+    //textAlign: 'center',
     fontSize: 20,
     marginBottom: 0,
     marginHorizontal: 10,
@@ -167,10 +189,12 @@ const styles = StyleSheet.create({
   },
   lowerHeaderTitle: {
     marginLeft: 20,
+    paddingTop: 8,
     fontSize: 25,
   },
   lowerHeaderSearch: {
-    marginRight: 50,
+    marginRight: 30,
+    paddingTop: 10,
   },
   lowerBody: {
     flex: 9.9,
@@ -181,7 +205,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   friendImage: {
-    flex: 4,
+    flex: 3,
     width: 50,
     height: 150,
   },
@@ -195,7 +219,11 @@ const styles = StyleSheet.create({
   },
   friendStatus: {
     // flex: 5,
-    fontSize: 25,
+    fontSize: 20,
+  },
+  friendState: {
+    justifyContent: 'space-around',
+    paddingRight: 20,
   },
 });
 

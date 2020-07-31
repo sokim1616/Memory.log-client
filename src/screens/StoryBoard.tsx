@@ -8,8 +8,10 @@ import {
   Dimensions,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 interface HomeTwoProps {}
+const Stack = createStackNavigator();
 const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);
@@ -35,6 +37,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   );
 
   return (
+    <Stack.Navigator>
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.photoScrollContainer}>
         {data.map((ele, i) => (
@@ -48,6 +51,21 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
         ))}
       </ScrollView>
     </SafeAreaView>
+    <Stack.Screen options={{
+          headerStyle: {
+            backgroundColor: 'black',
+            shadowOpacity: 0,
+          },
+          headerTitle: 'Memory.log',
+          headerTintColor: 'white',
+          headerTitleStyle: {
+            fontFamily: 'Lobster-Regular',
+            fontSize: 24,
+          },
+        }}
+        name="Storyboard"
+        />
+    </Stack.Navigator>
   );
 };
 const styles = StyleSheet.create({

@@ -29,7 +29,7 @@ const ListStack = () => {
         },
       }}>
       <Stack.Screen name="FriendList" component={FriendList} />
-      {/* <Stack.Screen name="Search" component={FriendSearch} /> */}
+      <Stack.Screen name="FriendSearch" component={FriendSearch} />
     </Stack.Navigator>
   );
 };
