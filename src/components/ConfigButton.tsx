@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     minHeight: Dimensions.get('screen').height * 0.1,
     justifyContent: 'center',
-    borderWidth: 0.5,
   },
   configButtonContent: {
     fontSize: 16,

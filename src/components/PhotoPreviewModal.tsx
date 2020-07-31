@@ -24,6 +24,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
   currentImageData,
   changeButtonsVisibilityStatus,
   savePicture,
+  visibility,
 }) => {
   const [editModeStatus, setEditModeStatus] = useState(false);
   const [photoDescription, setPhotoDescription] = useState(
@@ -37,11 +38,8 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
     if (val === 'save') {
       ans = savePicture(currentImageData, photoDescription);
     }
-    let wait = ans === 'OK' ? 0 : 1500;
-    setTimeout(() => {
-      changeButtonsVisibilityStatus(true);
-      handleModalVisibility(false);
-    }, wait);
+    changeButtonsVisibilityStatus(true);
+    handleModalVisibility(false);
   };
 
   const handleKeyboardIconPress = () => {
@@ -55,7 +53,13 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
   };
 
   return (
-    <Modal isVisible={true} style={styles.modalContainer}>
+    <Modal
+      animationIn="slideInDown"
+      animationInTiming={500}
+      animationOut="slideOutUp"
+      animationOutTiming={500}
+      isVisible={visibility}
+      style={styles.modalContainer}>
       <View style={styles.blurBackground}>
         <Image
           style={styles.backgroundImage}

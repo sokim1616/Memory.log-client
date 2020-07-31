@@ -1,40 +1,36 @@
 import React from 'react';
-import {
-  ScrollView,
-  Text,
-  View,
-  SectionList,
-  StyleSheet,
-  SafeAreaView
-} from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+import {Text, View, StyleSheet, SafeAreaView} from 'react-native';
 import ConfigButton from '../components/ConfigButton';
-import Profile from '../components/Profile'
-interface ConfigHomeProps { }
-const ConfigHome: React.FC<ConfigHomeProps> = ({ navigation }) => {
+import Profile from '../components/Profile';
+interface ConfigHomeProps {}
+const ConfigHome: React.FC<ConfigHomeProps> = ({navigation}) => {
   return (
-    <SafeAreaView>
-      <View>
-        <Text style={styles.title}>
-          My profile
-        </Text>
-        <Profile />
+    <SafeAreaView style={styles.container}>
+      <View style={{flex: 0.25}}>
+        <View style={{flex: 0.2, paddingLeft: 10}}>
+          <Text style={styles.title}>My profile</Text>
+        </View>
+        <View style={{flex: 0.8, paddingHorizontal: 10}}>
+          <Profile />
+        </View>
       </View>
+      <View style={{flex: 0.7}}>
         <ConfigButton navigation={navigation} config="Logout" />
-        <ConfigButton config="something" />
+        {/* <ConfigButton config="something" /> */}
+      </View>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   title: {
-    fontFamily: 'Cochin',
-    fontSize: 23,
-    fontWeight: 'bold'
-  }
-})
+    fontFamily: 'Lobster-Regular',
+    fontSize: 26,
+    fontWeight: 'bold',
+  },
+});
 // const options = {
 //   title: 'Load Photo',
 //   customButtons: [

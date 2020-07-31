@@ -182,44 +182,42 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
         </View>
       )}
       <View style={styles.footerContainer}>
-        {previewMode ? (
-          <PhotoPreviewModal
-            camera={camera}
-            savePicture={savePicture}
-            changeButtonsVisibilityStatus={changeButtonsVisibilityStatus}
-            currentImageData={currentImageData}
-            handleModalVisibility={setPreviewMode}
-          />
-        ) : (
-          <>
-            <View style={styles.captureContainer}>
-              <View onTouchEnd={toggleFlash} style={styles.flashLightButton}>
-                <MaterialCommunityIcons
-                  name={flashStatus ? 'flash' : 'flash-off'}
-                  style={styles.flashStatusIcon}
-                  color={'white'}
-                />
-              </View>
-              <TouchableOpacity
-                onPress={() => takePicture()}
-                style={styles.capture}>
-                <MaterialCommunityIcons
-                  name="circle-slice-8"
-                  color={'darkred'}
-                  size={80}
-                />
-              </TouchableOpacity>
-              <View style={styles.reverseCameraButton}>
-                <MaterialCommunityIcons
-                  name="camera-front-variant"
-                  style={styles.cameraFrontVariantIcon}
-                  onPress={() => handleToggle()}
-                  color={'white'}
-                />
-              </View>
+        <PhotoPreviewModal
+          visibility={previewMode}
+          camera={camera}
+          savePicture={savePicture}
+          changeButtonsVisibilityStatus={changeButtonsVisibilityStatus}
+          currentImageData={currentImageData}
+          handleModalVisibility={setPreviewMode}
+        />
+        <>
+          <View style={styles.captureContainer}>
+            <View onTouchEnd={toggleFlash} style={styles.flashLightButton}>
+              <MaterialCommunityIcons
+                name={flashStatus ? 'flash' : 'flash-off'}
+                style={styles.flashStatusIcon}
+                color={'white'}
+              />
             </View>
-          </>
-        )}
+            <TouchableOpacity
+              onPress={() => takePicture()}
+              style={styles.capture}>
+              <MaterialCommunityIcons
+                name="circle-slice-8"
+                color={'darkred'}
+                size={80}
+              />
+            </TouchableOpacity>
+            <View style={styles.reverseCameraButton}>
+              <MaterialCommunityIcons
+                name="camera-front-variant"
+                style={styles.cameraFrontVariantIcon}
+                onPress={() => handleToggle()}
+                color={'white'}
+              />
+            </View>
+          </View>
+        </>
       </View>
     </View>
   );
