@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "cd ios && pod install && cd ..",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "npx react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
@@ -21,6 +21,7 @@
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-camera": "^3.32.0",
+    "react-native-elements": "^2.1.0",
     "react-native-geolocation-service": "^5.0.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-image-picker": "^2.3.3",

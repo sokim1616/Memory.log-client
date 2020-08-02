@@ -1,91 +1,99 @@
-import React, {useCallback, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
-import {useFocusEffect} from '@react-navigation/native';
-import { grey100 } from 'react-native-paper/lib/typescript/src/styles/colors';
+import {SearchBar, ListItem} from 'react-native-elements';
 
 const FriendSearch = () => {
-  const [friendState, setFriendState] = useState({
-    id: 1,
-    email: 'z1@gmail.com',
-    username: 'zombie',
-    profilepath: '',
-    statusmessage:
-      '내가 바로 직원 경두현이다. 사장 나와!!',
-  }); // 로그인 사용자의 정보
+  const [search, setSearch] = useState('');
+  const [list, setList] = useState([]);
+  const updateSearch = (search) => {
+    setSearch(search);
+  };
 
+  const onPressFollowIcon = () => {
+    console.log('on pressed icon');
+    console.log('on pressed icon', search);
+    return fetch('http://localhost:4000/follow/rfollow', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: search,
+      }),
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((follower) => console.log(follower))
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
-
-  const getUserInfo = () => {
-    return fetch('http://localhost:4000/user/info')
+  const onPressSearchIcon = () => {
+    return fetch('http://localhost:4000/user/userinfo', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: search,
+      }),
+      credentials: 'include',
+    })
       .then((res) => res.json())
       .then((user) => {
-        console.log(user), setUserState(user);
+        setList([]);
+        setList((prevState) => [...prevState, user]);
       })
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        console.error(error);
+      });
   };
-
-  const getFollowerList = () => {
-    return fetch('http://localhost:4000/follow/friend')
-      .then((res) => res.json())
-      .then((res) => setFollowerList(res))
-      .catch((err) => console.error(err));
-  };
-
-  const searchIcon = () => {
-    console.log('clicked search button');
-  };
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     getUserInfo();
-  //     getFollowerList();
-  //   }, [userState]),
-  // );
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* 위뷰시작 */}
-      <View>
-        <Text style={styles.upperHeaderTitle}>Search for your friend</Text>
-      </View>
-      <View style={styles.upperContainer}>
-        <TextInput style={styles.textContainer}
-      onChangeText={text => onChangeText(text)} />
+      <View style={styles.upperView}>
+        <Text style={styles.upperView__title}>친구 찾기</Text>
+        <View style={styles.upperView__lower}>
+          <SearchBar
+            containerStyle={styles.upperView__lower__search}
+            placeholder="E-mail를 입력해 주세요."
+            onChangeText={updateSearch}
+            value={search}
+            lightTheme={true}
+            platform="ios"
+          />
           <Icon
-            style={styles.lowerHeaderSearch}
-            onPress={() => navigation.navigate(FriendSearch)}
+            style={styles.upperView__lower__icon}
             name="search"
-            size={30}
-            color="black"></Icon>
-      </View>
-      {/* 아래뷰시작 */}
-      <View style={styles.lowerContainer}>
-        <View style={styles.lowerHeader}>
-          <Text style={styles.lowerHeaderTitle}>Friends</Text>
+            size={40}
+            color="black"
+            onPress={onPressSearchIcon}
+          />
         </View>
-        <View style={styles.lowerBody}>
-        {/* {followerList.map((ele, idx) => (
-            <View style={styles.lowerBodyFriend} key={idx}>
-              <Image style={styles.friendImage} source={ele.profilepath} />
-              <View style={styles.friendContentContainer}>
-                <Text style={styles.friendName}>{ele.username}</Text>
-                <Text style={styles.friendStatus}>{ele.statusmessage}</Text>
-              </View>
-              <TouchableOpacity style={styles.friendState}>
-                {true ? <Text>Unfollow</Text> : <Text>Accept</Text>}
-              </TouchableOpacity>
-            </View>
-          ))} */}
+      </View>
+      <View style={styles.midView} />
+      <View style={styles.lowerView}>
+        <Text style={styles.lowerView__title}>검색 결과</Text>
+        <View>
+          {list.map((ele, i) => (
+            <ListItem
+              key={i}
+              leftAvatar={{source: {uri: 'https://picsum.photos/400/400'}}}
+              title={ele.username}
+              subtitle={ele.statusmessage}
+              bottomDivider
+              rightIcon={{
+                name: 'ios-person-add-sharp',
+                type: 'ionicon',
+                onPress: onPressFollowIcon,
+              }}
+              containerStyle={styles.lowerView__friend}
+            />
+          ))}
         </View>
       </View>
     </SafeAreaView>
@@ -96,93 +104,52 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  upperContainer: {
-    flex: 2.5,
-    flexDirection: 'row',
+  upperView: {
+    flex: 2,
   },
-  textContainer: {
-    flex: 1,
-    marginTop: 30,
-    height: 0.5,
-    borderColor: 'gray',
-    borderWidth: 30,
-  },
-  upperHeaderTitle: {
+  upperView__title: {
+    fontSize: 30,
+    marginTop: 20,
     marginLeft: 20,
-    paddingTop: 8,
-    fontSize: 25,
-    backgroundColor: '#f3f3',
   },
-  userImage: {
-    flex: 3,
-    width: 50,
-    height: 170,
-  },
-  userContentContainer: {
-    flex: 5,
-    borderRadius: 1,
-    backgroundColor: '#eaeaea',
-  },
-  userName: {
-    flex: 5,
-    //textAlign: 'center',
-    fontSize: 40,
-    paddingLeft: 10,
-  },
-  userStatus: {
-    flex: 5,
-    //textAlign: 'center',
-    fontSize: 20,
-    marginBottom: 0,
-    marginHorizontal: 10,
-  },
-  lowerContainer: {
-    flex: 7.5,
-    // backgroundColor: '#e3e3',
-  },
-  lowerHeader: {
-    flex: 0.1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#f3f3',
-  },
-  lowerHeaderTitle: {
-    marginLeft: 20,
-    paddingTop: 8,
-    fontSize: 25,
-  },
-  lowerHeaderSearch: {
-    marginRight: 30,
-    paddingTop: 10,
-  },
-  lowerBody: {
-    flex: 9.9,
-    backgroundColor: '#55A93E',
-  },
-  lowerBodyFriend: {
+  upperView__lower: {
     flex: 1,
     flexDirection: 'row',
-  },
-  friendImage: {
-    flex: 3,
-    width: 50,
-    height: 150,
-  },
-  friendContentContainer: {
-    flex: 6,
     justifyContent: 'space-around',
   },
-  friendName: {
-    // flex: 5,
-    fontSize: 25,
+  upperView__lower__search: {
+    marginLeft: 35,
+    marginRight: 50,
   },
-  friendStatus: {
-    // flex: 5,
+  upperView__lower__icon: {
+    marginTop: 25,
+    marginRight: 50,
+    // backgroundColor: '#D3D3D3',
+  },
+  midView: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  lowerView: {
+    flex: 8,
+  },
+  lowerView__title: {
+    fontSize: 30,
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 20,
+  },
+  lowerView__friend: {
+    marginTop: 5,
+    paddingTop: 25,
+    paddingBottom: 25,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  lowerView__friend__title: {
     fontSize: 20,
-  },
-  friendState: {
-    justifyContent: 'space-around',
-    paddingRight: 20,
   },
 });
 

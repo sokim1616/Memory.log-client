@@ -18,7 +18,7 @@ const ConfigStack: React.FC<ConfigStackProps> = ({configProps}) => {
           headerTitleStyle: {
             fontWeight: 'bold',
             fontFamily: 'Lobster-Regular',
-            fontSize: 24
+            fontSize: 24,
           },
         }}>
         <ConfigStackNav.Screen name="Memory.log" component={ConfigHome} />

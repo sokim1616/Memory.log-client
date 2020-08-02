@@ -1,138 +1,133 @@
 import React, {useCallback, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, SafeAreaView} from 'react-native';
+import {ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
-import SearchBar from 'react-native-search-bar';
 
 const FriendList = ({navigation}) => {
-  const [userState, setUserState] = useState({
-    id: 1,
-    email: 'z1@gmail.com',
-    username: 'zombie',
-    password: 12345678,
-    profilepath: '',
-    statusmessage:
-      '내가 바로 팀장 김소현이다. 다 덤벼 이자식들아!! 빠다 맞아봤냐?',
-  }); // 로그인 사용자의 정보
-  const [followerList, setFollowerList] = useState([
-    {
-      id: 1,
-      userId: 1,
-      followId: 2,
-      username: 'zombie',
-      profilepath: require('../assets/image/dafault_profile.jpg'),
-      statusmessage: '육호?',
-    },
-    {
-      id: 2,
-      userId: 2,
-      followId: 1,
-      username: 'kim',
-      profilepath: require('../assets/image/dafault_profile.jpg'),
-      statusmessage: '칠호?',
-    },
-    {
-      id: 3,
-      userId: 1,
-      followId: 3,
-      username: 'lee',
-      profilepath: require('../assets/image/dafault_profile.jpg'),
-      statusmessage: '팔호?',
-    },
-    {
-      id: 4,
-      userId: 3,
-      followId: 1,
-      username: 'park',
-      profilepath: require('../assets/image/dafault_profile.jpg'),
-      statusmessage:
-        '왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요왜요?',
-    },
-    {
-      id: 5,
-      userId: 3,
-      followId: 1,
-      username: 'choi',
-      profilepath: require('../assets/image/dafault_profile.jpg'),
-      statusmessage: '읭?',
-    },
-  ]); // 로그인 사용자의 인싸력 테스트
+  const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
+  const [followerList, setFollowerList] = useState([]); // 로그인 사용자의 인싸력 테스트
+
+  const requestUnFollow = (id) => {
+    console.log('pressed :', id);
+    // return fetch('http://localhost:4000/follow/ufollow', {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({id}),
+    //   credentials: 'include',
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     console.log('로그인유저팔로우리스트 :', res);
+    //   })
+    //   .catch((err) => console.error(err));
+  };
 
   const getUserInfo = () => {
-    return fetch('http://localhost:4000/user/info')
+    return fetch('http://localhost:4000/user/logininfo', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
       .then((res) => res.json())
-      .then((user) => {
-        console.log(user), setUserState(user);
+      .then((res) => {
+        console.log('로그인유저정보 :', res);
+        setUserState(res);
       })
       .catch((err) => console.error(err));
   };
 
   const getFollowerList = () => {
-    return fetch('http://localhost:4000/follow/friend')
+    return fetch('http://localhost:4000/follow/friend', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
       .then((res) => res.json())
-      .then((res) => setFollowerList(res))
+      .then((res) => {
+        console.log('팔로워정보 :', res);
+        setFollowerList(res);
+      })
       .catch((err) => console.error(err));
   };
-  
-  const onPressUnfollow = () => {
-    
-  }
 
   useFocusEffect(
     useCallback(() => {
-      // getUserInfo();
-      // getFollowerList();
-    }, [userState]),
+      getUserInfo();
+    }, [userState.length]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      getFollowerList();
+    }, [followerList.length]),
   );
 
   return (
     <SafeAreaView style={styles.container}>
       {/* 위뷰시작 */}
-      <View>
-        <Text style={styles.upperHeaderTitle}>My Profile</Text>
+      <Text style={styles.upperView__text}>나의 정보</Text>
+      <View style={styles.divideline} />
+      <View style={styles.upperView}>
+        {userState.map((ele, i) => (
+          <ListItem
+            key={i}
+            leftAvatar={{
+              source: {uri: 'https://picsum.photos/300/300'},
+              size: 'large',
+            }}
+            title={ele.username}
+            subtitle={ele.statusmessage}
+            titleStyle={styles.upperView__title}
+            subtitleStyle={styles.upperView__subtitle}
+          />
+        ))}
       </View>
-      <View style={styles.upperContainer}>
-        <Image
-          style={styles.userImage}
-          source={require('../assets/image/dafault_profile.jpg')}
+      <View style={styles.divideline} />
+      {/* 미드뷰시작 */}
+      <View style={styles.midView}>
+        <Text style={styles.midView__text}>친구 목록</Text>
+        <Icon
+          style={styles.midView__icon}
+          onPress={() => navigation.navigate(FriendSearch)}
+          name="search"
+          size={40}
+          color="black"
         />
-        <View style={styles.userContentContainer}>
-          <Text style={styles.userName}>{userState.username}</Text>
-          <Text style={styles.userStatus}>{userState.statusmessage}</Text>
-        </View>
       </View>
       {/* 아래뷰시작 */}
-      <View style={styles.lowerContainer}>
-        <View style={styles.lowerHeader}>
-          <Text style={styles.lowerHeaderTitle}>Friends</Text>
-          <Icon
-            style={styles.lowerHeaderSearch}
-            onPress={() => navigation.navigate(FriendSearch)}
-            name="search"
-            size={30}
-            color="black"></Icon>
-        </View>
-        <ScrollView style={styles.lowerBody}>
-          {followerList.map((ele, idx) => (
-            <View style={styles.lowerBodyFriend} key={idx}>
-              <Image style={styles.friendImage} source={ele.profilepath} />
-              <View style={styles.friendContentContainer}>
-                <Text style={styles.friendName}>{ele.username}</Text>
-                <Text style={styles.friendStatus}>{ele.statusmessage}</Text>
-              </View>
-              <TouchableOpacity style={styles.friendState}>
-                <Text onPress={onPressUnfollow}>Unfollow</Text>
-              </TouchableOpacity>
-            </View>
+      <View style={styles.divideline} />
+      <View style={styles.lowerView}>
+        <ScrollView>
+          {followerList.map((ele, i) => (
+            <ListItem
+              key={i}
+              leftAvatar={{
+                source: {uri: 'https://picsum.photos/300/300'},
+                size: 'large',
+              }}
+              title={ele.username}
+              subtitle={ele.statusmessage}
+              titleStyle={styles.lowerView__title}
+              subtitleStyle={styles.lowerView__subtitle}
+              rightIcon={{
+                name: 'ios-person-remove-sharp',
+                type: 'ionicon',
+                size: 30,
+                onPress: () => requestUnFollow(ele.id),
+              }}
+              bottomDivider
+            />
           ))}
         </ScrollView>
       </View>
@@ -143,87 +138,67 @@ const FriendList = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
   },
-  upperContainer: {
-    flex: 2.5,
-    flexDirection: 'row',
-  },
-  upperHeaderTitle: {
+  divideline: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
     marginLeft: 20,
-    paddingTop: 8,
-    fontSize: 25,
-    backgroundColor: '#f3f3',
+    marginRight: 20,
+    marginTop: 15,
+    marginBottom: 10,
   },
-  userImage: {
-    flex: 3,
-    width: 50,
-    height: 170,
-  },
-  userContentContainer: {
-    flex: 5,
-    borderRadius: 1,
-    backgroundColor: '#eaeaea',
-  },
-  userName: {
-    flex: 5,
-    //textAlign: 'center',
-    fontSize: 40,
-    paddingLeft: 10,
-  },
-  userStatus: {
-    flex: 5,
-    //textAlign: 'center',
-    fontSize: 20,
+  upperView: {
+    flex: 2,
+    justifyContent: 'center',
+    marginTop: 0,
     marginBottom: 0,
-    marginHorizontal: 10,
+    // backgroundColor: '#3EA944',
   },
-  lowerContainer: {
-    flex: 7.5,
-    // backgroundColor: '#e3e3',
+  upperView__text: {
+    fontSize: 30,
+    marginLeft: 20,
+    marginTop: 10,
   },
-  lowerHeader: {
-    flex: 0.1,
+  upperView__title: {
+    position: 'relative',
+    fontSize: 40,
+    bottom: 25,
+  },
+  upperView__subtitle: {
+    position: 'absolute',
+    fontSize: 18,
+    bottom: -10,
+  },
+  midView: {
+    flex: 0.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#f3f3',
+    // backgroundColor: '#9FA93E',
   },
-  lowerHeaderTitle: {
+  midView__text: {
+    fontSize: 30,
     marginLeft: 20,
-    paddingTop: 8,
-    fontSize: 25,
+    // backgroundColor: '#C70039',
   },
-  lowerHeaderSearch: {
-    marginRight: 30,
-    paddingTop: 10,
+  midView__icon: {
+    marginRight: 20,
+    marginTop: 1,
+    // backgroundColor: '#3E5DA9',
   },
-  lowerBody: {
-    flex: 9.9,
-    backgroundColor: '#55A93E',
+  lowerView: {
+    flex: 7.5,
+    // backgroundColor: '#3EA9A1',
   },
-  lowerBodyFriend: {
-    flex: 1,
-    flexDirection: 'row',
+  lowerView__title: {
+    position: 'relative',
+    fontSize: 40,
+    bottom: 25,
   },
-  friendImage: {
-    flex: 3,
-    width: 50,
-    height: 150,
-  },
-  friendContentContainer: {
-    flex: 6,
-    justifyContent: 'space-around',
-  },
-  friendName: {
-    // flex: 5,
-    fontSize: 25,
-  },
-  friendStatus: {
-    // flex: 5,
-    fontSize: 20,
-  },
-  friendState: {
-    justifyContent: 'space-around',
-    paddingRight: 20,
+  lowerView__subtitle: {
+    position: 'absolute',
+    fontSize: 18,
+    bottom: -10,
   },
 });
 

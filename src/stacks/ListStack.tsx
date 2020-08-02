@@ -21,7 +21,7 @@ const ListStack = () => {
           backgroundColor: 'black',
           shadowOpacity: 0,
         },
-        headerTitle: 'Memory.log',
+        headerTitle: 'F r i e n d L i s t',
         headerTintColor: 'white',
         headerTitleStyle: {
           fontFamily: 'Lobster-Regular',
