@@ -124,6 +124,7 @@ const FriendList = ({navigation}) => {
                 name: 'ios-person-remove-sharp',
                 type: 'ionicon',
                 size: 30,
+                containerStyle: {marginRight: 5},
                 onPress: () => requestUnFollow(ele.id),
               }}
               bottomDivider

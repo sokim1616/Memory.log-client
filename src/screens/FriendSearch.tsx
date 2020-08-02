@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/EvilIcons';
-import {SearchBar, ListItem} from 'react-native-elements';
+import {SearchBar, ListItem, Overlay, Button} from 'react-native-elements';
+
 
 const FriendSearch = () => {
   const [search, setSearch] = useState('');
   const [list, setList] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   const updateSearch = (search) => {
     setSearch(search);
   };
@@ -25,13 +31,19 @@ const FriendSearch = () => {
       credentials: 'include',
     })
       .then((res) => res.json())
-      .then((follower) => console.log(follower))
+      .then((follower) => {
+        console.log(follower);
+        toggleOverlay();
+      })
       .catch((error) => {
         console.error(error);
       });
   };
 
   const onPressSearchIcon = () => {
+    if (!search) {
+      return;
+    }
     return fetch('http://localhost:4000/user/userinfo', {
       method: 'POST',
       headers: {
@@ -44,9 +56,14 @@ const FriendSearch = () => {
       credentials: 'include',
     })
       .then((res) => res.json())
-      .then((user) => {
-        setList([]);
-        setList((prevState) => [...prevState, user]);
+      .then((res) => {
+        console.log(res);
+        if (res === null) {
+          setList([]);
+        } else {
+          setList([]);
+          setList((prevState) => [...prevState, res]);
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -65,12 +82,12 @@ const FriendSearch = () => {
             value={search}
             lightTheme={true}
             platform="ios"
+            cancelButtonTitle=""
           />
-          <Icon
-            style={styles.upperView__lower__icon}
-            name="search"
-            size={40}
-            color="black"
+          <Button
+            style={styles.upperView__lower__button}
+            title="검색"
+            type="solid"
             onPress={onPressSearchIcon}
           />
         </View>
@@ -89,12 +106,38 @@ const FriendSearch = () => {
               rightIcon={{
                 name: 'ios-person-add-sharp',
                 type: 'ionicon',
-                onPress: onPressFollowIcon,
+                onPress: toggleOverlay,
               }}
               containerStyle={styles.lowerView__friend}
             />
           ))}
         </View>
+        <Overlay
+          isVisible={visible}
+          onBackdropPress={toggleOverlay}
+          overlayStyle={styles.overlayStyle}>
+          <View style={styles.overlayStyle__body}>
+            <View style={styles.overlayStyle__upper}>
+              <Text style={styles.overlayStyle__upper__text}>
+                친구 추가 추가 추가 추가 추가 추가 추가
+              </Text>
+            </View>
+            <View style={styles.overlayStyle__lower}>
+              <Button
+                style={styles.overlayStyle__lower__button}
+                title="확인"
+                type="outline"
+                onPress={onPressFollowIcon}
+              />
+              <Button
+                style={styles.overlayStyle__lower__button}
+                title="취소"
+                type="outline"
+                onPress={toggleOverlay}
+              />
+            </View>
+          </View>
+        </Overlay>
       </View>
     </SafeAreaView>
   );
@@ -121,9 +164,9 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 50,
   },
-  upperView__lower__icon: {
+  upperView__lower__button: {
     marginTop: 25,
-    marginRight: 50,
+    marginRight: 44,
     // backgroundColor: '#D3D3D3',
   },
   midView: {
@@ -151,6 +194,35 @@ const styles = StyleSheet.create({
   lowerView__friend__title: {
     fontSize: 20,
   },
+  overlayStyle: {
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    height: 200,
+    width: 300,
+  },
+  overlayStyle__body: {
+    flex: 1,
+  },
+  overlayStyle__upper: {
+    flex: 7,
+  },
+  overlayStyle__upper__text: {
+
+    fontSize: 20,
+    textAlign: 'center',
+    paddingTop: 40,
+  },
+  overlayStyle__lower: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 0,
+  },
+  overlayStyle__lower__button: {
+    width: 80,
+    height: 50,
+  },
+
 });
 
 export default FriendSearch;

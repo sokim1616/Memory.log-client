@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 import CameraRoll from '@react-native-community/cameraroll';
 
-interface HomeTwoProps { }
+interface HomeTwoProps {}
 
 const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
   const [photos, getPhotos] = useState([]);
-  
-  //! 18 - 34 는 없어지는 코드, ---> 서버에서 사진 가져오는 코드로 
+
+  //! 18 - 34 는 없어지는 코드, ---> 서버에서 사진 가져오는 코드로
   const fetchPhotos = async () => {
     try {
       let camPhotos = await CameraRoll.getPhotos({
@@ -53,7 +53,7 @@ const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.photoScrollContainer}>
-         {/* data mapping 여기서 */}
+        {/* data mapping 여기서 */}
         {/* // * data.map */}
         {photos.map((photo, i) => {
           return (
@@ -62,7 +62,7 @@ const StoryBoard: React.FC<HomeTwoProps> = (navigation) => {
                 resizeMode="cover"
                 key={i}
                 style={styles.photo}
-                source={{ uri: photo.node.image.uri }}
+                source={{uri: photo.node.image.uri}}
               />
             </View>
           );

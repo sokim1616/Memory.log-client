@@ -37,36 +37,21 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   );
 
   return (
-    <Stack.Navigator>
-      <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.photoScrollContainer}>
-          {data.map((ele, i) => (
-            <View key={i} style={styles.photoView}>
-              <Image
-                resizeMode="cover"
-                style={styles.photo}
-                source={{uri: ele.filepath}}
-              />
-            </View>
-          ))}
-        </ScrollView>
-      </SafeAreaView>
-      <Stack.Screen
-        options={{
-          headerStyle: {
-            backgroundColor: 'black',
-            shadowOpacity: 0,
-          },
-          headerTitle: 'Memory.log',
-          headerTintColor: 'white',
-          headerTitleStyle: {
-            fontFamily: 'Lobster-Regular',
-            fontSize: 24,
-          },
-        }}
-        name="Storyboard"
-      />
-    </Stack.Navigator>
+
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.photoScrollContainer}>
+        {data.map((ele, i) => (
+          <View key={i} style={styles.photoView}>
+            <Image
+              resizeMode="cover"
+              style={styles.photo}
+              source={{uri: ele.filepath}}
+            />
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
+
   );
 };
 const styles = StyleSheet.create({
