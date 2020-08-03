@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import {SearchBar, ListItem, Overlay, Button} from 'react-native-elements';
 
-
 const FriendSearch = () => {
   const [search, setSearch] = useState('');
   const [list, setList] = useState([]);
@@ -207,7 +206,6 @@ const styles = StyleSheet.create({
     flex: 7,
   },
   overlayStyle__upper__text: {
-
     fontSize: 20,
     textAlign: 'center',
     paddingTop: 40,
@@ -217,6 +215,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 0,
+  },
+  overlayStyle__lower__button: {
+    width: 80,
+    height: 50,
   },
   overlayStyle__lower__button: {
     width: 80,

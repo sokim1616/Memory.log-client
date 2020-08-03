@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, SafeAreaView} from 'react-native';
-import {ListItem} from 'react-native-elements';
+import {ListItem, Button, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
@@ -8,23 +8,34 @@ import FriendSearch from '../screens/FriendSearch';
 const FriendList = ({navigation}) => {
   const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
   const [followerList, setFollowerList] = useState([]); // 로그인 사용자의 인싸력 테스트
+  const [visible, setVisible] = useState(false);
+  const [unFollowId, setUnfollowId] = useState('');
+
+  const toggleOverlay = (id) => {
+    setVisible(!visible);
+    console.log(id);
+    setUnfollowId('');
+    setUnfollowId(id);
+  };
 
   const requestUnFollow = (id) => {
     console.log('pressed :', id);
-    // return fetch('http://localhost:4000/follow/ufollow', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({id}),
-    //   credentials: 'include',
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     console.log('로그인유저팔로우리스트 :', res);
-    //   })
-    //   .catch((err) => console.error(err));
+    return fetch('http://localhost:4000/follow/ufollow', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({id}),
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log('로그인유저팔로우리스트 :', res);
+        getFollowerList();
+        toggleOverlay();
+      })
+      .catch((err) => console.error(err));
   };
 
   const getUserInfo = () => {
@@ -125,13 +136,39 @@ const FriendList = ({navigation}) => {
                 type: 'ionicon',
                 size: 30,
                 containerStyle: {marginRight: 5},
-                onPress: () => requestUnFollow(ele.id),
+                onPress: () => toggleOverlay(ele.id),
               }}
               bottomDivider
             />
           ))}
         </ScrollView>
       </View>
+      <Overlay
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+        overlayStyle={styles.overlayStyle}>
+        <View style={styles.overlayStyle__body}>
+          <View style={styles.overlayStyle__upper}>
+            <Text style={styles.overlayStyle__upper__text}>
+              친구 삭제 삭제 절교 삭제 절교 삭제 절교 삭제
+            </Text>
+          </View>
+          <View style={styles.overlayStyle__lower}>
+            <Button
+              style={styles.overlayStyle__lower__button}
+              title="확인"
+              type="outline"
+              onPress={() => requestUnFollow(unFollowId)}
+            />
+            <Button
+              style={styles.overlayStyle__lower__button}
+              title="취소"
+              type="outline"
+              onPress={toggleOverlay}
+            />
+          </View>
+        </View>
+      </Overlay>
     </SafeAreaView>
   );
 };
@@ -200,6 +237,33 @@ const styles = StyleSheet.create({
     position: 'absolute',
     fontSize: 18,
     bottom: -10,
+  },
+  overlayStyle: {
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    height: 200,
+    width: 300,
+  },
+  overlayStyle__body: {
+    flex: 1,
+  },
+  overlayStyle__upper: {
+    flex: 7,
+  },
+  overlayStyle__upper__text: {
+    fontSize: 20,
+    textAlign: 'center',
+    paddingTop: 40,
+  },
+  overlayStyle__lower: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 0,
+  },
+  overlayStyle__lower__button: {
+    width: 80,
+    height: 50,
   },
 });
 

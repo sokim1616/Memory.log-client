@@ -37,7 +37,6 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   );
 
   return (
-
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.photoScrollContainer}>
         {data.map((ele, i) => (
@@ -51,7 +50,6 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
         ))}
       </ScrollView>
     </SafeAreaView>
-
   );
 };
 const styles = StyleSheet.create({
