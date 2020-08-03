@@ -1,44 +1,30 @@
-import React, {useState} from 'react';
-import Modal from 'react-native-modal';
-import {
-  Text,
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Image,
-  Dimensions,
-  KeyboardAvoidingView,
-} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {Text, View, SafeAreaView, StyleSheet} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TextInput} from 'react-native-gesture-handler';
+import {
+  Avatar,
+  Accessory,
+  Overlay,
+  Icon,
+  Input,
+  Button,
+} from 'react-native-elements';
+import {useFocusEffect} from '@react-navigation/native';
 MaterialCommunityIcons.loadFont();
 
 interface ProfileProps {}
-
-// {
-//   "id": 5,
-//   "username": "zombie",
-//   "email": "z1@gmail.com",
-//   "password": "12345678",
-//   "profilepath": "./image/dafault_profile.jpg",
-//   "statusmessage": "지금 어떠신가요...?",
-//   "createdAt": "2020-07-29T05:07:58.000Z",
-//   "updatedAt": "2020-07-29T05:07:58.000Z"
-// }
 
 const Profile: React.FC<ProfileProps> = ({}) => {
   const [onEdit, setOnEdit] = useState(false);
   const [imageSource, setImageSource] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
-  const [userState, setUserState] = useState({
-    id: 5,
-    username: 'zombie',
-    email: 'z1@gmail.com',
-    password: '12345678',
-    profilepath: './image/dafault_profile.jpg',
-    statusmessage: '지금 어떠신가요...?',
-  });
+  const [userState, setUserState] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const options = {
     title: 'Load Photo',
@@ -48,17 +34,51 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     },
   };
 
-  const handleEditButtonPress = () => {
-    onEdit ? setOnEdit(false) : setOnEdit(true);
+  const getUserInfo = () => {
+    return fetch('http://localhost:4000/user/logininfo', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log('로그인유저정보 :', res);
+        setUserState(res);
+      })
+      .catch((err) => console.error(err));
   };
 
-  const handleTextInput = (text) => {
-    setStatusMessage(text);
+  useFocusEffect(
+    useCallback(() => {
+      getUserInfo();
+    }, [userState.length]),
+  );
+
+  const changeStatusMessage = () => {
+    console.log(statusMessage);
+    return fetch('http://localhost:4000/user/status', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        statusmessage: statusMessage,
+      }),
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        toggleOverlay();
+        getUserInfo();
+      });
   };
 
-  const handleStatusSubmit = () => {
-    setUserState({...userState, statusmessage: statusMessage});
-    setOnEdit(false);
+  const handleTextInput = (message) => {
+    setStatusMessage(message);
   };
 
   const pickImage = () => {
@@ -78,83 +98,90 @@ const Profile: React.FC<ProfileProps> = ({}) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.upperview}>
       {/* 위뷰시작 */}
-      <View style={styles.leftImageContainer}>
-        <View
-          onTouchEnd={pickImage}
-          style={styles.userImagePickButtonContainer}>
-          <MaterialCommunityIcons
-            name={'plus-circle'}
-            style={styles.userImagePickButtonIcon}
-          />
+      <View style={styles.upperview__left}>
+        <View style={styles.upperview__left__photo}>
+          <Avatar
+            size={100}
+            rounded={true}
+            source={{
+              uri: 'https://picsum.photos/300/300',
+            }}>
+            <Accessory onTouchEnd={pickImage} size={25} />
+          </Avatar>
         </View>
-        <Image
-          resizeMode="cover"
-          resizeMethod="scale"
-          style={styles.userImage}
-          source={
-            imageSource
-              ? {uri: imageSource}
-              : require('../assets/image/dafault_profile.jpg')
-          }
-        />
       </View>
-      <View style={styles.rightContentContainer}>
-        <View style={styles.userNameTextContainer}>
-          <Text style={styles.userNameText}>{userState.username}</Text>
+      <View style={styles.upperview__right}>
+        <View style={styles.upperview__right__username}>
+          <Text style={styles.upperview__right__username__text}>
+            {userState[0].username}
+          </Text>
         </View>
-        <View style={styles.userStatusTextContainer}>
-          <Modal
-            animationIn="zoomIn"
-            animationOut="zoomOut"
-            animationOutTiming={500}
-            isVisible={onEdit}
-            style={styles.editModal}>
-            <KeyboardAvoidingView
-              behavior="padding"
-              style={styles.editModalAvoidKeyView}>
-              <View style={styles.editModalTextInputContainer}>
-                <View style={styles.editModalTextInputHeaderContainer}>
-                  <Text style={styles.editModalTextInputHeaderText}>
-                    Status Message
-                  </Text>
-                </View>
-                <TextInput
-                  style={styles.editModalTextInput}
-                  onChangeText={handleTextInput}
-                  defaultValue={userState.statusmessage}
-                  multiline={true}
-                  maxLength={60}
-                />
-                <View style={styles.counterContainer}>
-                  <Text style={styles.counterText}>
-                    {statusMessage ? `${statusMessage.length} / 60` : '0 / 60'}
-                  </Text>
-                </View>
-                <View
-                  onTouchEnd={handleStatusSubmit}
-                  style={styles.submitButtonContainer}>
-                  <MaterialCommunityIcons
-                    name={'check-circle'}
-                    style={styles.submitButton}
-                  />
-                </View>
-              </View>
-            </KeyboardAvoidingView>
-          </Modal>
-          <Text style={styles.userStatusText}>{userState.statusmessage}</Text>
-          <View
-            onTouchEnd={handleEditButtonPress}
-            style={styles.userStatusUpdateButtonContainer}>
-            <MaterialCommunityIcons
-              name={'pencil-outline'}
-              style={styles.userStatusUpdateButtonIcon}
+
+        <View style={styles.upperview__right__message}>
+          <View style={styles.upperview__right__message__left}>
+            <Text style={styles.upperview__right__message__left__text}>
+              {userState[0].statusmessage}
+            </Text>
+          </View>
+          <View style={styles.upperview__right__message__right}>
+            <Icon
+              style={styles.upperview__right__message__right__icon}
+              name="pencil-outline"
+              type="material-community"
+              size={20}
+              onPress={toggleOverlay}
             />
           </View>
+
+          <Overlay
+            overlayStyle={styles.upperview__right__message__overlay}
+            isVisible={visible}
+            onBackdropPress={toggleOverlay}>
+            <View style={styles.overlay}>
+              <View style={styles.overlay__title}>
+                <Text style={styles.overlay__title__text}>
+                  상태 메세지 변경
+                </Text>
+              </View>
+              <View style={styles.overlay__textinput}>
+                <Input
+                  containerStyle={styles.overlay__textinput__container}
+                  inputContainerStyle={styles.overlay__textinput__input}
+                  inputStyle={{fontSize: 25}}
+                  placeholder="상태 메세지를 입력하세요."
+                  multiline={true}
+                  maxLength={40}
+                  onChangeText={handleTextInput}
+                  value={statusMessage}
+                />
+              </View>
+              <Text style={styles.overlay__textinput__legnth}>
+                {statusMessage ? `${statusMessage.length} / 40` : '0 / 40'}
+              </Text>
+              <View style={styles.overlay__textinput__line} />
+              <View style={styles.overlay__button}>
+                <Button
+                  containerStyle={styles.overlay__button__style}
+                  title="취소"
+                  type="outline"
+                  onPress={toggleOverlay}
+                />
+                <Button
+                  containerStyle={styles.overlay__button__style}
+                  title="확인"
+                  type="solid"
+                  onPress={changeStatusMessage}
+                />
+              </View>
+            </View>
+          </Overlay>
         </View>
-        <View style={styles.userEmailTextContainer}>
-          <Text style={styles.userEmailText}>{userState.email}</Text>
+        <View style={styles.upperview__right__email}>
+          <Text style={styles.upperview__right__email__text}>
+            {userState[0].email}
+          </Text>
         </View>
       </View>
     </SafeAreaView>
@@ -162,156 +189,92 @@ const Profile: React.FC<ProfileProps> = ({}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  upperview: {
     flex: 1,
     flexDirection: 'row',
-    borderWidth: 0.5,
-    borderColor: 'grey',
-    backgroundColor: '#dddddd',
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3.6,
-  },
-  leftImageContainer: {
-    flex: 0.3,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-  },
-  userImage: {
-    flex: 1,
-    width: Dimensions.get('screen').width * 0.27,
-  },
-  userImagePickButtonContainer: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    zIndex: 1,
-    backgroundColor: 'lightgrey',
-    alignItems: 'center',
-    textAlign: 'center',
-    borderRadius: 20,
-    padding: 3,
-  },
-  userImagePickButtonIcon: {
-    color: 'black',
-    fontSize: 20,
-    alignSelf: 'center',
-  },
-  rightContentContainer: {
-    flex: 0.7,
-    flexDirection: 'column',
-    paddingHorizontal: 10,
-  },
-  userNameTextContainer: {
-    flex: 0.3,
+    borderTopColor: 'black',
+    borderTopWidth: 1,
+    borderBottomColor: 'black',
     borderBottomWidth: 1,
-    borderColor: 'darkgrey',
+  },
+
+  upperview__left: {
+    flex: 3,
     justifyContent: 'center',
-    paddingLeft: 7,
   },
-  userStatusTextContainer: {
-    flex: 0.35,
+  upperview__left__photo: {},
+  upperview__right: {
+    flex: 7,
+  },
+
+  upperview__right__username: {
+    flex: 3,
+    flexDirection: 'column',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
     justifyContent: 'center',
-    paddingLeft: 7,
   },
-  userEmailTextContainer: {
-    flex: 0.35,
-    justifyContent: 'center',
-    paddingLeft: 7,
+  upperview__right__username__text: {
+    fontSize: 30,
   },
-  userNameText: {
-    fontWeight: 'bold',
-    fontSize: 26,
-    fontFamily: 'Cochin',
+
+  upperview__right__message: {
+    flex: 5,
+    flexDirection: 'row',
   },
-  userStatusText: {
-    fontSize: 16,
-    fontFamily: 'Cochin',
+  upperview__right__message__left: {
+    flex: 8,
   },
-  userEmailText: {
-    fontSize: 16,
-    fontFamily: 'Cochin',
+  upperview__right__message__left__text: {
+    fontSize: 18,
+    marginTop: 5,
   },
-  userStatusUpdateButtonContainer: {
-    position: 'absolute',
-    right: 10,
+  upperview__right__message__right: {
+    flex: 2,
   },
-  userStatusUpdateButtonIcon: {
-    fontSize: 24,
+  upperview__right__message__right__icon: {
+    marginTop: 5,
   },
-  editModal: {
-    flex: 1,
-    zIndex: 1,
+  upperview__right__message__overlay: {
+    height: 300,
+    width: 300,
+    borderRadius: 10,
   },
-  editModalAvoidKeyView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  overlay: {flex: 1},
+  overlay__title: {
+    flex: 2,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginTop: 10,
   },
-  editModalTextInputContainer: {
-    position: 'absolute',
-    top: Dimensions.get('screen').height * 0.35,
-    width: Dimensions.get('screen').width * 0.75,
-    height: Dimensions.get('screen').height * 0.23,
+  overlay__title__text: {fontSize: 30, textAlign: 'center'},
+  overlay__textinput: {flex: 6},
+  overlay__textinput__container: {},
+  overlay__textinput__input: {borderBottomColor: 'white'},
+  overlay__textinput__legnth: {
+    fontSize: 18,
+    textAlign: 'right',
+    marginBottom: 10,
   },
-  editModalTextInputHeaderContainer: {
-    flex: 0.2,
-    backgroundColor: 'lightblue',
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3.6,
+  overlay__textinput__line: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginBottom: 20,
   },
-  editModalTextInputHeaderText: {
-    fontSize: 20,
+  overlay__button: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 15,
   },
-  editModalTextInput: {
-    flex: 0.8,
-    backgroundColor: 'white',
-    padding: 10,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3.6,
-    fontSize: 20,
+  overlay__button__style: {width: 100},
+
+  upperview__right__email: {
+    flex: 2,
   },
-  counterContainer: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-  },
-  counterText: {
-    fontSize: 12,
-  },
-  submitButtonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-  },
-  submitButton: {
-    fontSize: 22,
+  upperview__right__email__text: {
+    fontSize: 15,
   },
 });
 
 export default Profile;
-
-// * 프로필에 관한것
