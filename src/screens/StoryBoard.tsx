@@ -8,10 +8,8 @@ import {
   Dimensions,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 
 interface HomeTwoProps {}
-const Stack = createStackNavigator();
 const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);

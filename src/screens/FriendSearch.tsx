@@ -1,8 +1,13 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import {SearchBar, ListItem, Overlay, Button} from 'react-native-elements';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import FriendList from '../screens/FriendList';
 
-const FriendSearch = () => {
+const Stack = createStackNavigator();
+
+const FriendSearch = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [list, setList] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -15,9 +20,11 @@ const FriendSearch = () => {
     setSearch(search);
   };
 
+  const moveToFriendList = () => {
+    navigation.navigate(FriendList);
+  };
+
   const onPressFollowIcon = () => {
-    console.log('on pressed icon');
-    console.log('on pressed icon', search);
     return fetch('http://localhost:4000/follow/rfollow', {
       method: 'POST',
       headers: {
@@ -31,8 +38,8 @@ const FriendSearch = () => {
     })
       .then((res) => res.json())
       .then((follower) => {
-        console.log(follower);
         toggleOverlay();
+        moveToFriendList();
       })
       .catch((error) => {
         console.error(error);
@@ -56,7 +63,6 @@ const FriendSearch = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         if (res === null) {
           setList([]);
         } else {
@@ -87,7 +93,9 @@ const FriendSearch = () => {
             style={styles.upperView__lower__button}
             title="검색"
             type="solid"
-            onPress={onPressSearchIcon}
+            onPress={() => {
+              onPressSearchIcon();
+            }}
           />
         </View>
       </View>
@@ -224,7 +232,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 50,
   },
-
 });
 
 export default FriendSearch;
