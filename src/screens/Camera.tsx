@@ -106,6 +106,7 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
       body: formData,
     };
     let response = await fetch(url, options);
+    console.log(response.status);
     alertSaveSucess(response.status);
     return true;
   };

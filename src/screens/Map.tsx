@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {ScrollView} from 'react-native-gesture-handler';
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
@@ -140,8 +139,8 @@ const Map = () => {
             <Marker
               onSelect={() =>
                 setRegion({
-                  latitude,
-                  longitude,
+                  latitude: Number(latitude),
+                  longitude: Number(longitude),
                   latitudeDelta: 0.0922,
                   longitudeDelta: 0.0421,
                 })

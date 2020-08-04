@@ -1,5 +1,6 @@
 import React from 'react';
 import {Dimensions, SafeAreaView, Button, Text, StyleSheet} from 'react-native';
+import Server from '../utils/Server';
 
 interface SignoutProps {}
 

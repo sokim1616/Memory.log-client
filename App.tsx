@@ -11,7 +11,7 @@ import HomeStackContainer from './src/containers/HomeStackContainer';
 import Map from './src/screens/Map';
 
 import ConfigStackContainer from './src/containers/ConfigStackContainer';
-import StoryBoard from './src/screens/StoryBoard';
+import StoryBoardStack from './src/stacks/StoryBoardStack';
 import LoginStack from './src/stacks/LoginStack';
 import ListStack from './src/stacks/ListStack';
 
@@ -83,7 +83,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
             />
             <AppTab.Screen
               name="StoryBoard"
-              component={StoryBoard}
+              component={StoryBoardStack}
               options={{
                 // tabBarColor: '#ad9d9d',
                 tabBarLabel: 'StoryBoard',
