@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import {SearchBar, ListItem, Overlay, Button} from 'react-native-elements';
-import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import FriendList from '../screens/FriendList';
 
@@ -107,16 +106,21 @@ const FriendSearch = ({navigation}) => {
           {list.map((ele, i) => (
             <ListItem
               key={i}
-              leftAvatar={{source: {uri: 'https://picsum.photos/400/400'}}}
+              leftAvatar={{
+                source: {uri: 'https://picsum.photos/400/400'},
+                size: 'large',
+              }}
+              containerStyle={styles.lowerView__friend}
               title={ele.username}
+              titleStyle={styles.lowerView__friend__username}
               subtitle={ele.statusmessage}
+              subtitleStyle={styles.lowerView__friend__subtitle}
               bottomDivider
               rightIcon={{
                 name: 'ios-person-add-sharp',
                 type: 'ionicon',
                 onPress: toggleOverlay,
               }}
-              containerStyle={styles.lowerView__friend}
             />
           ))}
         </View>
@@ -127,21 +131,21 @@ const FriendSearch = ({navigation}) => {
           <View style={styles.overlayStyle__body}>
             <View style={styles.overlayStyle__upper}>
               <Text style={styles.overlayStyle__upper__text}>
-                이 친구와 추억 공유를                      시작 하시겠습니까?
+                이 친구와 추억 공유를 {'\n'} 시작 하시겠습니까?
               </Text>
             </View>
             <View style={styles.overlayStyle__lower}>
               <Button
-                style={styles.overlayStyle__lower__button}
-                title="확인"
-                type="outline"
-                onPress={onPressFollowIcon}
-              />
-              <Button
-                style={styles.overlayStyle__lower__button}
+                containerStyle={styles.overlayStyle__lower__button}
                 title="취소"
                 type="outline"
                 onPress={toggleOverlay}
+              />
+              <Button
+                containerStyle={styles.overlayStyle__lower__button}
+                title="확인"
+                type="outline"
+                onPress={onPressFollowIcon}
               />
             </View>
           </View>
@@ -202,11 +206,25 @@ const styles = StyleSheet.create({
   lowerView__friend__title: {
     fontSize: 20,
   },
+  lowerView__friend__username: {
+    position: 'absolute',
+    fontSize: 30,
+    bottom: 10,
+  },
+  lowerView__friend__subtitle: {
+    position: 'absolute',
+    fontSize: 18,
+    bottom: -30,
+  },
   overlayStyle: {
     backgroundColor: '#ffffff',
     borderRadius: 10,
     height: 200,
     width: 300,
+    shadowColor: '#000',
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
   },
   overlayStyle__body: {
     flex: 1,
@@ -217,17 +235,17 @@ const styles = StyleSheet.create({
   overlayStyle__upper__text: {
     fontSize: 20,
     textAlign: 'center',
-    paddingTop: 40,
+    paddingTop: 25,
+    lineHeight: 40,
+    // textShadowColor: '#808080',
+    // textShadowOffset: {width: 2, height: 2},
+    // textShadowRadius: 4,
   },
   overlayStyle__lower: {
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 0,
-  },
-  overlayStyle__lower__button: {
-    width: 80,
-    height: 50,
   },
   overlayStyle__lower__button: {
     width: 80,

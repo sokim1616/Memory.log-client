@@ -93,7 +93,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
       <View style={styles.upperview__left}>
         <View style={styles.upperview__left__photo}>
           <Avatar
-            size={100}
+            size="large"
             rounded={true}
             source={{
               uri: 'https://picsum.photos/300/300',
@@ -106,6 +106,11 @@ const Profile: React.FC<ProfileProps> = ({}) => {
         <View style={styles.upperview__right__username}>
           <Text style={styles.upperview__right__username__text}>
             {userState.username}
+          </Text>
+        </View>
+        <View style={styles.upperview__right__email}>
+          <Text style={styles.upperview__right__email__text}>
+            {userState.email}
           </Text>
         </View>
         <View style={styles.upperview__right__message}>
@@ -166,11 +171,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
             </View>
           </Overlay>
         </View>
-        <View style={styles.upperview__right__email}>
-          <Text style={styles.upperview__right__email__text}>
-            {userState.email}
-          </Text>
-        </View>
       </View>
     </SafeAreaView>
   );
@@ -179,16 +179,21 @@ const styles = StyleSheet.create({
   upperview: {
     flex: 1,
     flexDirection: 'row',
-    borderTopColor: 'black',
-    borderTopWidth: 1,
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
   },
   upperview__left: {
     flex: 3,
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  upperview__left__photo: {},
+
+  upperview__left__photo: {
+    shadowColor: '#000',
+    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOpacity: 1,
+    shadowRadius: 3,
+    marginLeft: -21.5,
+    // backgroundColor: '#3ed',
+  },
   upperview__right: {
     flex: 7,
   },
@@ -197,6 +202,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
+    marginRight: 20,
     justifyContent: 'center',
   },
   upperview__right__username__text: {
@@ -210,7 +216,7 @@ const styles = StyleSheet.create({
     flex: 8,
   },
   upperview__right__message__left__text: {
-    fontSize: 18,
+    fontSize: 16,
     marginTop: 5,
   },
   upperview__right__message__right: {

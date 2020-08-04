@@ -59,7 +59,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
       />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>My storyboard...</Text>
+          <Text style={styles.headerText}>나의 추억 저장소..</Text>
         </View>
         <ScrollView contentContainerStyle={styles.photoScrollContainer}>
           {data.map((ele, i) => (
@@ -93,8 +93,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   headerText: {
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     fontSize: 30,
+    // fontWeight: 'bold',
   },
   photoScrollView: {
     flex: 1,
@@ -118,11 +119,15 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 3.84,
+    // shadowColor: '#000',
+    // shadowOffset: {width: 0, height: 2.5},
+    // shadowOpacity: 1,
+    // shadowRadius: 3,
   },
   photo: {
     flex: 1,
     height: Dimensions.get('screen').height / 8 - 12,
-    borderRadius: 10,
+    borderRadius: 5,
     borderColor: 'blue',
   },
 });

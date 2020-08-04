@@ -4,6 +4,7 @@ import {ListItem, Button, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
+import FriendStoryBoard from '../screens/FriendStoryBoard';
 
 const FriendList = ({navigation}) => {
   const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
@@ -96,6 +97,12 @@ const FriendList = ({navigation}) => {
             leftAvatar={{
               source: {uri: 'https://picsum.photos/300/300'},
               size: 'large',
+              containerStyle: {
+                shadowColor: '#000',
+                shadowOffset: {width: 2.5, height: 2.5},
+                shadowOpacity: 1,
+                shadowRadius: 3,
+              },
             }}
             title={ele.username}
             subtitle={ele.statusmessage}
@@ -126,11 +133,22 @@ const FriendList = ({navigation}) => {
               leftAvatar={{
                 source: {uri: 'https://picsum.photos/300/300'},
                 size: 'large',
+                containerStyle: {
+                  shadowColor: '#000',
+                  shadowOffset: {width: 2.5, height: 2.5},
+                  shadowOpacity: 1,
+                  shadowRadius: 3,
+                },
               }}
               title={ele.username}
               subtitle={ele.statusmessage}
               titleStyle={styles.lowerView__title}
               subtitleStyle={styles.lowerView__subtitle}
+              onPress={() =>
+                navigation.navigate('FriendStoryBoard', {
+                  friendId: ele.id,
+                })
+              }
               rightIcon={{
                 name: 'ios-person-remove-sharp',
                 type: 'ionicon',
@@ -150,21 +168,21 @@ const FriendList = ({navigation}) => {
         <View style={styles.overlayStyle__body}>
           <View style={styles.overlayStyle__upper}>
             <Text style={styles.overlayStyle__upper__text}>
-              이 친구와 추억 공유를                       그만하시겠습니까?
+              이 친구와 추억 공유를{'\n'} 그만하시겠습니까?
             </Text>
           </View>
           <View style={styles.overlayStyle__lower}>
             <Button
               style={styles.overlayStyle__lower__button}
-              title="확인"
-              type="outline"
-              onPress={() => requestUnFollow(unFollowId)}
-            />
-            <Button
-              style={styles.overlayStyle__lower__button}
               title="취소"
               type="outline"
               onPress={toggleOverlay}
+            />
+            <Button
+              style={styles.overlayStyle__lower__button}
+              title="확인"
+              type="outline"
+              onPress={() => requestUnFollow(unFollowId)}
             />
           </View>
         </View>
@@ -195,18 +213,24 @@ const styles = StyleSheet.create({
   },
   upperView__text: {
     fontSize: 30,
+    // fontWeight: 'bold',
     marginLeft: 20,
     marginTop: 10,
   },
   upperView__title: {
     position: 'relative',
     fontSize: 30,
-    bottom: 25,
+    bottom: 40,
+    backgroundColor: '#3ef',
   },
   upperView__subtitle: {
     position: 'absolute',
     fontSize: 18,
-    bottom: -10,
+    bottom: -50,
+    width: 290,
+    height: 80,
+    lineHeight: 25,
+    backgroundColor: '#f39c12',
   },
   midView: {
     flex: 0.5,
@@ -216,6 +240,7 @@ const styles = StyleSheet.create({
   },
   midView__text: {
     fontSize: 30,
+    // fontWeight: 'bold',
     marginLeft: 20,
     // backgroundColor: '#C70039',
   },
@@ -229,14 +254,16 @@ const styles = StyleSheet.create({
     // backgroundColor: '#3EA9A1',
   },
   lowerView__title: {
-    position: 'relative',
+    position: 'absolute',
     fontSize: 30,
-    bottom: 25,
+    bottom: 7,
   },
   lowerView__subtitle: {
     position: 'absolute',
-    fontSize: 18,
-    bottom: -10,
+    fontSize: 16,
+    bottom: -40,
+    height: 40,
+    backgroundColor: '#3ed',
   },
   overlayStyle: {
     backgroundColor: '#ffffff',
@@ -253,7 +280,8 @@ const styles = StyleSheet.create({
   overlayStyle__upper__text: {
     fontSize: 20,
     textAlign: 'center',
-    paddingTop: 40,
+    paddingTop: 25,
+    lineHeight: 40,
   },
   overlayStyle__lower: {
     flex: 3,

@@ -32,7 +32,7 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
       isVisible={previewMode}
       style={styles.modalContainer}>
       <View style={styles.blurBackground} />
-      <Text style={styles.headerText}>Memory.Log</Text>
+      <Text style={styles.headerText}>Memory.log</Text>
       <View style={styles.imageContainer}>
         <TouchableOpacity style={styles.goBackButtonContainer}>
           <MaterialCommunityIcons
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   headerText: {
     position: 'absolute',
     color: 'white',
-    fontSize: 30,
+    fontSize: 24,
     top: 40,
     fontFamily: 'Lobster-Regular',
   },
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingVertical: 30,
     fontSize: 24,
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     shadowColor: 'darkred',
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingVertical: 30,
     fontSize: 24,
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     shadowColor: 'darkred',

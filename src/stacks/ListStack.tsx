@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import FriendList from '../screens/FriendList';
 import FriendSearch from '../screens/FriendSearch';
+import FriendStoryBoard from '../screens/FriendStoryBoard';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ const ListStack = () => {
       }}>
       <Stack.Screen name="FriendList" component={FriendList} />
       <Stack.Screen name="FriendSearch" component={FriendSearch} />
+      <Stack.Screen name="FriendStoryBoard" component={FriendStoryBoard} />
     </Stack.Navigator>
   );
 };

@@ -94,7 +94,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           />
         </View>
         <TextInput
-          placeholder="What's on your mind?"
+          placeholder="지금 당신의 기분은 어떤가요..?"
           ref={memoField}
           multiline={true}
           style={
@@ -108,12 +108,12 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
         <View
           style={styles.cancelButton}
           onTouchEnd={() => modalButtonTouchHandler(null)}>
-          <Text style={styles.buttonText}>Cancel</Text>
+          <Text style={styles.buttonText}>취소</Text>
         </View>
         <View
           style={styles.saveButton}
           onTouchEnd={() => modalButtonTouchHandler('save')}>
-          <Text style={styles.buttonText}>Save</Text>
+          <Text style={styles.buttonText}>저장</Text>
         </View>
       </View>
     </Modal>
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingVertical: 30,
     fontSize: 24,
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     shadowColor: 'darkred',
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingVertical: 30,
     fontSize: 24,
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     shadowColor: 'darkred',
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.6,
   },
   buttonText: {
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     fontSize: 24,
   },
 });
