@@ -28,7 +28,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
 }) => {
   const [editModeStatus, setEditModeStatus] = useState(false);
   const [photoDescription, setPhotoDescription] = useState(
-    "What's on your mind? ",
+    "What's on your mind?",
   );
   const {uri} = currentImageData;
   const memoField: Ref = React.createRef();
@@ -68,7 +68,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           source={{uri}}
         />
       </View>
-      <Text style={styles.headerText}>Memory.Log</Text>
+      <Text style={styles.headerText}>Memory.log</Text>
       <View
         style={
           editModeStatus ? styles.imageContainerEditMode : styles.imageContainer
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   headerText: {
     position: 'absolute',
     color: 'white',
-    fontSize: 30,
+    fontSize: 24,
     top: 40,
     fontFamily: 'Lobster-Regular',
   },

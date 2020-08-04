@@ -87,7 +87,7 @@ const FriendList = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* 위뷰시작 */}
-      <Text style={styles.upperView__text}>나의 정보</Text>
+      <Text style={styles.upperView__text}>내 프로필</Text>
       <View style={styles.divideline} />
       <View style={styles.upperView}>
         {userState.map((ele, i) => (
@@ -150,7 +150,7 @@ const FriendList = ({navigation}) => {
         <View style={styles.overlayStyle__body}>
           <View style={styles.overlayStyle__upper}>
             <Text style={styles.overlayStyle__upper__text}>
-              친구 삭제 삭제 절교 삭제 절교 삭제 절교 삭제
+              이 친구와 추억 공유를                       그만하시겠습니까?
             </Text>
           </View>
           <View style={styles.overlayStyle__lower}>
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   },
   upperView__title: {
     position: 'relative',
-    fontSize: 40,
+    fontSize: 30,
     bottom: 25,
   },
   upperView__subtitle: {
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   lowerView__title: {
     position: 'relative',
-    fontSize: 40,
+    fontSize: 30,
     bottom: 25,
   },
   lowerView__subtitle: {

@@ -31,7 +31,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
     if (!email.length || !password.length) {
       Alert.alert(
         'Empty Fields',
-        'You must provide both email and password to log in',
+        'You must provide both email and password to log in.',
         {
           text: 'OK',
           onPress: () => console.log('hi'),
@@ -57,8 +57,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       return;
     } else if (!email.match(emailCheck)) {
       Alert.alert(
-        'Invalid E-mail Adress',
-        'Please input a correct e-mail address',
+        'Invalid E-mail Address',
+        'Please input a correct e-mail address.',
         {text: 'OK', onPress: () => console.log('hi')},
         {cancelable: false},
       );
@@ -74,7 +74,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       body,
     }).then((resp) => {
       if (resp.status === 200) {
-        setToastMessage('Success! Press To Continue');
+        setToastMessage('Success! Press to continue.');
         setTimeout(() => changeLogin('true'), 1000);
       } else {
         setToastMessage(

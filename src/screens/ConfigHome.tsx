@@ -16,7 +16,7 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({ navigation }) => {
         <View style={{ flex: 0.7, paddingHorizontal: 10 }}>
           <Profile />
         </View>
-      </View  >
+      </View>
       <View style={{ flex: 0.75, paddingTop: 10, paddingLeft: 10 }}>
         <View style={{ flex: 0.75, paddingTop: 10, paddingLeft: 10 }}>
           <About />

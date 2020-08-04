@@ -111,17 +111,17 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
   };
 
   const alertSaveSucess = async (status) => {
-    if (status === 200) {
+    if (status === 201) {
       return Alert.alert(
         'Picture upload success!',
-        'Thank you!',
+        'Check out your storyboard!',
         {text: 'OK', onPress: () => 'OK'},
         {cancelable: false},
       );
     } else {
       return Alert.alert(
-        'Picture Upload Failed',
-        '😭',
+        'Picture upload failed',
+        'I\'m sorry😭',
         {text: 'OK', onPress: () => 'OK'},
         {cancelable: false},
       );

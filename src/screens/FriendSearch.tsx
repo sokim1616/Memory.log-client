@@ -82,12 +82,13 @@ const FriendSearch = ({navigation}) => {
         <View style={styles.upperView__lower}>
           <SearchBar
             containerStyle={styles.upperView__lower__search}
-            placeholder="E-mail를 입력해 주세요."
+            placeholder="친구의 e-mail을 입력해 주세요."
             onChangeText={updateSearch}
             value={search}
             lightTheme={true}
             platform="ios"
             cancelButtonTitle=""
+            autoCapitalize="none"
           />
           <Button
             style={styles.upperView__lower__button}
@@ -126,7 +127,7 @@ const FriendSearch = ({navigation}) => {
           <View style={styles.overlayStyle__body}>
             <View style={styles.overlayStyle__upper}>
               <Text style={styles.overlayStyle__upper__text}>
-                친구 추가 추가 추가 추가 추가 추가 추가
+                이 친구와 추억 공유를                      시작 하시겠습니까?
               </Text>
             </View>
             <View style={styles.overlayStyle__lower}>

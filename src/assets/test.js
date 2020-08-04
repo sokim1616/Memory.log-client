@@ -1,7 +1,7 @@
 [
   {
     createdAt: '2020-07-29T02:07:35.000Z',
-    description: "What's on your mind..? ",
+    description: "What's on your mind? ",
     filepath:
       'https://memory-log.s3.ap-northeast-2.amazonaws.com/kim_1_1595988455.1167212.jpg',
     id: 11,
@@ -12,7 +12,7 @@
   },
   {
     createdAt: '2020-07-29T02:07:00.000Z',
-    description: "What's on your mind..? ",
+    description: "What's on your mind? ",
     filepath:
       'https://memory-log.s3.ap-northeast-2.amazonaws.com/kim_1_1595988419.821596.jpg',
     id: 10,

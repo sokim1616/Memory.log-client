@@ -12,20 +12,16 @@ import {
 } from 'react-native-elements';
 import {useFocusEffect} from '@react-navigation/native';
 MaterialCommunityIcons.loadFont();
-
 interface ProfileProps {}
-
 const Profile: React.FC<ProfileProps> = ({}) => {
   const [onEdit, setOnEdit] = useState(false);
   const [imageSource, setImageSource] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
-  const [userState, setUserState] = useState([]);
+  const [userState, setUserState] = useState({});
   const [visible, setVisible] = useState(false);
-
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-
   const options = {
     title: 'Load Photo',
     storageOptions: {
@@ -33,7 +29,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
       path: 'images',
     },
   };
-
   const getUserInfo = () => {
     return fetch('http://localhost:4000/user/logininfo', {
       method: 'POST',
@@ -46,17 +41,15 @@ const Profile: React.FC<ProfileProps> = ({}) => {
       .then((res) => res.json())
       .then((res) => {
         console.log('로그인유저정보 :', res);
-        setUserState(res);
+        setUserState(res[0]);
       })
       .catch((err) => console.error(err));
   };
-
   useFocusEffect(
     useCallback(() => {
       getUserInfo();
     }, [userState.length]),
   );
-
   const changeStatusMessage = () => {
     console.log(statusMessage);
     return fetch('http://localhost:4000/user/status', {
@@ -71,16 +64,14 @@ const Profile: React.FC<ProfileProps> = ({}) => {
       credentials: 'include',
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then(() => {
         toggleOverlay();
         getUserInfo();
       });
   };
-
   const handleTextInput = (message) => {
     setStatusMessage(message);
   };
-
   const pickImage = () => {
     ImagePicker.launchImageLibrary(options, (response) => {
       if (response.didCancel) {
@@ -96,7 +87,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     });
     //fetch -->
   };
-
   return (
     <SafeAreaView style={styles.upperview}>
       {/* 위뷰시작 */}
@@ -115,14 +105,13 @@ const Profile: React.FC<ProfileProps> = ({}) => {
       <View style={styles.upperview__right}>
         <View style={styles.upperview__right__username}>
           <Text style={styles.upperview__right__username__text}>
-            {userState[0].username}
+            {userState.username}
           </Text>
         </View>
-
         <View style={styles.upperview__right__message}>
           <View style={styles.upperview__right__message__left}>
             <Text style={styles.upperview__right__message__left__text}>
-              {userState[0].statusmessage}
+              {userState.statusmessage}
             </Text>
           </View>
           <View style={styles.upperview__right__message__right}>
@@ -134,7 +123,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
               onPress={toggleOverlay}
             />
           </View>
-
           <Overlay
             overlayStyle={styles.upperview__right__message__overlay}
             isVisible={visible}
@@ -180,14 +168,13 @@ const Profile: React.FC<ProfileProps> = ({}) => {
         </View>
         <View style={styles.upperview__right__email}>
           <Text style={styles.upperview__right__email__text}>
-            {userState[0].email}
+            {userState.email}
           </Text>
         </View>
       </View>
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   upperview: {
     flex: 1,
@@ -197,7 +184,6 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 1,
   },
-
   upperview__left: {
     flex: 3,
     justifyContent: 'center',
@@ -206,7 +192,6 @@ const styles = StyleSheet.create({
   upperview__right: {
     flex: 7,
   },
-
   upperview__right__username: {
     flex: 3,
     flexDirection: 'column',
@@ -217,7 +202,6 @@ const styles = StyleSheet.create({
   upperview__right__username__text: {
     fontSize: 30,
   },
-
   upperview__right__message: {
     flex: 5,
     flexDirection: 'row',
@@ -268,7 +252,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   overlay__button__style: {width: 100},
-
   upperview__right__email: {
     flex: 2,
   },
