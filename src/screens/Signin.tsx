@@ -161,7 +161,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
               onFocus={() => setInputInFocus('이메일')}
               onBlur={() => setInputInFocus('')}
               placeholder="이메일"
-              onChangeText={(input) => handleInput(input, '이메일')}
+              onChangeText={(input) => handleInput(input, 'email')}
               selectTextOnFocus={true}
               textContentType="emailAddress"
               selectionColor="lightgreen"

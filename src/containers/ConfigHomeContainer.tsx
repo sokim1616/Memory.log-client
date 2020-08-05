@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Signout from '../screens/Signout';
+import ConfigHome from '../screens/ConfigHome';
 import {changeUserLoginStatus} from '../actions';
 
-const SignoutContainer = (loginProps) => {
-  return <Signout loginProps={loginProps} />;
+const ConfigHomeContainer = (loginProps) => {
+  return <ConfigHome loginProps={loginProps} />;
 };
 
 const mapStateToProps: MapStateToProps = (state) => ({
@@ -15,4 +15,7 @@ const mapDispatchToProps = (dispatch) => {
   return {changeLogin: (status) => dispatch(changeUserLoginStatus(status))};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignoutContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ConfigHomeContainer);

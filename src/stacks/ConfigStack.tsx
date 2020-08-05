@@ -1,10 +1,12 @@
 import React from 'react';
-import SignoutContainer from '../containers/SignoutContainer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {StatusBar, StyleSheet, Dimensions} from 'react-native';
-import ConfigHome from '../screens/ConfigHome';
+import ConfigHomeContainer from '../containers/ConfigHomeContainer';
+
 interface ConfigStackProps {}
+
 const ConfigStackNav = createStackNavigator<ConfigStackParamList>();
+
 const ConfigStack: React.FC<ConfigStackProps> = ({configProps}) => {
   const {loginStatus, changeLogin} = configProps;
   return (
@@ -21,7 +23,11 @@ const ConfigStack: React.FC<ConfigStackProps> = ({configProps}) => {
             fontSize: 24,
           },
         }}>
-        <ConfigStackNav.Screen name="Memory.log" component={ConfigHome} />
+        <ConfigStackNav.Screen
+          name="Memory.log"
+          configProps={configProps}
+          component={ConfigHomeContainer}
+        />
         {/* <ConfigStackNav.Screen name="SignOut" component={SignoutContainer} /> */}
       </ConfigStackNav.Navigator>
     </>
