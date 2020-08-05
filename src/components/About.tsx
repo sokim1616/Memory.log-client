@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, SafeAreaView, Linking, Alert } from 'react-native';
-import { Button, Overlay, SocialIcon, ListItem } from 'react-native-elements';
-// import email from 'react-native-email'
+import { Text, View, StyleSheet, SafeAreaView, Alert } from 'react-native';
+import { Button, Overlay, SocialIcon, ListItem, Tile } from 'react-native-elements';
 import Mailer from 'react-native-mail'
-// import TouchableScale from 'react-native-touchable-scale';
-// import LinearGradient from 'react-native-linear-gradient';
+import Modal from 'react-native-modal';
+import { white, black } from 'react-native-paper/lib/typescript/src/styles/colors';
+
 
 interface AboutProps { }
+
 const About: React.FC<AboutProps> = () => {
   const [visible, setVisible] = useState(false);
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
+  // const [modalUp, setModalUp] = useState(false)
+
+  // const modalThrow = () => {
+  //   setModalUp(!modalUp)
+  // }
 
   const toggleModal = () => {
     setVisible(!visible);
@@ -53,24 +59,80 @@ const About: React.FC<AboutProps> = () => {
   return (
     <SafeAreaView style={{ flex: 0.75, paddingTop: 10, paddingLeft: 10 }}>
       <View style={{ flex: 0.75, paddingTop: 10, paddingLeft: 10 }}>
-        <Text style={styles.title}>About</Text>
+        <Text style={styles.title}>여기는앱정보입니다</Text>
         <Button
-          title="About using this App"
+          title="Memory.log 앱 사용법"
           style={{ paddingTop: 50, paddingRight: 30 }}
           onPress={toggleModal}
+          buttonStyle={{ backgroundColor: "orange" }}
         />
         <Overlay
           overlayStyle={styles.overlay}
           isVisible={visible}
           onBackdropPress={toggleModal}>
-          <View style={{ flex: 0.5 }}>
-
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 0.2, borderBottomColor: 'black', borderBottomWidth: 1 }}>
+              <Text style={{ fontSize: 28, fontFamily: 'Cochin', justifyContent: 'center', textAlign: 'center' }}>
+                "Simple 3 Steps to making your {'\n'} Memory everlasting"
+            </Text>
+            </View>
+            <View style={{ flex: 0.2 }}>
+              <Text style={{
+                paddingLeft: 3,
+                fontSize: 28,
+                borderRadius: 10,
+                borderColor: 'grey',
+                borderWidth: 3,
+                marginTop: 30,
+                fontFamily: 'Cochin',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                Login in advancd
+              </Text>
+            </View>
+            <View style={{ flex: 0.2 }}>
+              <Text style={{
+                paddingLeft: 3,
+                fontSize: 25,
+                borderRadius: 10,
+                borderColor: 'grey',
+                borderWidth: 3,
+                marginTop: 30,
+                fontFamily: 'Cochin',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                Take a photo during your trip
+              </Text>
+            </View>
+            <View style={{ flex: 0.2 }}>
+              <Text style={{
+                paddingLeft: 3,
+                fontSize: 25,
+                borderRadius: 10,
+                borderColor: 'grey',
+                borderWidth: 3,
+                marginTop: 30,
+                fontFamily: 'Cochin',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                Write a short log & save ❗️
+              </Text>
+            </View>
+            <View style={{ flex: 0.2, borderTopColor: 'black', borderTopWidth: 1 }}>
+              <Text style={{ fontSize: 28, fontFamily: 'Cochin', justifyContent: 'center', textAlign: 'center', paddingTop: 20 }}>
+                Now it's in your {'\n'} "Memory storage❗️ "
+              </Text>
+            </View>
           </View>
         </Overlay>
         <Button
-          title="Meet Our Crew"
+          title="Travel-Maker 소개"
           style={{ paddingTop: 50, paddingRight: 30 }}
           onPress={toggleModal2}
+          buttonStyle={{ backgroundColor: "purple" }}
         />
         <Overlay
           overlayStyle={styles.overlay2}
@@ -121,11 +183,11 @@ const About: React.FC<AboutProps> = () => {
             </View>
           </View>
         </Overlay>
-        {/* //! 3번째 부분 시작 */}
         <Button
-          title="Questions & Concerns"
+          title="Q&A"
           style={{ paddingTop: 50, paddingRight: 30 }}
           onPress={toggleModal3}
+          buttonStyle={{ backgroundColor: "black" }}
         />
         <Overlay
           overlayStyle={styles.overlay2}
@@ -146,8 +208,11 @@ const About: React.FC<AboutProps> = () => {
             </View>
           </View>
         </Overlay>
+        <View>
+
+        </View>
       </View>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 const styles = StyleSheet.create({
@@ -160,9 +225,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   overlay: {
-    width: 350,
-    height: 350,
+    width: 340,
+    height: 600,
     borderRadius: 5,
+    justifyContent: 'center'
   },
   overlay2: {
     width: 340,

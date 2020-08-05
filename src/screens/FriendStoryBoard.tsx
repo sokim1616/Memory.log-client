@@ -1,5 +1,5 @@
-import React, {useState, useCallback} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
 import {
   SafeAreaView,
@@ -16,12 +16,12 @@ interface HomeTwoProps {
   route;
 }
 
-const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
+const FriendStoryBoard: React.FC<HomeTwoProps> = ({ route }) => {
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);
   const [currentPhoto, setCurrentPhoto] = useState({});
   const [previewMode, setPreviewMode] = useState(false);
-  const {friendId} = route.params;
+  const { friendId } = route.params;
 
   const fetchPhotos = async () => {
     await fetch('http://localhost:4000/photo/fboard', {
@@ -31,7 +31,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id: friendId}),
+      body: JSON.stringify({ id: friendId }),
       credentials: 'include',
     })
       .then((res) => res.json())
@@ -78,7 +78,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
               <Image
                 resizeMode="cover"
                 style={styles.photo}
-                source={{uri: ele.filepath}}
+                source={{ uri: ele.filepath }}
               />
             </TouchableOpacity>
           ))}

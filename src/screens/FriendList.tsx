@@ -1,12 +1,12 @@
-import React, {useCallback, useState} from 'react';
-import {StyleSheet, View, Text, ScrollView, SafeAreaView} from 'react-native';
-import {ListItem, Button, Overlay} from 'react-native-elements';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { ListItem, Button, Overlay } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
 import FriendStoryBoard from '../screens/FriendStoryBoard';
 
-const FriendList = ({navigation}) => {
+const FriendList = ({ navigation }) => {
   const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
   const [followerList, setFollowerList] = useState([]); // 로그인 사용자의 인싸력 테스트
   const [visible, setVisible] = useState(false);
@@ -25,7 +25,7 @@ const FriendList = ({navigation}) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id}),
+      body: JSON.stringify({ id }),
       credentials: 'include',
     })
       .then((res) => res.json())
@@ -88,11 +88,11 @@ const FriendList = ({navigation}) => {
           <ListItem
             key={i}
             leftAvatar={{
-              source: {uri: 'https://picsum.photos/300/300'},
+              source: { uri: 'https://picsum.photos/300/300' },
               size: 'large',
               containerStyle: {
                 shadowColor: '#000',
-                shadowOffset: {width: 2.5, height: 2.5},
+                shadowOffset: { width: 2.5, height: 2.5 },
                 shadowOpacity: 1,
                 shadowRadius: 3,
               },
@@ -124,11 +124,11 @@ const FriendList = ({navigation}) => {
             <ListItem
               key={i}
               leftAvatar={{
-                source: {uri: 'https://picsum.photos/300/300'},
+                source: { uri: 'https://picsum.photos/300/300' },
                 size: 'large',
                 containerStyle: {
                   shadowColor: '#000',
-                  shadowOffset: {width: 2.5, height: 2.5},
+                  shadowOffset: { width: 2.5, height: 2.5 },
                   shadowOpacity: 1,
                   shadowRadius: 3,
                 },
@@ -146,7 +146,7 @@ const FriendList = ({navigation}) => {
                 name: 'ios-person-remove-sharp',
                 type: 'ionicon',
                 size: 30,
-                containerStyle: {marginRight: 5},
+                containerStyle: { marginRight: 5 },
                 onPress: () => toggleOverlay(ele.id),
               }}
               bottomDivider
