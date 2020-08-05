@@ -12,6 +12,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import {Avatar} from 'react-native-elements';
 
 interface HomeTwoProps {}
 
@@ -20,6 +21,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   const [dataLength, setDataLength] = useState([]);
   const [currentPhoto, setCurrentPhoto] = useState({});
   const [previewMode, setPreviewMode] = useState(false);
+  const [userState, setUserState] = useState({}); // 로그인 사용자의 정보
 
   const fetchPhotos = async () => {
     await fetch('http://localhost:4000/photo/sboard', {
@@ -39,6 +41,29 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
         setDataLength(res.length);
       });
   };
+
+  const getUserInfo = () => {
+    return fetch('http://localhost:4000/user/logininfo', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log('로그인유저정보 :', res);
+        setUserState(res[0]);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getUserInfo();
+    }, [userState.length]),
+  );
 
   const activatePreview = (ele) => {
     setPreviewMode(!previewMode);
@@ -62,7 +87,20 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
       <FocusAwareStatusBar barStyle={'light-content'} />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>나의 추억 저장소..</Text>
+          <Avatar
+            rounded
+            size="large"
+            source={{uri: userState.profilepath}}
+            containerStyle={{
+              shadowColor: '#000',
+              shadowOffset: {width: 2.5, height: 2.5},
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          />
+          <View style={{justifyContent: 'center'}}>
+            <Text style={styles.headerText}>나의 추억 저장소..</Text>
+          </View>
         </View>
         <ScrollView contentContainerStyle={styles.photoScrollContainer}>
           {data.map((ele, i) => (
@@ -88,7 +126,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerContainer: {
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     borderBottomWidth: 0.5,
     borderBottomColor: 'grey',
     paddingVertical: 10,
@@ -98,6 +137,7 @@ const styles = StyleSheet.create({
   headerText: {
     // fontFamily: 'Lobster-Regular',
     fontSize: 30,
+    paddingLeft: 20,
     // fontWeight: 'bold',
   },
   photoScrollView: {

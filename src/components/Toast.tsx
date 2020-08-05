@@ -26,13 +26,13 @@ const Toast: React.FC<ToastProps> = ({message, handlePress}) => {
 const styles = StyleSheet.create({
   toastContainer: {
     position: 'absolute',
-    width: Dimensions.get('screen').width * 0.9,
-    height: Dimensions.get('screen').height * 0.1,
-    borderRadius: 20,
-    bottom: 0,
+
+    // borderWidth: 0.5,
+    borderRadius: 50,
+    bottom: 60,
     justifyContent: 'center',
     alignSelf: 'center',
-    backgroundColor: 'rgb(85,135,216)',
+    backgroundColor: 'rgba(36,69,83,0.75)',
     paddingHorizontal: 20,
   },
   tostMessage: {

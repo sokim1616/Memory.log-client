@@ -153,9 +153,9 @@ const Profile: React.FC<ProfileProps> = ({}) => {
             rounded={true}
             source={{
               uri: imageSource,
-            }}>
-            <Accessory onTouchEnd={postImage} size={25} />
-          </Avatar>
+            }}
+          />
+          <Accessory onTouchEnd={postImage} size={25} />
         </View>
       </View>
       <View style={styles.upperview__right}>
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 5,
     height: 60,
-    width: 250,
+    width: 225,
     lineHeight: 28,
     // backgroundColor: '#16a085',
   },

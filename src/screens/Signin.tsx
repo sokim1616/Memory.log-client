@@ -7,10 +7,9 @@ import {
   StyleSheet,
   Alert,
   ImageBackground,
-  Image,
 } from 'react-native';
 import Toast from '../components/Toast';
-import {Button, Input, Icon, SocialIcon} from 'react-native-elements';
+import {Button, Input, Icon, SocialIcon, Image} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {emailCheck} from '../utils/emailCheck';
 
@@ -143,8 +142,16 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
         source={require('../assets/image/morning.png')}
         style={styles.backgroundImage}
         blurRadius={10}>
-        <Text style={styles.header}>Memory.log...in</Text>
-
+        <View style={styles.header}>
+          <View
+            style={styles.textContainer}
+            onTouchStart={() => {
+              handleSubmit();
+              blurAll();
+            }}>
+            <Text style={styles.headerText}>Memory.{'\n'}log</Text>
+          </View>
+        </View>
         <View style={styles.inputContainer}>
           <View>
             <Text
@@ -172,7 +179,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
                 <Icon
                   name="email-outline"
                   type="material-community"
-                  color="#ceced0"
+                  color="grey"
                 />
               }
             />
@@ -200,7 +207,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
               clearButtonMode="unless-editing"
               autoCapitalize="none"
               leftIcon={
-                <Icon name="lock" type="material-community" color="#ceced0" />
+                <Icon name="lock" type="material-community" color="grey" />
               }
             />
           </View>
@@ -289,25 +296,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    // alignItems: 'center',
     backgroundColor: 'white',
   },
   backgroundImage: {flex: 1, height: '110%', resizeMode: 'cover'},
   header: {
-    flex: 0.1,
-    color: 'black',
-    fontFamily: 'Lobster-Regular',
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 125,
+  },
+  textContainer: {
+    borderWidth: 2,
+    borderColor: 'black',
+    width: 100,
+    height: 100,
     alignSelf: 'center',
-    marginTop: 150,
-    paddingHorizontal: 30,
+    justifyContent: 'flex-end',
+  },
+  headerText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    top: -10,
+    left: 5,
     textAlignVertical: 'bottom',
-    fontSize: 50,
-    // textShadowColor: 'black',
-    // textShadowOffset: {width: 0, height: 0},
-    // textShadowRadius: 10,
   },
   inputContainer: {
-    flex: 0.4,
+    flex: 3.5,
     justifyContent: 'center',
     marginTop: 0,
     marginBottom: 0,
@@ -355,7 +368,7 @@ const styles = StyleSheet.create({
     // borderWidth: 3,
   },
   buttonContainer: {
-    flex: 0.15,
+    flex: 1.5,
     // width: 300,
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -376,7 +389,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: 'rgba(255,255,255,0.25)',
   },
-  socialLogin: {flex: 0.3},
+  socialLogin: {flex: 3},
   devLoginButton: {
     position: 'absolute',
     top: 20,

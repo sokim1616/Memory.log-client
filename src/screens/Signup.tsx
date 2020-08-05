@@ -65,7 +65,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
       return;
     } else if (password.length < 8) {
       Alert.alert(
-        '잘못된 비밀번호',
+        '오류',
         '비밀번호는 8글자 이상이여야 합니다.',
         {
           text: 'OK',
@@ -76,18 +76,18 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
       passwordFieldRef.current.clear();
       passwordFieldRef.current.focus();
       return;
-    } else if (username.match(/[^\s-_a-zA-Z0-9]/)) {
+    } else if (username.match(/[^\s-_a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/)) {
       Alert.alert(
-        '잘못된 이름',
-        '이름은 영어로만 작성 가능합니다.',
+        '오류',
+        '올바른 형식의 이름을 적어주세요.',
         {text: 'OK', onPress: () => console.log('hi')},
         {cancelable: false},
       );
       return;
     } else if (!email.match(emailCheck)) {
       Alert.alert(
-        '잘못된 이메일',
-        '올바른 이메일 형식으로 작성 주세요.',
+        '오류',
+        '올바른 형식의 이메일을 적어주세요.',
         {text: 'OK', onPress: () => console.log('hi')},
         {cancelable: false},
       );
@@ -171,7 +171,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
               enablesReturnKeyAutomatically={true}
               autoCapitalize="none"
               leftIcon={
-                <Icon name="user" type="simple-line-icon" color="#ceced0" />
+                <Icon name="user" type="simple-line-icon" color="grey" />
               }
             />
           </View>
@@ -197,7 +197,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
                 <Icon
                   name="email-outline"
                   type="material-community"
-                  color="#ceced0"
+                  color="grey"
                 />
               }
             />
@@ -220,7 +220,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
               clearButtonMode="unless-editing"
               enablesReturnKeyAutomatically={true}
               leftIcon={
-                <Icon name="lock" type="material-community" color="#ceced0" />
+                <Icon name="lock" type="material-community" color="grey" />
               }
             />
           </View>

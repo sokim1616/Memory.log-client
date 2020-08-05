@@ -1,5 +1,12 @@
 import React, {useCallback, useState} from 'react';
-import {StyleSheet, View, Text, ScrollView, SafeAreaView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 import {ListItem, Button, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
@@ -221,7 +228,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     fontSize: 18,
     bottom: -50,
-    width: 290,
+    width: 250,
     height: 80,
     lineHeight: 25,
     // backgroundColor: '#f39c12',

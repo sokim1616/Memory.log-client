@@ -11,6 +11,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import {Avatar} from 'react-native-elements';
 
 interface HomeTwoProps {
   route;
@@ -68,7 +69,20 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
       />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>너의 추억 저장소..</Text>
+          <Avatar
+            rounded
+            size="large"
+            source={require('../assets/image/slave_3.png')}
+            containerStyle={{
+              shadowColor: '#000',
+              shadowOffset: {width: 2.5, height: 2.5},
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          />
+          <View style={{justifyContent: 'center'}}>
+            <Text style={styles.headerText}>너의 추억 저장소..</Text>
+          </View>
         </View>
         <ScrollView contentContainerStyle={styles.photoScrollContainer}>
           {data.map((ele, i) => (
@@ -94,7 +108,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerContainer: {
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     borderBottomWidth: 0.5,
     borderBottomColor: 'grey',
     paddingVertical: 10,
@@ -102,9 +117,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   headerText: {
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     fontSize: 30,
+    paddingLeft: 20,
+    // fontWeight: 'bold',
   },
+
   photoScrollView: {
     flex: 1,
   },

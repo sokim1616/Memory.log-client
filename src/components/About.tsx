@@ -124,10 +124,11 @@ const About: React.FC<AboutProps> = () => {
         }}>
         <Button
           title="HOW TO USE"
+          titleStyle={{color: '#454552'}}
           onPress={escapeToggleModal1}
           raised
           buttonStyle={{
-            backgroundColor: 'orange',
+            backgroundColor: '#D8E9Ef',
           }}
         />
         {/* ---------------------오버레이1 시작---------------------*/}
@@ -426,7 +427,7 @@ const About: React.FC<AboutProps> = () => {
           title="Travel-Maker"
           onPress={toggleModal5}
           raised
-          buttonStyle={{backgroundColor: 'purple'}}
+          buttonStyle={{backgroundColor: '#4EA1D3'}}
         />
         <Overlay
           overlayStyle={styles.overlay2}
@@ -577,7 +578,7 @@ const About: React.FC<AboutProps> = () => {
           title="Q&A"
           onPress={handleEmail}
           raised
-          buttonStyle={{backgroundColor: 'black'}}
+          buttonStyle={{backgroundColor: '#454552'}}
         />
         <View />
       </View>

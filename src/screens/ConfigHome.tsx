@@ -49,7 +49,7 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
           raised
           containerStyle={{marginTop: 30}}
           buttonStyle={{
-            backgroundColor: 'rgba(255,0,0,0.75)',
+            backgroundColor: '#E85A71',
           }}
         />
       </View>
