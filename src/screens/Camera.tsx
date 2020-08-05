@@ -106,7 +106,6 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
       body: formData,
     };
     let response = await fetch(url, options);
-    console.log(response.status);
     alertSaveSucess(response.status);
     return true;
   };
@@ -122,7 +121,7 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
     } else {
       return Alert.alert(
         'Picture upload failed',
-        'I\'m sorry😭',
+        "I'm sorry😭",
         {text: 'OK', onPress: () => 'OK'},
         {cancelable: false},
       );

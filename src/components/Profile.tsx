@@ -1,7 +1,11 @@
-import React, { useCallback, useState } from 'react';
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native';
+
+import React, {useCallback, useState} from 'react';
+import {Text, View, SafeAreaView, StyleSheet, Alert} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import {useFocusEffect} from '@react-navigation/native';
+import Server from '../utils/Server';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+MaterialCommunityIcons.loadFont();
 import {
   Avatar,
   Accessory,
@@ -10,11 +14,10 @@ import {
   Input,
   Button,
 } from 'react-native-elements';
-import { useFocusEffect } from '@react-navigation/native';
-MaterialCommunityIcons.loadFont();
+
 interface ProfileProps {}
+
 const Profile: React.FC<ProfileProps> = ({}) => {
-  const [onEdit, setOnEdit] = useState(false);
   const [imageSource, setImageSource] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
   const [userState, setUserState] = useState({});
@@ -30,7 +33,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     },
   };
   const getUserInfo = () => {
-    return fetch('http://localhost:4000/user/logininfo', {
+    return fetch(`http://${Server.server}/user/logininfo`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -40,8 +43,9 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('로그인유저정보 :', res);
+        console.log('로그인유저정보 :', res[0]);
         setUserState(res[0]);
+        setImageSource(res[0].profilepath);
       })
       .catch((err) => console.error(err));
   };
@@ -52,7 +56,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
   );
   const changeStatusMessage = () => {
     console.log(statusMessage);
-    return fetch('http://localhost:4000/user/status', {
+    return fetch(`http://${Server.server}/user/status`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -73,20 +77,72 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     setStatusMessage(message);
   };
   const pickImage = () => {
-    ImagePicker.launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-        Alert.alert(response.customButton);
-      } else {
-        setImageSource(response.uri);
-      }
+    return new Promise((resolve, reject) => {
+      ImagePicker.launchImageLibrary(options, (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+          reject(false);
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+          reject(false);
+        } else {
+          console.log(response);
+          setImageSource(response.origURL);
+          resolve(response);
+        }
+      });
     });
-    //fetch -->
   };
+
+  const postImage = async () => {
+    try {
+      let {uri, fileName, origURL} = await pickImage();
+      let formData = createForm(origURL, fileName);
+      let url = `http://${Server.server}/user/profile`;
+      let options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        credentials: 'include',
+        body: formData,
+      };
+      let response = await fetch(url, options);
+      alertSaveSucess(response.status);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const alertSaveSucess = async (status) => {
+    if (status === 200) {
+      return Alert.alert(
+        'Profile updated!',
+        {text: 'OK', onPress: () => 'OK'},
+        {cancelable: false},
+      );
+    } else {
+      return Alert.alert(
+        'Picture upload failed',
+        "I'm sorry😭",
+        {text: 'OK', onPress: () => 'OK'},
+        {cancelable: false},
+      );
+    }
+  };
+
+  const createForm = (uri, fileName) => {
+    let formData = new FormData();
+    formData.append('img', {
+      uri,
+      name: fileName.replace('.JPG', '.jpg'),
+      type: 'image/jpg',
+      size: 3,
+    });
+    return formData;
+  };
+
   return (
     <SafeAreaView style={styles.upperview}>
       {/* 위뷰시작 */}
@@ -96,9 +152,9 @@ const Profile: React.FC<ProfileProps> = ({}) => {
             size="large"
             rounded={true}
             source={{
-              uri: 'https://picsum.photos/300/300',
+              uri: imageSource,
             }}>
-            <Accessory onTouchEnd={pickImage} size={25} />
+            <Accessory onTouchEnd={postImage} size={25} />
           </Avatar>
         </View>
       </View>
