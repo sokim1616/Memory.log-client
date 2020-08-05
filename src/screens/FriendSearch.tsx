@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import {SearchBar, ListItem, Overlay, Button} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
+
 import FriendList from '../screens/FriendList';
 
 const Stack = createStackNavigator();

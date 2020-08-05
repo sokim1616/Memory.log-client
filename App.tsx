@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {StyleSheet} from 'react-native';
 
@@ -14,6 +14,15 @@ import ConfigStackContainer from './src/containers/ConfigStackContainer';
 import StoryBoardStack from './src/stacks/StoryBoardStack';
 import LoginStack from './src/stacks/LoginStack';
 import ListStack from './src/stacks/ListStack';
+import {GoogleSignin} from '@react-native-community/google-signin';
+
+const googleSigninConfigure = async () => {
+  await GoogleSignin.configure({
+    webClientId:
+      '1016803348653-4rp34s6osjbodua826bjebe427m60568.apps.googleusercontent.com',
+    offlineAccess: false,
+  });
+};
 
 //! 밑에 mapping import 는 테스트 용입니다 삭제할 것
 // import Mapping from './src/screens/Mapping'
@@ -25,6 +34,10 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
+  useEffect(() => {
+    googleSigninConfigure();
+  }, []);
+
   return (
     <>
       <NavigationContainer>

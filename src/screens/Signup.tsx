@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Toast from '../components/Toast';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Input} from 'react-native-elements';
 import {emailCheck} from '../utils/emailCheck';
 import {SafeAreaView} from 'react-native-safe-area-context';
 

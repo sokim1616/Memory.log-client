@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     fontSize: 30,
     bottom: 40,
-    backgroundColor: '#3ef',
+    // backgroundColor: '#3ef',
   },
   upperView__subtitle: {
     position: 'absolute',
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     width: 290,
     height: 80,
     lineHeight: 25,
-    backgroundColor: '#f39c12',
+    // backgroundColor: '#f39c12',
   },
   midView: {
     flex: 0.5,
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     bottom: -40,
     height: 40,
-    backgroundColor: '#3ed',
+    // backgroundColor: '#3ed',
   },
   overlayStyle: {
     backgroundColor: '#ffffff',

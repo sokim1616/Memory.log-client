@@ -146,9 +146,10 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     <SafeAreaView style={styles.upperview}>
       {/* 위뷰시작 */}
       <View style={styles.upperview__left}>
-        <View style={styles.upperview__left__photo}>
+        <View>
           <Avatar
-            size="large"
+            containerStyle={styles.upperview__left__photo}
+            size={95}
             rounded={true}
             source={{
               uri: imageSource,
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2.5, height: 2.5},
     shadowOpacity: 1,
     shadowRadius: 3,
-    marginLeft: -21.5,
+    marginLeft: 0,
     // backgroundColor: '#3ed',
   },
   upperview__right: {
@@ -271,8 +272,12 @@ const styles = StyleSheet.create({
     flex: 8,
   },
   upperview__right__message__left__text: {
-    fontSize: 16,
+    fontSize: 18,
     marginTop: 5,
+    height: 60,
+    width: 250,
+    lineHeight: 28,
+    // backgroundColor: '#16a085',
   },
   upperview__right__message__right: {
     flex: 2,
@@ -317,7 +322,7 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   upperview__right__email__text: {
-    fontSize: 15,
+    fontSize: 18,
   },
 });
 
