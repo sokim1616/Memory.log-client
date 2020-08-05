@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
-import { SearchBar, ListItem, Overlay, Button } from 'react-native-elements';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useState} from 'react';
+import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
+import {SearchBar, ListItem, Overlay, Button} from 'react-native-elements';
+import {createStackNavigator} from '@react-navigation/stack';
 import FriendList from '../screens/FriendList';
 
 const Stack = createStackNavigator();
 
-const FriendSearch = ({ navigation }) => {
+const FriendSearch = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [list, setList] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -107,7 +107,7 @@ const FriendSearch = ({ navigation }) => {
             <ListItem
               key={i}
               leftAvatar={{
-                source: { uri: 'https://picsum.photos/400/400' },
+                source: {uri: 'https://picsum.photos/400/400'},
                 size: 'large',
               }}
               containerStyle={styles.lowerView__friend}
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     height: 200,
     width: 300,
     shadowColor: '#000',
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 0.8,
     shadowRadius: 10,
   },

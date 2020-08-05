@@ -64,6 +64,16 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lobster-Regular.ttf</string>
+		<string>Stylish-Regular.ttf</string>
+		<string>NanumGothicCoding-Bold.ttf</string>
+		<string>NanumGothicCoding-Regular.ttf</string>
+		<string>NotoSerifKR-Black.ttf</string>
+		<string>NotoSerifKR-Bold.ttf</string>
+		<string>NotoSerifKR-ExtraLight.ttf</string>
+		<string>NotoSerifKR-Light.ttf</string>
+		<string>NotoSerifKR-Medium.ttf</string>
+		<string>NotoSerifKR-Regular.ttf</string>
+		<string>NotoSerifKR-SemiBold.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>

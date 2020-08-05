@@ -22,7 +22,7 @@ const ConfigStack: React.FC<ConfigStackProps> = ({configProps}) => {
           },
         }}>
         <ConfigStackNav.Screen name="Memory.log" component={ConfigHome} />
-        <ConfigStackNav.Screen name="SignOut" component={SignoutContainer} />
+        {/* <ConfigStackNav.Screen name="SignOut" component={SignoutContainer} /> */}
       </ConfigStackNav.Navigator>
     </>
   );

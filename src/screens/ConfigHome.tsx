@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Text, View, StyleSheet, SafeAreaView} from 'react-native';
 import ConfigButton from '../components/ConfigButton';
@@ -20,7 +21,14 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({navigation}) => {
       </View>
       <View style={styles.divideline} />
       <View style={styles.lowerView}>
-        {/* <ConfigButton navigation={navigation} config="Logout" /> */}
+        <Button
+          title="LOGOUT"
+          raised
+          containerStyle={{marginTop: 30}}
+          buttonStyle={{
+            backgroundColor: 'rgba(255,0,0,0.75)',
+          }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -51,6 +59,7 @@ const styles = StyleSheet.create({
   },
   lowerView: {
     flex: 2,
+    marginHorizontal: 50,
   },
 });
 
