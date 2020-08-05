@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TextInput} from 'react-native-paper';
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
@@ -123,32 +124,33 @@ const Map = () => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        region={region}>
+        region={autoLocationStatus ? region : undefined}>
         <Marker
           pinColor="blue"
+          style={{zIndex: 999}}
           coordinate={{
             latitude: location.latitude,
             longitude: location.longitude,
           }}
-          description={'here is your location'}
-          // image={{uri: 'https://i.ibb.co/nnV730F/maxresdefault.png'}}
         />
         {photoData.map((el: PhotoDataElement, i) => {
           const {latitude, longitude, createdAt, description, filepath} = el;
+          let lat = Number(latitude) + i * 10;
+          let long = Number(longitude) + i * 10;
           return (
             <Marker
               onSelect={() =>
                 setRegion({
-                  latitude: Number(latitude),
-                  longitude: Number(longitude),
+                  latitude: lat,
+                  longitude: long,
                   latitudeDelta: 0.0922,
                   longitudeDelta: 0.0421,
                 })
               }
               key={i}
               coordinate={{
-                latitude: Number(latitude),
-                longitude: Number(longitude),
+                latitude: lat,
+                longitude: long,
               }}
               description={'map'}>
               <Callout
@@ -164,9 +166,12 @@ const Map = () => {
                     <Text style={styles.dateText}>{`Date: ${trimDate(
                       createdAt,
                     )}`}</Text>
-                    <View style={styles.descriptionTextView}>
+                    <TextInput
+                      editable={false}
+                      multiline={true}
+                      style={styles.descriptionTextView}>
                       <Text style={styles.descriptionText}>{description}</Text>
-                    </View>
+                    </TextInput>
                   </>
                 ) : (
                   <Image style={styles.calloutImage} source={{uri: filepath}} />
@@ -231,7 +236,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width * 0.6,
     height: Dimensions.get('screen').height * 0.3,
     borderRadius: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#33DDFF',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     shadowColor: '#000000',
@@ -246,20 +251,22 @@ const styles = StyleSheet.create({
     margin: 10,
     fontSize: 20,
     fontWeight: 'bold',
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     color: 'black',
   },
   descriptionTextView: {
+    flex: 1,
+    backgroundColor: 'white',
     width: Dimensions.get('screen').width * 0.6,
     borderTopColor: 'black',
-    borderTopWidth: 1,
+    borderTopWidth: 2,
     alignSelf: 'center',
     flexWrap: 'wrap',
   },
   descriptionText: {
     margin: 10,
     fontSize: 20,
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     color: 'black',
   },
   changeMapTypeButtonContainer: {
@@ -307,6 +314,28 @@ const styles = StyleSheet.create({
   autoLocationIconOff: {
     color: 'white',
     fontSize: 20,
+  },
+  userMarker: {
+    fontSize: 50,
+    color: '#3355FF',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 1.5,
+      height: 1.5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 1,
+  },
+  locationMarker: {
+    fontSize: 50,
+    color: 'red',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 1.5,
+      height: 1.5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 1,
   },
 });
 
