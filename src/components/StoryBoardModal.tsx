@@ -25,6 +25,7 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
   currentPhoto,
   previewMode,
   setPreviewMode,
+  editable,
 }) => {
   const [memoOnFocus, setMemoOnFocus] = useState(false);
   const [memo, setMemo] = useState('');
@@ -127,25 +128,31 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
         behavior="padding"
         style={memoOnFocus ? styles.noteContainerEdit : styles.noteContainer}>
         <View style={styles.noteLeftSide}>
-          <TouchableOpacity onPress={handleKeyboardIconPress}>
-            <MaterialCommunityIcons
-              name={memoOnFocus ? 'keyboard-off-outline' : 'keyboard-outline'}
-              color={'black'}
-              size={35}
-              style={styles.keyboardButton}
-            />
-          </TouchableOpacity>
-          {memo !== currentPhoto.description ? (
-            <TouchableOpacity
-              onPress={handleStatusUpdate}
-              style={styles.saveButton}>
-              <Text style={{fontSize: 16}}>Save</Text>
-            </TouchableOpacity>
+          {editable ? (
+            <>
+              <TouchableOpacity onPress={handleKeyboardIconPress}>
+                <MaterialCommunityIcons
+                  name={
+                    memoOnFocus ? 'keyboard-off-outline' : 'keyboard-outline'
+                  }
+                  color={'black'}
+                  size={35}
+                  style={styles.keyboardButton}
+                />
+              </TouchableOpacity>
+              {memo !== currentPhoto.description ? (
+                <TouchableOpacity
+                  onPress={handleStatusUpdate}
+                  style={styles.saveButton}>
+                  <Text style={{fontSize: 16}}>Save</Text>
+                </TouchableOpacity>
+              ) : null}
+            </>
           ) : null}
         </View>
         <TextInput
           ref={memoField}
-          editable={true}
+          editable={editable}
           onChangeText={(text) => setMemo(text)}
           onFocus={() => setMemoOnFocus(true)}
           defaultValue={currentPhoto.description}

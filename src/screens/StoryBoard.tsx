@@ -53,6 +53,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   return (
     <>
       <StoryBoardModal
+        editable={true}
         setPreviewMode={setPreviewMode}
         previewMode={previewMode}
         currentPhoto={currentPhoto}
