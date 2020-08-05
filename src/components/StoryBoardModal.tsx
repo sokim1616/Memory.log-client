@@ -8,7 +8,10 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
+import Server from '../utils/Server';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -23,6 +26,70 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
   previewMode,
   setPreviewMode,
 }) => {
+  const [memoOnFocus, setMemoOnFocus] = useState(false);
+  const [memo, setMemo] = useState(false);
+
+  const memoField: Ref = React.createRef();
+
+  const handleKeyboardIconPress = () => {
+    if (memoOnFocus) {
+      memoField.current.blur();
+      setMemoOnFocus(false);
+    } else {
+      memoField.current.focus();
+      setMemoOnFocus(true);
+    }
+  };
+
+  const handleStatusUpdate = async () => {
+    currentPhoto.description = memo;
+    const res = await fetch(`http://${Server.server}/photo/uboard`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...currentPhoto,
+      }),
+      credentials: 'include',
+    });
+    alertSaveSucess(res.status);
+  };
+
+  const alertSaveSucess = async (status) => {
+    if (status === 200) {
+      return Alert.alert(
+        'Description updated!',
+        'Photo description was updated',
+        [
+          {
+            text: 'OK',
+            onPress: handleKeyboardIconPress,
+          },
+        ],
+        {cancelable: false},
+      );
+    } else {
+      return Alert.alert(
+        'Update fail',
+        'Photo description update failed',
+        [
+          {
+            text: 'Retry',
+            onPress: async () => await handleStatusUpdate(),
+          },
+          {
+            text: 'Cancel',
+            onPress: handleKeyboardIconPress,
+            style: 'cancel',
+          },
+        ],
+        {cancelable: false},
+      );
+    }
+  };
+
   return (
     <Modal
       animationIn="slideInDown"
@@ -32,31 +99,56 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
       isVisible={previewMode}
       style={styles.modalContainer}>
       <View style={styles.blurBackground} />
-      <Text style={styles.headerText}>Memory.log</Text>
-      <View style={styles.imageContainer}>
-        <TouchableOpacity style={styles.goBackButtonContainer}>
-          <MaterialCommunityIcons
-            onPress={() => setPreviewMode(false)}
-            name={'arrow-left-circle-outline'}
-            style={styles.goBackButton}
-          />
-        </TouchableOpacity>
-        <Image
-          resizeMode="contain"
-          resizeMethod="auto"
-          style={styles.currentImage}
-          source={{uri: currentPhoto.filepath}}
-        />
-      </View>
-      <View style={styles.noteContainer}>
-        <View style={styles.noteLeftSide} />
+      {!memoOnFocus ? (
+        <>
+          <Text style={styles.headerText}>Memory.log</Text>
+          <View style={styles.imageContainer}>
+            <TouchableOpacity style={styles.goBackButtonContainer}>
+              <MaterialCommunityIcons
+                onPress={() => setPreviewMode(false)}
+                name={'arrow-left-circle-outline'}
+                style={styles.goBackButton}
+              />
+            </TouchableOpacity>
+            <Image
+              resizeMode="contain"
+              resizeMethod="auto"
+              style={styles.currentImage}
+              source={{uri: currentPhoto.filepath}}
+            />
+          </View>
+        </>
+      ) : null}
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={memoOnFocus ? styles.noteContainerEdit : styles.noteContainer}>
+        <View style={styles.noteLeftSide}>
+          <TouchableOpacity onPress={handleKeyboardIconPress}>
+            <MaterialCommunityIcons
+              name={memoOnFocus ? 'keyboard-off-outline' : 'keyboard-outline'}
+              color={'black'}
+              size={35}
+              style={styles.keyboardButton}
+            />
+          </TouchableOpacity>
+          {memo !== currentPhoto.description ? (
+            <TouchableOpacity
+              onPress={handleStatusUpdate}
+              style={styles.saveButton}>
+              <Text style={{fontSize: 16}}>Save</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
         <TextInput
-          editable={false}
+          ref={memoField}
+          editable={true}
+          onChangeText={(text) => setMemo(text)}
+          onFocus={() => setMemoOnFocus(true)}
           defaultValue={currentPhoto.description}
           multiline={true}
           style={styles.noteRightSide}
         />
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -67,6 +159,13 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  editModalContainer: {
+    flex: 1,
+    margin: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'yellow',
   },
   headerText: {
     position: 'absolute',
@@ -119,15 +218,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'lightyellow',
     width: Dimensions.get('screen').width * 0.8,
-    borderRadius: 40,
-    marginBottom: 80,
-  },
-  noteLeftSide: {
-    flex: 0.2,
-    backgroundColor: 'lightyellow',
     borderRightColor: 'red',
     borderRightWidth: 3,
     borderTopLeftRadius: 15,
+    marginBottom: 80,
     shadowColor: 'darkred',
     shadowOffset: {
       width: 1,
@@ -135,6 +229,30 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.6,
     shadowRadius: 3.6,
+  },
+  noteContainerEdit: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'lightyellow',
+    width: Dimensions.get('screen').width,
+    borderRightColor: 'red',
+    borderRightWidth: 3,
+    borderTopLeftRadius: 15,
+    marginVertical: 50,
+    shadowColor: 'darkred',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 3.6,
+  },
+  noteLeftSide: {
+    flex: 0.2,
+    backgroundColor: 'lightyellow',
+    borderRightColor: 'red',
+    borderRightWidth: 3,
+    borderTopLeftRadius: 15,
   },
   noteRightSide: {
     flex: 0.8,
@@ -143,18 +261,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     paddingLeft: 10,
+    paddingRight: 10,
     paddingVertical: 30,
     fontSize: 24,
     // fontFamily: 'Lobster-Regular',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
-    shadowColor: 'darkred',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3.6,
   },
   noteRightSideEditMode: {
     flex: 0.8,
@@ -168,13 +280,6 @@ const styles = StyleSheet.create({
     // fontFamily: 'Lobster-Regular',
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
-    shadowColor: 'darkred',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3.6,
   },
   buttonsContainer: {
     flex: 0.7,
@@ -182,24 +287,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'stretch',
     width: Dimensions.get('screen').width,
-  },
-  saveButton: {
-    marginTop: 80,
-    flex: 0.25,
-    height: 40,
-    borderRadius: 15,
-    borderWidth: 3,
-    borderColor: 'lightblue',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'lightblue',
-    shadowColor: '#222222',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3.6,
   },
   cancelButton: {
     marginTop: 80,
@@ -222,6 +309,30 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: 'Lobster-Regular',
     fontSize: 24,
+  },
+  keyboardButton: {
+    alignSelf: 'center',
+    shadowOffset: {
+      width: 0.2,
+      height: 0.2,
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 1,
+  },
+  saveButton: {
+    alignSelf: 'center',
+    marginVertical: 20,
+    padding: 3,
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: 'lightblue',
+    backgroundColor: 'lightblue',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 3,
   },
 });
 

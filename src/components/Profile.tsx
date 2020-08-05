@@ -1,4 +1,3 @@
-
 import React, {useCallback, useState} from 'react';
 import {Text, View, SafeAreaView, StyleSheet, Alert} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
@@ -125,7 +124,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     } else {
       return Alert.alert(
         'Picture upload failed',
-        "I'm sorry😭",
+        'Please retry later!',
         {text: 'OK', onPress: () => 'OK'},
         {cancelable: false},
       );
@@ -198,7 +197,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
                 <Input
                   containerStyle={styles.overlay__textinput__container}
                   inputContainerStyle={styles.overlay__textinput__input}
-                  inputStyle={{ fontSize: 25 }}
+                  inputStyle={{fontSize: 25}}
                   placeholder="상태 메세지를 입력하세요."
                   multiline={true}
                   maxLength={40}
@@ -286,17 +285,17 @@ const styles = StyleSheet.create({
     width: 300,
     borderRadius: 10,
   },
-  overlay: { flex: 1 },
+  overlay: {flex: 1},
   overlay__title: {
     flex: 2,
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginTop: 10,
   },
-  overlay__title__text: { fontSize: 30, textAlign: 'center' },
-  overlay__textinput: { flex: 6 },
+  overlay__title__text: {fontSize: 30, textAlign: 'center'},
+  overlay__textinput: {flex: 6},
   overlay__textinput__container: {},
-  overlay__textinput__input: { borderBottomColor: 'white' },
+  overlay__textinput__input: {borderBottomColor: 'white'},
   overlay__textinput__legnth: {
     fontSize: 18,
     textAlign: 'right',
@@ -321,4 +320,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
+
 export default Profile;
