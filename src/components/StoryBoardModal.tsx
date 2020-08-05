@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Modal from 'react-native-modal';
 import {
   View,
@@ -27,9 +27,13 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
   setPreviewMode,
 }) => {
   const [memoOnFocus, setMemoOnFocus] = useState(false);
-  const [memo, setMemo] = useState(false);
+  const [memo, setMemo] = useState('');
+  let memoField: Ref = React.createRef();
 
-  const memoField: Ref = React.createRef();
+  useEffect(() => {
+    setMemo(currentPhoto.description);
+    memoField = React.createRef();
+  }, [currentPhoto.description]);
 
   const handleKeyboardIconPress = () => {
     if (memoOnFocus) {
