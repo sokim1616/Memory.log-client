@@ -7,11 +7,11 @@ import {
   StyleSheet,
   Alert,
   ImageBackground,
-  Animated,
+  Image,
 } from 'react-native';
 import Toast from '../components/Toast';
 import {Button, Input, Icon, SocialIcon} from 'react-native-elements';
-import {LinearGradient} from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import {emailCheck} from '../utils/emailCheck';
 
 import {GoogleSignin} from '@react-native-community/google-signin';
@@ -209,57 +209,56 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
         <View style={styles.buttonContainer}>
           <Button
             style={styles.buttonContainer__buttonTextStyle}
+            title="회원가입"
+            type="clear"
+            onPress={() => navigation.navigate('Signup')}
+          />
+          <Button
+            style={styles.buttonContainer__buttonTextStyle}
             title="로그인"
-            type="outline"
+            type="clear"
             onPress={() => {
               handleSubmit();
               blurAll();
             }}
-          />
-          <Button
-            style={styles.buttonContainer__buttonTextStyle}
-            title="회원가입"
-            type="solid"
-            onPress={() => navigation.navigate('Signup')}
           />
         </View>
         <View style={styles.socialLogin}>
           <SocialIcon
             title="Sign In With Google"
             button
-            light={true}
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              borderColor: 'rgba(192, 76, 60, 1)',
-              borderWidth: 2,
-            }}
             type="google"
             onPress={googlesignIn}
           />
           <SocialIcon
             title="Sign In With Facebook"
             button
-            light={true}
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              borderColor: 'rgba(80, 103, 175, 1)',
-              borderWidth: 2,
-            }}
             type="facebook"
             // onPress={signIn}
           />
-          <SocialIcon
-            title="Sign In With Instagram"
-            button
-            light={true}
+          <LinearGradient
+            colors={['#CA1D7E', '#E35157', '#F2703F']}
+            start={{x: 0.0, y: 1.0}}
+            end={{x: 1.0, y: 1.0}}
             style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              borderColor: 'rgba(80, 103, 175, 1)',
-              borderWidth: 2,
-            }}
-            type="instagram"
-            // onPress={signIn}
-          />
+              height: 55,
+              width: 400,
+              left: 7,
+              top: 7.5,
+              borderRadius: 50,
+            }}>
+            <SocialIcon
+              title="Sign In With Instagram"
+              fontStyle={{height: 50, top: -3, left: -10}}
+              iconStyle={{height: 70, width: 50, top: 2, left: 25}}
+              button
+              style={{
+                backgroundColor: 'transparent',
+              }}
+              type="instagram"
+              // onPress={signIn}
+            />
+          </LinearGradient>
         </View>
 
         <View
@@ -296,16 +295,16 @@ const styles = StyleSheet.create({
   backgroundImage: {flex: 1, height: '110%', resizeMode: 'cover'},
   header: {
     flex: 0.1,
-    color: 'white',
+    color: 'black',
     fontFamily: 'Lobster-Regular',
     alignSelf: 'center',
     marginTop: 150,
     paddingHorizontal: 30,
     textAlignVertical: 'bottom',
-    fontSize: 35,
-    textShadowColor: 'black',
-    textShadowOffset: {width: 0, height: 0},
-    textShadowRadius: 10,
+    fontSize: 50,
+    // textShadowColor: 'black',
+    // textShadowOffset: {width: 0, height: 0},
+    // textShadowRadius: 10,
   },
   inputContainer: {
     flex: 0.4,
@@ -371,7 +370,11 @@ const styles = StyleSheet.create({
   //   borderColor: 'grey',
   // },
   buttonContainer__buttonTextStyle: {
-    width: 80,
+    width: 100,
+    borderWidth: 1,
+    borderColor: 'rgb(85,135,216)',
+    borderRadius: 50,
+    backgroundColor: 'rgba(255,255,255,0.25)',
   },
   socialLogin: {flex: 0.3},
   devLoginButton: {
