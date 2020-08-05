@@ -35,8 +35,9 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Screen Shot 2020-08-05 at 1.09.08 AM" translatesAutoresizingMaskIntoConstraints="NO" id="k86-98-qhd">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Screen Shot 2020-08-05 at 1.09.08 AM" translatesAutoresizingMaskIntoConstraints="NO" id="k86-98-qhd">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -44,8 +45,11 @@
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
                             <constraint firstItem="MN2-I3-ftu" firstAttribute="top" secondItem="k86-98-qhd" secondAttribute="bottom" id="Gbj-H4-xIK"/>
                             <constraint firstItem="k86-98-qhd" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="47" id="HDJ-kb-TaK"/>
+                            <constraint firstItem="k86-98-qhd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="IVQ-gv-dU7"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="MN2-I3-ftu" secondAttribute="bottom" constant="20" id="OZV-Vh-mqD"/>
+                            <constraint firstItem="k86-98-qhd" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" id="QM0-9v-6cn"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
+                            <constraint firstAttribute="bottom" secondItem="k86-98-qhd" secondAttribute="bottom" id="WFa-hp-xiE"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
                             <constraint firstItem="k86-98-qhd" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="3" id="YKS-Xe-hgh"/>
                             <constraint firstItem="MN2-I3-ftu" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="akx-eg-2ui"/>
@@ -55,6 +59,7 @@
                             <constraint firstAttribute="bottom" secondItem="k86-98-qhd" secondAttribute="bottom" constant="78" id="khy-Ua-dy7"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="k86-98-qhd" secondAttribute="trailing" id="p9J-hl-x9w"/>
                             <constraint firstItem="k86-98-qhd" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" id="q6l-0c-0bn"/>
+                            <constraint firstItem="k86-98-qhd" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="qtg-8b-Ma8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                     </view>
