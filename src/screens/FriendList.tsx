@@ -11,14 +11,12 @@ const FriendList = ({navigation}) => {
   const [followerList, setFollowerList] = useState([]); // 로그인 사용자의 인싸력 테스트
   const [visible, setVisible] = useState(false);
   const [unFollowId, setUnfollowId] = useState('');
-
   const toggleOverlay = (id) => {
     setVisible(!visible);
     console.log(id);
     setUnfollowId('');
     setUnfollowId(id);
   };
-
   const requestUnFollow = (id) => {
     console.log('pressed :', id);
     return fetch('http://localhost:4000/follow/ufollow', {
@@ -38,7 +36,6 @@ const FriendList = ({navigation}) => {
       })
       .catch((err) => console.error(err));
   };
-
   const getUserInfo = () => {
     return fetch('http://localhost:4000/user/logininfo', {
       method: 'POST',
@@ -55,7 +52,6 @@ const FriendList = ({navigation}) => {
       })
       .catch((err) => console.error(err));
   };
-
   const getFollowerList = () => {
     return fetch('http://localhost:4000/follow/friend', {
       method: 'POST',
@@ -72,19 +68,16 @@ const FriendList = ({navigation}) => {
       })
       .catch((err) => console.error(err));
   };
-
   useFocusEffect(
     useCallback(() => {
       getUserInfo();
     }, [userState.length]),
   );
-
   useFocusEffect(
     useCallback(() => {
       getFollowerList();
     }, [followerList.length]),
   );
-
   return (
     <SafeAreaView style={styles.container}>
       {/* 위뷰시작 */}
@@ -190,7 +183,6 @@ const FriendList = ({navigation}) => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -294,5 +286,4 @@ const styles = StyleSheet.create({
     height: 50,
   },
 });
-
 export default FriendList;
