@@ -104,8 +104,9 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
       body,
     }).then((resp) => {
       if (resp.status === 200) {
-        setToastMessage(`회원가입이 성공적으로 완료되었습니다.${'\n'}
-        클릭 시, 로그인 페이지로 이동합니다.`);
+        setToastMessage(
+          '회원가입이 성공적으로 완료되었습니다.\n 클릭 시, 로그인 페이지로 이동합니다.',
+        );
         setTimeout(() => {
           navigation.navigate('Signin');
         }, 2500);
@@ -153,13 +154,8 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
         </View>
         <View style={styles.inputSection}>
           <View style={styles.inputContainer}>
-            <View
-              style={
-                inputInFocus === 'username'
-                  ? styles.inputLabelFocused
-                  : styles.inputLabelBlurred
-              }>
-              <Text>Name</Text>
+            <View style={styles.inputLabelFocused}>
+              <Text>{inputInFocus === 'username' ? '이름' : ''}</Text>
             </View>
             <Input
               ref={usernameFieldRef}
@@ -180,13 +176,8 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
             />
           </View>
           <View style={styles.inputContainer}>
-            <View
-              style={
-                inputInFocus === 'email'
-                  ? styles.inputLabelFocused
-                  : styles.inputLabelBlurred
-              }>
-              <Text>Email</Text>
+            <View style={styles.inputLabelFocused}>
+              <Text>{inputInFocus === 'email' ? '이메일' : ''}</Text>
             </View>
             <Input
               ref={emailFieldRef}
@@ -212,13 +203,8 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
             />
           </View>
           <View style={styles.inputContainer}>
-            <View
-              style={
-                inputInFocus === 'password'
-                  ? styles.inputLabelFocused
-                  : styles.inputLabelBlurred
-              }>
-              <Text>Password</Text>
+            <View style={styles.inputLabelFocused}>
+              <Text>{inputInFocus === 'password' ? '패스워드' : ''}</Text>
             </View>
             <Input
               ref={passwordFieldRef}
@@ -271,15 +257,13 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
             />
           </View>
         </View>
-        {toastMessage ? (
-          <Toast
-            handlePress={() => {
-              setToastMessage('');
-              blurAll();
-            }}
-            message={toastMessage}
-          />
-        ) : null}
+        <Toast
+          handlePress={() => {
+            setToastMessage('');
+            blurAll();
+          }}
+          message={toastMessage}
+        />
       </ImageBackground>
     </View>
   );
@@ -315,23 +299,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputLabelFocused: {
-    flex: 2 / 10,
+    height: 20,
     justifyContent: 'center',
-    marginBottom: 5,
+    paddingLeft: 15,
     fontSize: 14,
     color: 'black',
     minWidth: Dimensions.get('window').width - 90,
     // borderWidth: 3,
   },
-  inputLabelBlurred: {
-    flex: 2 / 10,
-    justifyContent: 'center',
-    marginBottom: 5,
-    fontSize: 14,
-    color: 'transparent',
-    minWidth: Dimensions.get('window').width - 90,
-    // borderWidth: 3,
-  },
+  // inputLabelBlurred: {
+  //   height: 20,
+  //   justifyContent: 'center',
+  //   marginBottom: 5,
+  //   fontSize: 14,
+  //   color: 'white',
+  //   minWidth: Dimensions.get('window').width - 90,
+  //   // borderWidth: 3,
+  // },
 
   inputField: {
     flex: 6 / 10,

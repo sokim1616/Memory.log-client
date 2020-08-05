@@ -1,6 +1,7 @@
 import React, {useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import {
   SafeAreaView,
   View,
@@ -58,6 +59,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
         previewMode={previewMode}
         currentPhoto={currentPhoto}
       />
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>나의 추억 저장소..</Text>

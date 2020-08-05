@@ -12,6 +12,7 @@ import {
 import {useFocusEffect} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TextInput} from 'react-native-paper';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
@@ -110,7 +111,6 @@ const Map = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
       <MapView
         showsScale={true}
         showsBuildings={true}
@@ -125,6 +125,11 @@ const Map = () => {
           longitudeDelta: 0.0421,
         }}
         region={autoLocationStatus ? region : undefined}>
+        <FocusAwareStatusBar
+          barStyle={
+            mapType === 'mutedStandard' ? 'dark-content' : 'light-content'
+          }
+        />
         <Marker
           pinColor="blue"
           style={{zIndex: 999}}

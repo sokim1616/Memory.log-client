@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, TouchableOpacity, Text, StyleSheet} from 'react-native';
-import {} from 'react-native-gesture-handler';
+import Modal from 'react-native-modal';
 
 interface ToastProps {
   message: string;
@@ -9,22 +9,27 @@ interface ToastProps {
 
 const Toast: React.FC<ToastProps> = ({message, handlePress}) => {
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.toastContainer}>
-      <Text style={styles.tostMessage}>{message}</Text>
-    </TouchableOpacity>
+    <Modal
+      animationIn="bounceInUp"
+      animationInTiming={500}
+      animationOut="bounceOutDown"
+      animationOutTiming={500}
+      backdropColor="transparent"
+      isVisible={message ? true : false}>
+      <TouchableOpacity onPress={handlePress} style={styles.toastContainer}>
+        <Text style={styles.tostMessage}>{message}</Text>
+      </TouchableOpacity>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   toastContainer: {
-    flex: 0.3,
-    minWidth: Dimensions.get('window').width * 0.8,
-    maxWidth: Dimensions.get('window').width * 0.9,
-    minHeight: Dimensions.get('window').height * 0.08,
     position: 'absolute',
-    // borderWidth: 0.5,
-    borderRadius: 5,
-    bottom: 60,
+    width: Dimensions.get('screen').width * 0.9,
+    height: Dimensions.get('screen').height * 0.1,
+    borderRadius: 20,
+    bottom: 0,
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: 'rgb(85,135,216)',

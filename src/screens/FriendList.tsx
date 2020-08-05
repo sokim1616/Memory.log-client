@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
 import FriendStoryBoard from '../screens/FriendStoryBoard';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const FriendList = ({navigation}) => {
   const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
@@ -81,6 +82,7 @@ const FriendList = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* 위뷰시작 */}
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <Text style={styles.upperView__text}>내 프로필</Text>
       <View style={styles.divideline} />
       <View style={styles.upperView}>

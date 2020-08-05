@@ -5,6 +5,7 @@ import Profile from '../components/Profile';
 import {Button} from 'react-native-elements';
 import About from '../components/About';
 import Server from '../utils/Server';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 interface ConfigHomeProps {}
 
@@ -30,6 +31,7 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <Text style={styles.title}>내 프로필</Text>
       <View style={styles.divideline} />
       <View style={styles.upperView}>

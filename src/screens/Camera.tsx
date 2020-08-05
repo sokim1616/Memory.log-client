@@ -1,19 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Alert,
+  StatusBar,
 } from 'react-native';
 import Server from '../utils/Server';
 import {RNCamera, TakePictureResponse} from 'react-native-camera';
 import CameraRoll from '@react-native-community/cameraroll';
-import {StatusBar} from 'react-native';
 import Geolocation, {
   GeolocationResponse,
 } from '@react-native-community/geolocation';
 import PhotoPreviewModal from '../components/PhotoPreviewModal';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -107,6 +108,7 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
     };
     let response = await fetch(url, options);
     alertSaveSucess(response.status);
+
     return true;
   };
 
@@ -165,9 +167,8 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
           y: nativeEvent.pageY,
         });
       }}>
-      <View style={styles.headerContainer}>
-        <StatusBar barStyle="light-content" />
-      </View>
+      <FocusAwareStatusBar barStyle="light-content" />
+      <View style={styles.headerContainer} />
       {previewMode ? null : (
         <View style={styles.cameraContainer}>
           <RNCamera
