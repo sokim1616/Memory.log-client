@@ -36,9 +36,8 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
   const memoField: Ref = React.createRef();
 
   const modalButtonTouchHandler = async (val) => {
-    let ans = '';
     if (val === 'save') {
-      ans = savePicture(currentImageData, photoDescription);
+      savePicture(currentImageData, photoDescription);
     }
     changeButtonsVisibilityStatus(true);
     handleModalVisibility(false);

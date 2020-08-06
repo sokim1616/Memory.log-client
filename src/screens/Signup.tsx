@@ -1,12 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   Text,
   View,
   StyleSheet,
   Alert,
-  Keyboard,
   ImageBackground,
 } from 'react-native';
 import Toast from '../components/Toast';
@@ -28,59 +27,58 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
   const [email, setEmail] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
-  const [keyboardUp, setKeyboardUp] = useState(false);
-
-  useEffect(() => {
-    Keyboard.addListener('keyboardWillShow', () => {
-      setKeyboardUp(true);
-    });
-    Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardUp(false);
-    });
-    return () => {
-      Keyboard.removeAllListeners('keyboardWillShow');
-      Keyboard.removeAllListeners('keyboardDidHide');
-    };
-  });
-
   let usernameFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
   let emailFieldRef: Ref = React.createRef();
 
-  //TODO: handle e-mail
-  const handleSubmit: () => null = () => {
+  const handleSubmit: () => void = () => {
     let body = JSON.stringify({username, password, email});
     if (!username.length || !password.length || !email.length) {
       Alert.alert(
+        '오류',
         `모든 항목을 작성 후, ${'\n'} 회원가입을 눌러주세요.`,
-        {
-          text: 'OK',
-          onPress: () => console.log('hi'),
-        },
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              if (!username) usernameFieldRef.current.focus();
+              else if (!email) emailFieldRef.current.focus();
+              else passwordFieldRef.current.focus();
+            },
+          },
+        ],
         {cancelable: false},
       );
-      !username.length
-        ? usernameFieldRef.current.focus()
-        : passwordFieldRef.current.focus();
       return;
     } else if (password.length < 8) {
       Alert.alert(
         '오류',
         '비밀번호는 8글자 이상이여야 합니다.',
-        {
-          text: 'OK',
-          onPress: () => console.log('hi'),
-        },
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              passwordFieldRef.current.clear();
+              passwordFieldRef.current.focus();
+            },
+          },
+        ],
         {cancelable: false},
       );
-      passwordFieldRef.current.clear();
-      passwordFieldRef.current.focus();
       return;
     } else if (username.match(/[^\s-_a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/)) {
       Alert.alert(
         '오류',
         '올바른 형식의 이름을 적어주세요.',
-        {text: 'OK', onPress: () => console.log('hi')},
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              usernameFieldRef.current.clear();
+              usernameFieldRef.current.focus();
+            },
+          },
+        ],
         {cancelable: false},
       );
       return;
@@ -88,36 +86,45 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
       Alert.alert(
         '오류',
         '올바른 형식의 이메일을 적어주세요.',
-        {text: 'OK', onPress: () => console.log('hi')},
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              emailFieldRef.current.clear();
+              emailFieldRef.current.focus();
+            },
+          },
+        ],
         {cancelable: false},
       );
       return;
     }
-    usernameFieldRef.current.blur();
-    passwordFieldRef.current.blur();
-    fetch('http://localhost:4000/user/signup', {
+    submitSignUp(body);
+  };
+
+  const submitSignUp = async (body) => {
+    let resp = await fetch('http://localhost:4000/user/signup', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body,
-    }).then((resp) => {
-      if (resp.status === 200) {
-        setToastMessage(
-          '회원가입이 성공적으로 완료되었습니다.\n 클릭 시, 로그인 페이지로 이동합니다.',
-        );
-        setTimeout(() => {
-          navigation.navigate('Signin');
-        }, 2500);
-      } else if (resp.status === 409) {
-        setToastMessage(
-          `이미 존재하는 이메일입니다.${'\n'}다른 이메일을 작성해 주세요.`,
-        );
-      } else {
-        setToastMessage('죄송합니다. 현재는 회원가입을 진행할 수 없습니다.');
-      }
     });
+    if (resp.status === 200) {
+      setToastMessage(
+        '회원가입이 성공적으로 완료되었습니다.\n클릭 시, 로그인 페이지로 이동합니다.',
+      );
+      setTimeout(() => {
+        navigation.navigate('Signin');
+      }, 2500);
+    } else if (resp.status === 409) {
+      setToastMessage(
+        `이미 존재하는 이메일입니다.${'\n'}다른 이메일을 작성해 주세요.`,
+      );
+    } else {
+      setToastMessage('죄송합니다. 현재는 회원가입을 진행할 수 없습니다.');
+    }
   };
 
   const handleInput: (input: string, inputType: string) => void = (
@@ -149,7 +156,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
         source={require('../assets/image/end.png')}
         style={styles.backgroundImage}
         blurRadius={10}>
-        <View style={keyboardUp ? {display: 'none'} : styles.header}>
+        <View style={styles.header}>
           <Text style={styles.headerText}>회원 가입</Text>
         </View>
         <View style={styles.inputSection}>
@@ -307,16 +314,6 @@ const styles = StyleSheet.create({
     minWidth: Dimensions.get('window').width - 90,
     // borderWidth: 3,
   },
-  // inputLabelBlurred: {
-  //   height: 20,
-  //   justifyContent: 'center',
-  //   marginBottom: 5,
-  //   fontSize: 14,
-  //   color: 'white',
-  //   minWidth: Dimensions.get('window').width - 90,
-  //   // borderWidth: 3,
-  // },
-
   inputField: {
     flex: 6 / 10,
     textAlign: 'left',
