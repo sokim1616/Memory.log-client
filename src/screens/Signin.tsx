@@ -9,77 +9,91 @@ import {
   Alert,
   ImageBackground,
 } from 'react-native';
+import Server from '../utils/Server';
 import Toast from '../components/Toast';
 import {Button, Input, Icon, SocialIcon, Image} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {emailCheck} from '../utils/emailCheck';
-
-import {GoogleSignin} from '@react-native-community/google-signin';
-
+import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 interface LoginProps {
   loginStatus: boolean;
 }
-
 const Signin: React.FC<LoginProps> = ({loginProps}) => {
   const {changeLogin, navigation} = loginProps;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUserName] = useState('');
-  const [profilepath, setProfilepath] = useState('');
-
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
-  const [error, setError] = useState(null);
+  let emailFieldRef: Ref = React.createRef();
+  let passwordFieldRef: Ref = React.createRef();
 
   const googlesignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      setEmail(userInfo.user.email);
-      setPassword(userInfo.user.id);
-      setUserName(userInfo.user.name);
-      setProfilepath(userInfo.user.photo);
-      console.log(email);
-      console.log(password);
-      console.log(username);
-      console.log(profilepath);
-      googleSinup();
+      await googleSinup(userInfo.user);
     } catch (error) {
-      console.error(error);
+      // when user cancels sign in process,
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // when in progress already
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        Alert.alert('Process in progress');
+        // when play services not available
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        Alert.alert('Play services are not available');
+        // some other error
+      } else {
+        Alert.alert('Something else went wrong. \n Please try again.');
+      }
     }
   };
 
-  const googleSinup = () => {
-    fetch('http://localhost:4000/user/signup', {
+  const googleSinup = async ({email, id, photo, name}) => {
+    let resp = await fetch(`http://${Server.server}/user/signup`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, password, username, profilepath}),
-    }).then((resp) => {
-      if (resp.status === 200) {
-        setToastMessage('로그인에 성공하였습니다.');
-      } else if (resp.status === 409) {
-        handleSubmit();
-      } else {
-        setToastMessage('죄송합니다. 현재는 구글로그인을 진행할 수 없습니다.');
-      }
+      body: JSON.stringify({
+        email,
+        password: id,
+        username: name,
+        profilepath: photo,
+      }),
     });
+    if (resp.status === 200) {
+      setToastMessage('로그인에 성공하였습니다.');
+      await googleSignin({email, id});
+    } else if (resp.status === 409) {
+      await googleSignin({email, id});
+    } else {
+      setToastMessage('죄송합니다. 현재는 구글로그인을 진행할 수 없습니다.');
+    }
   };
 
-  let emailFieldRef: Ref = React.createRef();
-  let passwordFieldRef: Ref = React.createRef();
+  const googleSignin = async ({email, id}) => {
+    let resp = await fetch(`http://${Server.server}/user/signin`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email, password: id}),
+    });
+    if (resp.status === 200) {
+      setToastMessage('로그인에 성공하였습니다.');
+      setTimeout(() => changeLogin(true), 1000);
+    } else {
+      setToastMessage('Unathorized. Please check your username and password.');
+    }
+  };
 
-  //username ==>
   const handleSubmit: () => void = () => {
     let body = JSON.stringify({email, password});
     if (!email.length || !password.length) {
       Alert.alert(
-        // 'Empty Fields',
+        'Empty Fields',
         `이메일과 비밀번호를 확인 후,${'\n'}다시 시도해 주시기 바랍니다.`,
         {
           text: 'OK',
@@ -124,7 +138,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
     }).then((resp) => {
       if (resp.status === 200) {
         setToastMessage('로그인에 성공하였습니다.');
-        setTimeout(() => changeLogin('true'), 1000);
+        setTimeout(() => changeLogin(true), 1000);
       } else {
         setToastMessage(
           'Unathorized. Please check your username and password.',
@@ -132,7 +146,6 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       }
     });
   };
-
   const handleInput: (input: string, inputType: string) => void = (
     input,
     inputType,
@@ -145,7 +158,6 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
         setPassword(input);
     }
   };
-
   const blurAll = () => {
     passwordFieldRef.current.blur();
     emailFieldRef.current.blur();
@@ -227,7 +239,6 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
             />
           </View>
         </View>
-
         <View style={styles.buttonContainer}>
           <Button
             style={styles.buttonContainer__buttonTextStyle}
@@ -284,7 +295,6 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
             />
           </LinearGradient>
         </View>
-
         <View
           onTouchStart={() => {
             setEmail('z1@gmail.com');
@@ -417,5 +427,4 @@ const styles = StyleSheet.create({
     height: 50,
   },
 });
-
 export default Signin;

@@ -13,12 +13,11 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
   const {changeLogin} = loginProps;
 
   const requestSignout: () => void = async () => {
-    console.log(Server.server);
     let url = `http://${Server.server}/user/signout`;
     let options = {
       method: 'POST',
-      // mode: 'cors',
-      // credentials: 'include',
+      mode: 'cors',
+      credentials: 'include',
     };
     await fetch(url, options).then((res) => {
       if (res.status === 200 || res.status === 400) {

@@ -53,7 +53,6 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('로그인유저정보 :', res);
         setUserState(res[0]);
       })
       .catch((err) => console.error(err));

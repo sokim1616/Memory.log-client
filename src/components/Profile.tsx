@@ -42,7 +42,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('로그인유저정보 :', res[0]);
         setUserState(res[0]);
         setImageSource(res[0].profilepath);
       })
@@ -54,7 +53,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     }, [userState.length]),
   );
   const changeStatusMessage = () => {
-    console.log(statusMessage);
     return fetch(`http://${Server.server}/user/status`, {
       method: 'POST',
       headers: {
@@ -85,7 +83,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
           console.log('ImagePicker Error: ', response.error);
           reject(false);
         } else {
-          console.log(response);
           setImageSource(response.origURL);
           resolve(response);
         }

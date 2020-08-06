@@ -1,19 +1,10 @@
 import React, {useCallback, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  StatusBar,
-} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, SafeAreaView} from 'react-native';
 import {ListItem, Button, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
-import FriendStoryBoard from '../screens/FriendStoryBoard';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import Profile from 'src/components/Profile';
 
 const FriendList = ({navigation}) => {
   const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
@@ -22,12 +13,10 @@ const FriendList = ({navigation}) => {
   const [unFollowId, setUnfollowId] = useState('');
   const toggleOverlay = (id) => {
     setVisible(!visible);
-    console.log(id);
     setUnfollowId('');
     setUnfollowId(id);
   };
   const requestUnFollow = (id) => {
-    console.log('pressed :', id);
     return fetch('http://localhost:4000/follow/ufollow', {
       method: 'POST',
       headers: {
@@ -39,7 +28,6 @@ const FriendList = ({navigation}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('로그인유저팔로우리스트 :', res);
         getFollowerList();
         toggleOverlay();
       })
@@ -56,7 +44,6 @@ const FriendList = ({navigation}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('로그인유저정보 :', res);
         setUserState(res);
       })
       .catch((err) => console.error(err));
@@ -72,7 +59,6 @@ const FriendList = ({navigation}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('팔로워정보 :', res);
         setFollowerList(res);
       })
       .catch((err) => console.error(err));
