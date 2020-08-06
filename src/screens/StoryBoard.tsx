@@ -1,18 +1,21 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import StoryBoardPhoto from '../components/StoryBoardPhoto';
+import Server from '../utils/Server';
 import {
   SafeAreaView,
   View,
   StyleSheet,
-  Image,
   ScrollView,
-  Dimensions,
+  Alert,
   Text,
   TouchableOpacity,
 } from 'react-native';
 import {Avatar} from 'react-native-elements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+MaterialCommunityIcons.loadFont();
 
 interface HomeTwoProps {}
 
@@ -22,6 +25,76 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   const [currentPhoto, setCurrentPhoto] = useState({});
   const [previewMode, setPreviewMode] = useState(false);
   const [userState, setUserState] = useState({}); // 로그인 사용자의 정보
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [deleteList, setDeleteList] = useState([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      getUserInfo();
+    }, [userState.length]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchPhotos();
+    }, [dataLength]),
+  );
+
+  const deletePhotos = async (photos) => {
+    for (let photo of photos) {
+      let resp = await fetch(`http://${Server.server}/photo/dphoto`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filepath: photo,
+        }),
+      });
+    }
+    await fetchPhotos();
+  };
+
+  const handleDeleteIconPress = () => {
+    if (!deleteMode) setDeleteMode(true);
+    else {
+      if (deleteList.length) {
+        setDeleteList([]);
+        Alert.alert(
+          `사진 삭제`,
+          `${deleteList.length}장의 사진을 지우시곘습니까 ?`,
+          [
+            {
+              text: '예',
+              onPress: () => {
+                deletePhotos(deleteList);
+              },
+            },
+            {
+              text: '아니요',
+            },
+          ],
+          {cancelable: false},
+        );
+      }
+      setDeleteMode(!deleteMode);
+    }
+  };
+
+  const handlePhotoTouch = (ele) => {
+    if (deleteMode) return;
+    ele ? activatePreview(ele) : null;
+  };
+
+  const handleAddToDeleteList = (path) => {
+    if (deleteList.includes(path)) {
+      let newList = deleteList.filter((el) => el !== path);
+      setDeleteList(newList);
+    } else {
+      setDeleteList([...deleteList, path]);
+    }
+  };
 
   const fetchPhotos = async () => {
     await fetch('http://localhost:4000/photo/sboard', {
@@ -58,22 +131,10 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
       .catch((err) => console.error(err));
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getUserInfo();
-    }, [userState.length]),
-  );
-
   const activatePreview = (ele) => {
     setPreviewMode(!previewMode);
     setCurrentPhoto(ele);
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchPhotos();
-    }, [dataLength]),
-  );
 
   return (
     <>
@@ -90,29 +151,38 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
             rounded
             size="large"
             source={{uri: userState.profilepath}}
-            containerStyle={{
-              shadowColor: '#000',
-              shadowOffset: {width: 2.5, height: 2.5},
-              shadowOpacity: 1,
-              shadowRadius: 3,
-            }}
+            containerStyle={styles.avatarContainer}
           />
-          <View style={{justifyContent: 'center'}}>
+          <View style={styles.headerTextContainer}>
             <Text style={styles.headerText}>나의 추억 저장소..</Text>
           </View>
+          <TouchableOpacity
+            onPress={handleDeleteIconPress}
+            style={styles.deleteIconContainer}>
+            <MaterialCommunityIcons
+              name={deleteMode ? 'delete-empty' : 'delete'}
+              style={styles.deleteIcon}
+              color={'black'}
+            />
+            {deleteList.length ? (
+              <View style={styles.deleteListCounterContainer}>
+                <Text style={styles.deleteListCounter}>
+                  {deleteList.length}
+                </Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
         </View>
         <ScrollView contentContainerStyle={styles.photoScrollContainer}>
           {data.map((ele, i) => (
-            <TouchableOpacity
-              onPress={() => (ele ? activatePreview(ele) : null)}
+            <StoryBoardPhoto
               key={i}
-              style={styles.photoView}>
-              <Image
-                resizeMode="cover"
-                style={styles.photo}
-                source={{uri: ele.filepath}}
-              />
-            </TouchableOpacity>
+              photo={ele}
+              deleteMode={deleteMode}
+              deleteList={deleteList}
+              handlePhotoTouch={handlePhotoTouch}
+              handleAddToDeleteList={handleAddToDeleteList}
+            />
           ))}
         </ScrollView>
       </SafeAreaView>
@@ -133,11 +203,30 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 10,
   },
+  avatarContainer: {
+    shadowColor: '#000',
+    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOpacity: 1,
+    shadowRadius: 3,
+  },
+  headerTextContainer: {
+    justifyContent: 'center',
+  },
   headerText: {
-    // fontFamily: 'Lobster-Regular',
     fontSize: 30,
     paddingLeft: 20,
-    // fontWeight: 'bold',
+  },
+  deleteIconContainer: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    shadowColor: '#000',
+    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+  },
+  deleteIcon: {
+    fontSize: 50,
   },
   photoScrollView: {
     flex: 1,
@@ -148,29 +237,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'flex-start',
   },
-  photoView: {
-    flex: 0.25,
-    flexDirection: 'row',
-    marginVertical: 5,
-    minWidth: Dimensions.get('window').width / 4 - 18,
-    maxWidth: 93,
-    // shadowColor: '#ff5555',
-    // shadowOffset: {
-    //   width: 1,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.5,
-    // shadowRadius: 3.84,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2.5},
-    shadowOpacity: 1,
-    shadowRadius: 3,
+  deleteListCounterContainer: {
+    position: 'absolute',
+    bottom: 5,
+    left: 10,
+    width: 20,
+    height: 20,
+    backgroundColor: 'yellow',
+    borderRadius: 10,
+    borderWidth: 1,
   },
-  photo: {
-    flex: 1,
-    height: Dimensions.get('screen').height / 8 - 12,
-    borderRadius: 5,
-    borderColor: 'blue',
+  deleteListCounter: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    textAlignVertical: 'center',
   },
 });
 
