@@ -1,5 +1,5 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import StoryBoardPhoto from '../components/StoryBoardPhoto';
@@ -12,14 +12,16 @@ import {
   Alert,
   Text,
   TouchableOpacity,
+  Button,
+  Share,
 } from 'react-native';
-import {Avatar} from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
-interface HomeTwoProps {}
+interface HomeTwoProps { }
 
-const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
+const StoryBoard: React.FC<HomeTwoProps> = ({ }) => {
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);
   const [currentPhoto, setCurrentPhoto] = useState({});
@@ -39,6 +41,27 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
       fetchPhotos();
     }, [dataLength]),
   );
+
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          '이 부분도 수정부탁드립니다 멘트',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const deletePhotos = async (photos) => {
     for (let photo of photos) {
@@ -75,7 +98,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
               text: '아니요',
             },
           ],
-          {cancelable: false},
+          { cancelable: false },
         );
       }
       setDeleteMode(!deleteMode);
@@ -150,7 +173,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
           <Avatar
             rounded
             size="large"
-            source={{uri: userState.profilepath}}
+            source={{ uri: userState.profilepath }}
             containerStyle={styles.avatarContainer}
           />
           <View style={styles.headerTextContainer}>
@@ -185,6 +208,9 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
             />
           ))}
         </ScrollView>
+        <View style={{ marginTop: 50 }}>
+          <Button onPress={onShare} title="Share" />
+        </View>
       </SafeAreaView>
     </>
   );
@@ -205,7 +231,7 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     shadowColor: '#000',
-    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOffset: { width: 2.5, height: 2.5 },
     shadowOpacity: 1,
     shadowRadius: 3,
   },
@@ -221,7 +247,7 @@ const styles = StyleSheet.create({
     top: 15,
     right: 15,
     shadowColor: '#000',
-    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOffset: { width: 2.5, height: 2.5 },
     shadowOpacity: 0.3,
     shadowRadius: 1,
   },

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   Text,
@@ -9,9 +9,9 @@ import {
   ImageBackground,
 } from 'react-native';
 import Toast from '../components/Toast';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {Input, Icon, Button} from 'react-native-elements';
-import {emailCheck} from '../utils/emailCheck';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Input, Icon, Button } from 'react-native-elements';
+import { emailCheck } from '../utils/emailCheck';
 
 interface SignupProps {
   loginProps: {
@@ -20,8 +20,8 @@ interface SignupProps {
   };
 }
 
-const Signup: React.FC<SignupProps> = ({loginProps}) => {
-  const {navigation, changeLogin} = loginProps;
+const Signup: React.FC<SignupProps> = ({ loginProps }) => {
+  const { navigation, changeLogin } = loginProps;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
   let emailFieldRef: Ref = React.createRef();
 
   const handleSubmit: () => void = () => {
-    let body = JSON.stringify({username, password, email});
+    let body = JSON.stringify({ username, password, email });
     if (!username.length || !password.length || !email.length) {
       Alert.alert(
         '오류',
@@ -47,7 +47,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
             },
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
       return;
     } else if (password.length < 8) {
@@ -63,7 +63,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
             },
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
       return;
     } else if (username.match(/[^\s-_a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/)) {
@@ -79,7 +79,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
             },
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
       return;
     } else if (!email.match(emailCheck)) {
@@ -95,7 +95,7 @@ const Signup: React.FC<SignupProps> = ({loginProps}) => {
             },
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
       return;
     }

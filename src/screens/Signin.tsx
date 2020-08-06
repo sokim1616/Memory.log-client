@@ -1,6 +1,6 @@
 /* eslint-disable no-catch-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   Text,
@@ -11,15 +11,15 @@ import {
 } from 'react-native';
 import Server from '../utils/Server';
 import Toast from '../components/Toast';
-import {Button, Input, Icon, SocialIcon, Image} from 'react-native-elements';
+import { Button, Input, Icon, SocialIcon, Image } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {emailCheck} from '../utils/emailCheck';
-import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import { emailCheck } from '../utils/emailCheck';
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 interface LoginProps {
   loginStatus: boolean;
 }
-const Signin: React.FC<LoginProps> = ({loginProps}) => {
-  const {changeLogin, navigation} = loginProps;
+const Signin: React.FC<LoginProps> = ({ loginProps }) => {
+  const { changeLogin, navigation } = loginProps;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
@@ -48,7 +48,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
     }
   };
 
-  const googleSinup = async ({email, id, photo, name}) => {
+  const googleSinup = async ({ email, id, photo, name }) => {
     let resp = await fetch(`http://${Server.server}/user/signup`, {
       method: 'POST',
       headers: {
@@ -64,22 +64,22 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
     });
     if (resp.status === 200) {
       setToastMessage('로그인에 성공하였습니다.');
-      await googleSignin({email, id});
+      await googleSignin({ email, id });
     } else if (resp.status === 409) {
-      await googleSignin({email, id});
+      await googleSignin({ email, id });
     } else {
       setToastMessage('죄송합니다. 현재는 구글로그인을 진행할 수 없습니다.');
     }
   };
 
-  const googleSignin = async ({email, id}) => {
+  const googleSignin = async ({ email, id }) => {
     let resp = await fetch(`http://${Server.server}/user/signin`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, password: id}),
+      body: JSON.stringify({ email, password: id }),
     });
     if (resp.status === 200) {
       setToastMessage('로그인에 성공하였습니다.');
@@ -90,7 +90,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
   };
 
   const handleSubmit: () => void = () => {
-    let body = JSON.stringify({email, password});
+    let body = JSON.stringify({ email, password });
     if (!email.length || !password.length) {
       Alert.alert(
         'Empty Fields',
@@ -99,7 +99,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           text: 'OK',
           onPress: () => console.log('hi'),
         },
-        {cancelable: false},
+        { cancelable: false },
       );
       !email.length
         ? emailFieldRef.current.focus()
@@ -113,7 +113,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           text: 'OK',
           onPress: () => console.log('hi'),
         },
-        {cancelable: false},
+        { cancelable: false },
       );
       passwordFieldRef.current.clear();
       passwordFieldRef.current.focus();
@@ -122,8 +122,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       Alert.alert(
         'Invalid E-mail Address',
         'Please input a correct e-mail address.',
-        {text: 'OK', onPress: () => console.log('hi')},
-        {cancelable: false},
+        { text: 'OK', onPress: () => console.log('hi') },
+        { cancelable: false },
       );
       return;
     }
@@ -243,14 +243,14 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           <Button
             style={styles.buttonContainer__buttonTextStyle}
             title="회원가입"
-            titleStyle={{color: 'black'}}
+            titleStyle={{ color: 'black' }}
             type="clear"
             onPress={() => navigation.navigate('Signup')}
           />
           <Button
             style={styles.buttonContainer__buttonTextStyle}
             title="로그인"
-            titleStyle={{color: 'black'}}
+            titleStyle={{ color: 'black' }}
             type="clear"
             onPress={() => {
               handleSubmit();
@@ -269,12 +269,12 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
             title="Sign In With Facebook"
             button
             type="facebook"
-            // onPress={signIn}
+          // onPress={signIn}
           />
           <LinearGradient
             colors={['#CA1D7E', '#E35157', '#F2703F']}
-            start={{x: 0.0, y: 1.0}}
-            end={{x: 1.0, y: 1.0}}
+            start={{ x: 0.0, y: 1.0 }}
+            end={{ x: 1.0, y: 1.0 }}
             style={{
               height: 55,
               width: 400,
@@ -284,14 +284,14 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
             }}>
             <SocialIcon
               title="Sign In With Instagram"
-              fontStyle={{height: 50, top: -3, left: -10}}
-              iconStyle={{height: 70, width: 50, top: 2, left: 25}}
+              fontStyle={{ height: 50, top: -3, left: -10 }}
+              iconStyle={{ height: 70, width: 50, top: 2, left: 25 }}
               button
               style={{
                 backgroundColor: 'transparent',
               }}
               type="instagram"
-              // onPress={signIn}
+            // onPress={signIn}
             />
           </LinearGradient>
         </View>
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
   },
-  backgroundImage: {flex: 1, height: '110%', resizeMode: 'cover'},
+  backgroundImage: { flex: 1, height: '110%', resizeMode: 'cover' },
   header: {
     flex: 1,
     justifyContent: 'center',
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: 'rgba(255,255,255,0.25)',
   },
-  socialLogin: {flex: 3},
+  socialLogin: { flex: 3 },
   devLoginButton: {
     position: 'absolute',
     top: 20,
