@@ -151,9 +151,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
             containerStyle={styles.upperview__left__photo}
             size={95}
             rounded={true}
-            source={{
-              uri: imageSource,
-            }}
+            source={imageSource ? {uri: imageSource} : null}
           />
           <Accessory onTouchEnd={postImage} size={25} />
         </View>

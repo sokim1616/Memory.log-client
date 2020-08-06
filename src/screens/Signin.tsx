@@ -1,3 +1,4 @@
+/* eslint-disable no-catch-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
@@ -23,6 +24,9 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
   const {changeLogin, navigation} = loginProps;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUserName] = useState('');
+  const [profilepath, setProfilepath] = useState('');
+
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
 
@@ -30,31 +34,42 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
   const [userInfo, setUserInfo] = useState(null);
   const [error, setError] = useState(null);
 
-  async function googlesignIn() {
+  const googlesignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      setUserInfo(userInfo);
-      setError(null);
-      setIsLoggedIn(true);
-      changeLogin(true);
+      setEmail(userInfo.user.email);
+      setPassword(userInfo.user.id);
+      setUserName(userInfo.user.name);
+      setProfilepath(userInfo.user.photo);
+      console.log(email);
+      console.log(password);
+      console.log(username);
+      console.log(profilepath);
+      googleSinup();
     } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // when user cancels sign in process,
-        Alert.alert('Process Cancelled');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // when in progress already
-        Alert.alert('Process in progress');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // when play services not available
-        Alert.alert('Play services are not available');
-      } else {
-        // some other error
-        Alert.alert('Something else went wrong... ', error.toString());
-        setError(error);
-      }
+      console.error(error);
     }
-  }
+  };
+
+  const googleSinup = () => {
+    fetch('http://localhost:4000/user/signup', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email, password, username, profilepath}),
+    }).then((resp) => {
+      if (resp.status === 200) {
+        setToastMessage('로그인에 성공하였습니다.');
+      } else if (resp.status === 409) {
+        handleSubmit();
+      } else {
+        setToastMessage('죄송합니다. 현재는 구글로그인을 진행할 수 없습니다.');
+      }
+    });
+  };
 
   let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
@@ -217,12 +232,14 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           <Button
             style={styles.buttonContainer__buttonTextStyle}
             title="회원가입"
+            titleStyle={{color: 'black'}}
             type="clear"
             onPress={() => navigation.navigate('Signup')}
           />
           <Button
             style={styles.buttonContainer__buttonTextStyle}
             title="로그인"
+            titleStyle={{color: 'black'}}
             type="clear"
             onPress={() => {
               handleSubmit();
@@ -385,7 +402,8 @@ const styles = StyleSheet.create({
   buttonContainer__buttonTextStyle: {
     width: 100,
     borderWidth: 1,
-    borderColor: 'rgb(85,135,216)',
+    // borderColor: 'rgb(85,135,216)',
+    borderColor: 'rgba(0,0,0,0.5)',
     borderRadius: 50,
     backgroundColor: 'rgba(255,255,255,0.25)',
   },

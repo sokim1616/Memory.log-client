@@ -13,6 +13,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
 import FriendStoryBoard from '../screens/FriendStoryBoard';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import Profile from 'src/components/Profile';
 
 const FriendList = ({navigation}) => {
   const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
@@ -97,7 +98,7 @@ const FriendList = ({navigation}) => {
           <ListItem
             key={i}
             leftAvatar={{
-              source: {uri: 'https://picsum.photos/300/300'},
+              source: {uri: ele.profilepath},
               size: 'large',
               containerStyle: {
                 shadowColor: '#000',
@@ -133,7 +134,7 @@ const FriendList = ({navigation}) => {
             <ListItem
               key={i}
               leftAvatar={{
-                source: {uri: 'https://picsum.photos/300/300'},
+                source: {uri: ele.profilepath},
                 size: 'large',
                 containerStyle: {
                   shadowColor: '#000',

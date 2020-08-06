@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {
@@ -8,6 +9,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
+import {Button} from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -94,7 +96,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           />
         </View>
         <TextInput
-          placeholder="지금 당신의 기분은 어떤가요..?"
+          placeholder="몰라몰라"
           ref={memoField}
           multiline={true}
           style={
@@ -105,16 +107,35 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
         />
       </View>
       <View style={styles.buttonsContainer}>
-        <View
-          style={styles.cancelButton}
-          onTouchEnd={() => modalButtonTouchHandler(null)}>
-          <Text style={styles.buttonText}>취소</Text>
-        </View>
-        <View
-          style={styles.saveButton}
-          onTouchEnd={() => modalButtonTouchHandler('save')}>
-          <Text style={styles.buttonText}>저장</Text>
-        </View>
+        <Button
+          buttonStyle={{
+            width: 100,
+            height: 50,
+            borderWidth: 1,
+            borderRadius: 25,
+            borderColor: 'rgba(232, 90, 113, 0.5)',
+            backgroundColor: 'rgba(232, 90, 113, 0.75)',
+            // borderColor: 'rgba(255,255,255,0.5)',
+            // backgroundColor: 'rgba(255,255,255,0.75)',
+          }}
+          title="취소"
+          titleStyle={{fontSize: 25, color: 'white'}}
+          type="solid"
+          onPress={() => modalButtonTouchHandler(null)}
+        />
+        <Button
+          buttonStyle={{
+            width: 100,
+            height: 50,
+            borderRadius: 25,
+            borderColor: 'rgba(78, 161, 211, 0.5)',
+            backgroundColor: 'rgba(78, 161, 211, 0.75)',
+          }}
+          title="저장"
+          titleStyle={{fontSize: 25}}
+          type="solid"
+          onPress={() => modalButtonTouchHandler('save')}
+        />
       </View>
     </Modal>
   );
@@ -170,24 +191,24 @@ const styles = StyleSheet.create({
   noteContainer: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'lightyellow',
+    backgroundColor: 'white',
     width: Dimensions.get('screen').width * 0.9,
-    borderRadius: 40,
+    borderRadius: 0,
   },
   noteContainerEditMode: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'lightyellow',
+    backgroundColor: 'white',
     width: Dimensions.get('screen').width * 0.95,
     marginBottom: 20,
-    borderRadius: 40,
+    borderRadius: 0,
   },
   noteLeftSide: {
     flex: 0.2,
-    backgroundColor: 'lightyellow',
+    backgroundColor: 'white',
     borderRightColor: 'red',
     borderRightWidth: 3,
-    borderTopLeftRadius: 15,
+    borderTopLeftRadius: 0,
     shadowColor: 'darkred',
     shadowOffset: {
       width: 1,
@@ -198,7 +219,7 @@ const styles = StyleSheet.create({
   },
   noteRightSide: {
     flex: 0.8,
-    backgroundColor: 'lightyellow',
+    backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
@@ -206,8 +227,8 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     fontSize: 24,
     // fontFamily: 'Lobster-Regular',
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
     shadowColor: 'darkred',
     shadowOffset: {
       width: 1,
@@ -218,7 +239,7 @@ const styles = StyleSheet.create({
   },
   noteRightSideEditMode: {
     flex: 0.8,
-    backgroundColor: 'lightyellow',
+    backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
@@ -226,8 +247,8 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     fontSize: 24,
     // fontFamily: 'Lobster-Regular',
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
     shadowColor: 'darkred',
     shadowOffset: {
       width: 1,
@@ -238,50 +259,11 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flex: 0.7,
+    top: 60,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'stretch',
     width: Dimensions.get('screen').width,
-  },
-  saveButton: {
-    marginTop: 80,
-    flex: 0.25,
-    height: 40,
-    borderRadius: 15,
-    borderWidth: 3,
-    borderColor: 'lightblue',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'lightblue',
-    shadowColor: '#222222',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3.6,
-  },
-  cancelButton: {
-    marginTop: 80,
-    flex: 0.25,
-    height: 40,
-    borderRadius: 15,
-    borderWidth: 3,
-    borderColor: 'lightcoral',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'lightcoral',
-    shadowColor: '#222222',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3.6,
-  },
-  buttonText: {
-    // fontFamily: 'Lobster-Regular',
-    fontSize: 24,
   },
 });
 

@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Avatar} from 'react-native-elements';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 interface HomeTwoProps {
   route;
@@ -61,6 +62,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
 
   return (
     <>
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <StoryBoardModal
         editable={false}
         setPreviewMode={setPreviewMode}

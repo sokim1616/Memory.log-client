@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import {SearchBar, ListItem, Overlay, Button} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import FriendList from '../screens/FriendList';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Stack = createStackNavigator();
 
@@ -77,6 +78,7 @@ const FriendSearch = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <View style={styles.upperView}>
         <Text style={styles.upperView__title}>친구 찾기</Text>
         <View style={styles.upperView__lower}>
@@ -91,8 +93,9 @@ const FriendSearch = ({navigation}) => {
             autoCapitalize="none"
           />
           <Button
-            style={styles.upperView__lower__button}
+            buttonStyle={styles.upperView__lower__button}
             title="검색"
+            titleStyle={{color: 'white'}}
             type="solid"
             onPress={() => {
               onPressSearchIcon();
@@ -108,7 +111,8 @@ const FriendSearch = ({navigation}) => {
             <ListItem
               key={i}
               leftAvatar={{
-                source: {uri: 'https://picsum.photos/400/400'},
+                // source: {uri: ele.profilepath},
+                source: require('../assets/image/slave_1.jpg'),
                 size: 'large',
               }}
               containerStyle={styles.lowerView__friend}
@@ -138,13 +142,23 @@ const FriendSearch = ({navigation}) => {
             <View style={styles.overlayStyle__lower}>
               <Button
                 containerStyle={styles.overlayStyle__lower__button}
+                buttonStyle={{
+                  borderColor: '#E85A71',
+                  backgroundColor: '#E85A71',
+                }}
                 title="취소"
+                titleStyle={{color: 'white'}}
                 type="outline"
                 onPress={toggleOverlay}
               />
               <Button
                 containerStyle={styles.overlayStyle__lower__button}
+                buttonStyle={{
+                  borderColor: '#4EA1D3',
+                  backgroundColor: '#4EA1D3',
+                }}
                 title="확인"
+                titleStyle={{color: 'white'}}
                 type="outline"
                 onPress={onPressFollowIcon}
               />
@@ -180,6 +194,9 @@ const styles = StyleSheet.create({
   upperView__lower__button: {
     marginTop: 25,
     marginRight: 44,
+    backgroundColor: '#454552',
+    borderColor: '#454552',
+    borderWidth: 1,
     // backgroundColor: '#D3D3D3',
   },
   midView: {
@@ -210,12 +227,13 @@ const styles = StyleSheet.create({
   lowerView__friend__username: {
     position: 'absolute',
     fontSize: 30,
-    bottom: 10,
+    bottom: 15,
   },
   lowerView__friend__subtitle: {
     position: 'absolute',
     fontSize: 18,
-    bottom: -30,
+    bottom: -50,
+    width: 180,
   },
   overlayStyle: {
     backgroundColor: '#ffffff',
