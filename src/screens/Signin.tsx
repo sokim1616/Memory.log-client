@@ -1,6 +1,6 @@
 /* eslint-disable no-catch-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   Text,
@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import Server from '../utils/Server';
 import Toast from '../components/Toast';
-
 import {Button, Input, Icon, SocialIcon} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {emailCheck} from '../utils/emailCheck';
@@ -28,9 +27,6 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
-  let emailFieldRef: Ref = React.createRef();
-  let passwordFieldRef: Ref = React.createRef();
-
 
   let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
@@ -133,7 +129,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: 'google_' + email,
+        email,
         password: id,
         username: name,
         profilepath: photo,
@@ -158,7 +154,6 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       },
 
       body: JSON.stringify({email, password: id}),
-
     });
     if (resp.status === 200) {
       setToastMessage('로그인에 성공하였습니다.');
@@ -178,7 +173,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           text: 'OK',
           onPress: () => console.log('hi'),
         },
-        { cancelable: false },
+        {cancelable: false},
       );
       !mail.length
         ? emailFieldRef.current.focus()
@@ -192,7 +187,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           text: 'OK',
           onPress: () => console.log('hi'),
         },
-        { cancelable: false },
+        {cancelable: false},
       );
       passwordFieldRef.current.clear();
       passwordFieldRef.current.focus();
@@ -201,8 +196,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       Alert.alert(
         'Invalid E-mail Address',
         'Please input a correct e-mail address.',
-        { text: 'OK', onPress: () => console.log('hi') },
-        { cancelable: false },
+        {text: 'OK', onPress: () => console.log('hi')},
+        {cancelable: false},
       );
       return;
     }
@@ -351,8 +346,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           />
           <LinearGradient
             colors={['#CA1D7E', '#E35157', '#F2703F']}
-            start={{ x: 0.0, y: 1.0 }}
-            end={{ x: 1.0, y: 1.0 }}
+            start={{x: 0.0, y: 1.0}}
+            end={{x: 1.0, y: 1.0}}
             style={{
               height: 55,
               width: 400,
@@ -362,14 +357,14 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
             }}>
             <SocialIcon
               title="Sign In With Instagram"
-              fontStyle={{ height: 50, top: -3, left: -10 }}
-              iconStyle={{ height: 70, width: 50, top: 2, left: 25 }}
+              fontStyle={{height: 50, top: -3, left: -10}}
+              iconStyle={{height: 70, width: 50, top: 2, left: 25}}
               button
               style={{
                 backgroundColor: 'transparent',
               }}
               type="instagram"
-            // onPress={signIn}
+              // onPress={signIn}
             />
           </LinearGradient>
         </View>
@@ -394,7 +389,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
   },
-  backgroundImage: { flex: 1, height: '110%', resizeMode: 'cover' },
+  backgroundImage: {flex: 1, height: '110%', resizeMode: 'cover'},
   header: {
     flex: 1,
     justifyContent: 'center',
@@ -486,7 +481,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: 'rgba(255,255,255,0.25)',
   },
-  socialLogin: { flex: 3 },
+  socialLogin: {flex: 3},
   devLoginButton: {
     position: 'absolute',
     top: 20,

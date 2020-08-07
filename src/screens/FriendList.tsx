@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import {useFocusEffect} from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import Profile from 'src/components/Profile';
 
 const FriendList = ({navigation}) => {
   const [userState, setUserState] = useState([]); // 로그인 사용자의 정보

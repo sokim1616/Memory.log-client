@@ -61,7 +61,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Your message to user when the camera is accessed for the first time</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMIcrophoneUsageDescription</key>
 	<string>Your message to user when the photo library is accessed for the first time</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -111,19 +111,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb586382468713750</string>
-      </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>586382468713750</string>
-  <key>FacebookDisplayName</key>
-  <string>memorylog</string>
 </dict>
 </plist>
