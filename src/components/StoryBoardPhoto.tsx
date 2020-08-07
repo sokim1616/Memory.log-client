@@ -8,14 +8,19 @@ interface StoryBoardPhotoProps {}
 const StoryBoardPhoto: React.FC<StoryBoardPhotoProps> = ({
   photo,
   handlePhotoTouch,
-  handleAddToDeleteList,
+  handleAddToSelectionList,
   deleteMode,
+  shareMode,
 }) => {
-  const [onCancelList, setOnCancelList] = useState(false);
+  const [onSelectionList, setOnSelectionList] = useState(false);
 
   useEffect(() => {
-    setOnCancelList(false);
+    setOnSelectionList(false);
   }, [deleteMode]);
+
+  useEffect(() => {
+    setOnSelectionList(false);
+  }, [shareMode]);
 
   return (
     <TouchableOpacity
@@ -23,18 +28,31 @@ const StoryBoardPhoto: React.FC<StoryBoardPhotoProps> = ({
       style={styles.photoView}>
       <Image
         resizeMode="cover"
-        style={deleteMode && onCancelList ? styles.onDeletePhoto : styles.photo}
+        style={
+          (deleteMode || shareMode) && onSelectionList
+            ? styles.onDeletePhoto
+            : styles.photo
+        }
         source={{uri: photo.filepath}}
       />
-      {deleteMode && photo ? (
+      {(deleteMode || shareMode) && photo ? (
         <TouchableOpacity
           onPress={() => {
-            handleAddToDeleteList(photo.filepath);
-            setOnCancelList(!onCancelList);
+            handleAddToSelectionList(
+              photo.filepath,
+              deleteMode ? 'delete' : 'share',
+            );
+            setOnSelectionList(!onSelectionList);
           }}
-          style={styles.onPhotoDeleteIconContainer}>
+          style={
+            onSelectionList
+              ? styles.onPhotoDeleteIconContainerSelected
+              : styles.onPhotoDeleteIconContainer
+          }>
           <MaterialCommunityIcons
-            name={'window-close'}
+            name={
+              deleteMode ? 'window-close' : 'checkbox-marked-circle-outline'
+            }
             style={styles.onPhotoDeleteIcon}
             color={'black'}
           />
@@ -73,6 +91,13 @@ const styles = StyleSheet.create({
     right: 5,
     top: 5,
     backgroundColor: 'white',
+    borderRadius: 12,
+  },
+  onPhotoDeleteIconContainerSelected: {
+    position: 'absolute',
+    right: 5,
+    top: 5,
+    backgroundColor: 'yellow',
     borderRadius: 12,
   },
   onPhotoDeleteIcon: {
