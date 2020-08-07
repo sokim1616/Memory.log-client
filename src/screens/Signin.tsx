@@ -164,7 +164,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
   };
 
   const handleSubmit: () => void = () => {
-    let body = JSON.stringify({mail, password});
+    let body = JSON.stringify({email: mail, password});
     if (!mail.length || !password.length) {
       Alert.alert(
         'Empty Fields',
@@ -202,14 +202,18 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       return;
     }
     blurAll();
+    console.log(mail, password);
     fetch('http://localhost:4000/user/signin', {
       method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body,
     }).then((resp) => {
+      console.log(resp.status);
       if (resp.status === 200) {
         setToastMessage('로그인에 성공하였습니다.');
         setTimeout(() => changeLogin(true), 1000);
