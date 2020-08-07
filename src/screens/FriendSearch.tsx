@@ -111,8 +111,7 @@ const FriendSearch = ({navigation}) => {
             <ListItem
               key={i}
               leftAvatar={{
-                // source: {uri: ele.profilepath},
-                source: require('../assets/image/slave_1.jpg'),
+                source: {uri: ele.profilepath},
                 size: 'large',
               }}
               containerStyle={styles.lowerView__friend}

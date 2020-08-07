@@ -21,9 +21,27 @@ interface HomeTwoProps {
 const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);
-  const [currentPhoto, setCurrentPhoto] = useState({});
+  const [currentPhoto, setCurrentPhoto] = useState([]);
   const [previewMode, setPreviewMode] = useState(false);
+  const [friend, setFriend] = useState({});
   const {friendId} = route.params;
+
+  const getFriendInfo = async () => {
+    await fetch('http://localhost:4000/user/userinfobyid', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({id: friendId}),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setFriend(res);
+      });
+  };
 
   const fetchPhotos = async () => {
     await fetch('http://localhost:4000/photo/fboard', {
@@ -60,6 +78,12 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
     }, [dataLength]),
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      getFriendInfo();
+    }, [friend.length]),
+  );
+
   return (
     <>
       <FocusAwareStatusBar barStyle={'light-content'} />
@@ -74,7 +98,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
           <Avatar
             rounded
             size="large"
-            source={require('../assets/image/slave_3.png')}
+            source={{uri: friend.profilepath}}
             containerStyle={{
               shadowColor: '#000',
               shadowOffset: {width: 2.5, height: 2.5},
@@ -140,7 +164,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     minWidth: Dimensions.get('window').width / 4 - 18,
     maxWidth: 93,
-    shadowColor: '#ff5555',
+    shadowColor: 'black',
     shadowOffset: {
       width: 1,
       height: 1,

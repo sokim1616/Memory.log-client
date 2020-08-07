@@ -19,11 +19,19 @@ interface ProfileProps {}
 const Profile: React.FC<ProfileProps> = ({}) => {
   const [imageSource, setImageSource] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const [statusName, setStatusName] = useState('');
   const [userState, setUserState] = useState({});
-  const [visible, setVisible] = useState(false);
-  const toggleOverlay = () => {
-    setVisible(!visible);
+  const [visibleStatus, setVisibleStatus] = useState(false);
+  const [visibleName, setVisibleName] = useState(false);
+
+  const toggleStatus = () => {
+    setVisibleStatus(!visibleStatus);
   };
+
+  const toggleName = () => {
+    setVisibleName(!visibleName);
+  };
+
   const options = {
     title: 'Load Photo',
     storageOptions: {
@@ -66,13 +74,39 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     })
       .then((res) => res.json())
       .then(() => {
-        toggleOverlay();
+        toggleStatus();
         getUserInfo();
       });
   };
+
+  const changeUserName = () => {
+    console.log(statusName);
+    return fetch(`http://${Server.server}/user/username`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: statusName,
+      }),
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then(() => {
+        toggleName();
+        getUserInfo();
+      });
+  };
+
   const handleTextInput = (message) => {
     setStatusMessage(message);
   };
+
+  const handleNameInput = (name) => {
+    setStatusName(name);
+  };
+
   const pickImage = () => {
     return new Promise((resolve, reject) => {
       ImagePicker.launchImageLibrary(options, (response) => {
@@ -154,10 +188,21 @@ const Profile: React.FC<ProfileProps> = ({}) => {
         </View>
       </View>
       <View style={styles.upperview__right}>
-        <View style={styles.upperview__right__username}>
-          <Text style={styles.upperview__right__username__text}>
-            {userState.username}
-          </Text>
+        <View style={styles.upperview__right__upper}>
+          <View style={styles.upperview__right__username}>
+            <Text style={styles.upperview__right__username__text}>
+              {userState.username}
+            </Text>
+          </View>
+          <View style={styles.upperview__right__username__right}>
+            <Icon
+              style={styles.upperview__right__username__right__icon}
+              name="pencil-outline"
+              type="material-community"
+              size={20}
+              onPress={toggleName}
+            />
+          </View>
         </View>
         <View style={styles.upperview__right__email}>
           <Text style={styles.upperview__right__email__text}>
@@ -176,13 +221,16 @@ const Profile: React.FC<ProfileProps> = ({}) => {
               name="pencil-outline"
               type="material-community"
               size={20}
-              onPress={toggleOverlay}
+              onPress={toggleStatus}
             />
           </View>
+
+          {/* ----------------------------상태 메세지 변경 오버레이 시작---------------------------- */}
+
           <Overlay
             overlayStyle={styles.upperview__right__message__overlay}
-            isVisible={visible}
-            onBackdropPress={toggleOverlay}>
+            isVisible={visibleStatus}
+            onBackdropPress={toggleStatus}>
             <View style={styles.overlay}>
               <View style={styles.overlay__title}>
                 <Text style={styles.overlay__title__text}>
@@ -212,7 +260,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
                   title="취소"
                   titleStyle={{color: 'black'}}
                   type="outline"
-                  onPress={toggleOverlay}
+                  onPress={toggleStatus}
                 />
                 <Button
                   containerStyle={styles.overlay__button__style}
@@ -221,6 +269,49 @@ const Profile: React.FC<ProfileProps> = ({}) => {
                   titleStyle={{color: 'black'}}
                   type="outline"
                   onPress={changeStatusMessage}
+                />
+              </View>
+            </View>
+          </Overlay>
+
+          {/* ----------------------------유저 이름 변경 오버레이 시작---------------------------- */}
+
+          <Overlay
+            overlayStyle={styles.upperview__right__message__overlay}
+            isVisible={visibleName}
+            onBackdropPress={toggleName}>
+            <View style={styles.overlay}>
+              <View style={styles.overlay__title}>
+                <Text style={styles.overlay__title__text}>유저 이름 변경</Text>
+              </View>
+              <View style={styles.overlay__textinput}>
+                <Input
+                  containerStyle={styles.overlay__textinput__container}
+                  inputContainerStyle={styles.overlay__textinput__input}
+                  inputStyle={{fontSize: 25}}
+                  placeholder="새로운 이름를 입력하세요."
+                  multiline={true}
+                  maxLength={10}
+                  onChangeText={handleNameInput}
+                  value={statusName}
+                />
+              </View>
+              <Text style={styles.overlay__textinput__legnth}>
+                {statusName ? `${statusName.length} / 10` : '0 / 10'}
+              </Text>
+              <View style={styles.overlay__textinput__line} />
+              <View style={styles.overlay__button}>
+                <Button
+                  containerStyle={styles.overlay__button__style}
+                  title="취소"
+                  type="outline"
+                  onPress={toggleName}
+                />
+                <Button
+                  containerStyle={styles.overlay__button__style}
+                  title="확인"
+                  type="solid"
+                  onPress={changeUserName}
                 />
               </View>
             </View>
@@ -252,16 +343,28 @@ const styles = StyleSheet.create({
   upperview__right: {
     flex: 7,
   },
-  upperview__right__username: {
+  upperview__right__upper: {
     flex: 3,
-    flexDirection: 'column',
+    flexDirection: 'row',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     marginRight: 20,
+    // backgroundColor: '#3ef',
+  },
+  upperview__right__username: {
+    flex: 7,
     justifyContent: 'center',
   },
   upperview__right__username__text: {
     fontSize: 30,
+  },
+  upperview__right__username__right: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  upperview__right__username__right__icon: {
+    marginTop: 5,
   },
   upperview__right__message: {
     flex: 5,

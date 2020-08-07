@@ -24,9 +24,6 @@ const googleSigninConfigure = async () => {
   });
 };
 
-//! 밑에 mapping import 는 테스트 용입니다 삭제할 것
-// import Mapping from './src/screens/Mapping'
-
 const AppTab = createMaterialBottomTabNavigator();
 
 interface AppProps {

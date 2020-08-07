@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import Server from '../utils/Server';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -103,6 +104,10 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
       animationOutTiming={500}
       isVisible={previewMode}
       style={styles.modalContainer}>
+      {/* <ImageBackground
+        style={styles.backgroundImage}
+        source={{uri: currentPhoto.filepath}}
+        blurRadius={10}> */}
       <View style={styles.blurBackground} />
       {!memoOnFocus ? (
         <>
@@ -160,6 +165,7 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
           style={styles.noteRightSide}
         />
       </KeyboardAvoidingView>
+      {/* </ImageBackground> */}
     </Modal>
   );
 };
@@ -170,6 +176,11 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  backgroundImage: {
+    flex: 1,
+    height: '200%',
+    resizeMode: 'contain',
   },
   editModalContainer: {
     flex: 1,

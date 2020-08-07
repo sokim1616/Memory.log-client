@@ -11,22 +11,99 @@ import {
 } from 'react-native';
 import Server from '../utils/Server';
 import Toast from '../components/Toast';
-import { Button, Input, Icon, SocialIcon, Image } from 'react-native-elements';
+
+import {Button, Input, Icon, SocialIcon} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import { emailCheck } from '../utils/emailCheck';
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import {emailCheck} from '../utils/emailCheck';
+import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import {LoginManager, AccessToken} from 'react-native-fbsdk';
+import auth from '@react-native-firebase/auth';
+
 interface LoginProps {
   loginStatus: boolean;
 }
-const Signin: React.FC<LoginProps> = ({ loginProps }) => {
-  const { changeLogin, navigation } = loginProps;
-  const [email, setEmail] = useState('');
+const Signin: React.FC<LoginProps> = ({loginProps}) => {
+  const {changeLogin, navigation} = loginProps;
+  const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
 
+
+  let emailFieldRef: Ref = React.createRef();
+  let passwordFieldRef: Ref = React.createRef();
+
+  const onLoginFacebook = async () => {
+    await LoginManager.logInWithPermissions(['public_profile', 'email'])
+      .then((result) => {
+        if (result.isCancelled) {
+          return Promise.reject(new Error('User cancelled the login process'));
+        }
+
+        console.log(
+          `Login success with permissions: ${result.grantedPermissions.toString()}`,
+        );
+        return AccessToken.getCurrentAccessToken();
+      })
+      .then((data) => {
+        const credential = auth.FacebookAuthProvider.credential(
+          data.accessToken,
+        );
+        return auth().signInWithCredential(credential);
+      })
+      .then((currentUser) => {
+        console.log(currentUser);
+        facebookSignup(currentUser.user);
+      })
+      .catch((error) => {
+        console.log(`Facebook login fail with error: ${error}`);
+      });
+  };
+
+  const facebookSignup = async ({email, uid, photoURL, displayName}) => {
+    let resp = await fetch(`http://${Server.server}/user/signup`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: 'fb_' + email,
+        password: uid,
+        username: displayName,
+        profilepath: photoURL,
+      }),
+    });
+    if (resp.status === 200) {
+      setToastMessage('페이스북 로그인에 성공하였습니다.');
+      await facebookSignin('fb_' + email, uid);
+    } else if (resp.status === 409) {
+      await facebookSignin('fb_' + email, uid);
+    } else {
+      setToastMessage(
+        '죄송합니다. 현재는 페이스북 로그인을 진행할 수 없습니다.',
+      );
+    }
+  };
+
+  const facebookSignin = async (email, uid) => {
+    let resp = await fetch(`http://${Server.server}/user/signin`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email, password: uid}),
+    });
+    if (resp.status === 200) {
+      setToastMessage('로그인에 성공하였습니다.');
+      setTimeout(() => changeLogin(true), 1000);
+    } else {
+      setToastMessage('Unathorized. Please check your username and password.');
+    }
+  };
   const googlesignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -48,7 +125,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
     }
   };
 
-  const googleSinup = async ({ email, id, photo, name }) => {
+  const googleSinup = async ({email, id, photo, name}) => {
     let resp = await fetch(`http://${Server.server}/user/signup`, {
       method: 'POST',
       headers: {
@@ -56,30 +133,32 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email,
+        email: 'google_' + email,
         password: id,
         username: name,
         profilepath: photo,
       }),
     });
     if (resp.status === 200) {
-      setToastMessage('로그인에 성공하였습니다.');
-      await googleSignin({ email, id });
+      setToastMessage('구글 로그인에 성공하였습니다.');
+      await googleSignin({email, id});
     } else if (resp.status === 409) {
-      await googleSignin({ email, id });
+      await googleSignin({email, id});
     } else {
       setToastMessage('죄송합니다. 현재는 구글로그인을 진행할 수 없습니다.');
     }
   };
 
-  const googleSignin = async ({ email, id }) => {
+  const googleSignin = async ({email, id}) => {
     let resp = await fetch(`http://${Server.server}/user/signin`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password: id }),
+
+      body: JSON.stringify({email, password: id}),
+
     });
     if (resp.status === 200) {
       setToastMessage('로그인에 성공하였습니다.');
@@ -90,8 +169,8 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   };
 
   const handleSubmit: () => void = () => {
-    let body = JSON.stringify({ email, password });
-    if (!email.length || !password.length) {
+    let body = JSON.stringify({mail, password});
+    if (!mail.length || !password.length) {
       Alert.alert(
         'Empty Fields',
         `이메일과 비밀번호를 확인 후,${'\n'}다시 시도해 주시기 바랍니다.`,
@@ -101,7 +180,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
         },
         { cancelable: false },
       );
-      !email.length
+      !mail.length
         ? emailFieldRef.current.focus()
         : passwordFieldRef.current.focus();
       return;
@@ -118,7 +197,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       passwordFieldRef.current.clear();
       passwordFieldRef.current.focus();
       return;
-    } else if (!email.match(emailCheck)) {
+    } else if (!mail.match(emailCheck)) {
       Alert.alert(
         'Invalid E-mail Address',
         'Please input a correct e-mail address.',
@@ -152,7 +231,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   ) => {
     switch (inputType) {
       case 'email':
-        setEmail(input);
+        setMail(input);
         break;
       case 'password':
         setPassword(input);
@@ -162,7 +241,6 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
     passwordFieldRef.current.blur();
     emailFieldRef.current.blur();
   };
-
   return (
     <View onTouchStart={blurAll} style={styles.container}>
       <ImageBackground
@@ -243,14 +321,14 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
           <Button
             style={styles.buttonContainer__buttonTextStyle}
             title="회원가입"
-            titleStyle={{ color: 'black' }}
+            titleStyle={{color: 'black'}}
             type="clear"
             onPress={() => navigation.navigate('Signup')}
           />
           <Button
             style={styles.buttonContainer__buttonTextStyle}
             title="로그인"
-            titleStyle={{ color: 'black' }}
+            titleStyle={{color: 'black'}}
             type="clear"
             onPress={() => {
               handleSubmit();
@@ -269,7 +347,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
             title="Sign In With Facebook"
             button
             type="facebook"
-          // onPress={signIn}
+            onPress={onLoginFacebook}
           />
           <LinearGradient
             colors={['#CA1D7E', '#E35157', '#F2703F']}
@@ -294,15 +372,6 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
             // onPress={signIn}
             />
           </LinearGradient>
-        </View>
-        <View
-          onTouchStart={() => {
-            setEmail('z1@gmail.com');
-            setPassword('12345678');
-            handleSubmit();
-          }}
-          style={styles.devLoginButton}>
-          <Text>개발용 로그인</Text>
         </View>
         {toastMessage ? (
           <Toast

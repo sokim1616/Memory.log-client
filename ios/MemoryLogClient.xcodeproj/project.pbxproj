@@ -16,9 +16,11 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* MemoryLogClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MemoryLogClientTests.m */; };
 		5ED2E02D7C1745CEA873CA7A /* Lobster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1E8EEA216524B5BBA62921A /* Lobster-Regular.ttf */; };
+		6306557424DC5DB100052A60 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6306557324DC5DB100052A60 /* GoogleService-Info.plist */; };
+		63E81C2F24DC701C005760AD /* FBSDKLoginKit.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 63E81C2D24DC701C005760AD /* FBSDKLoginKit.framework.dSYM */; };
+		63E81C3024DC701C005760AD /* FBSDKCoreKit.framework.dSYM in Resources */ = {isa = PBXBuildFile; fileRef = 63E81C2E24DC701C005760AD /* FBSDKCoreKit.framework.dSYM */; };
 		6DE1035BF7DE317FE9E328C2 /* libPods-MemoryLogClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B32E30124374EF66F22F144 /* libPods-MemoryLogClient.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		9DA0797A24DAF5FF00F98F75 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9DA0797924DAF5FF00F98F75 /* GoogleService-Info.plist */; };
 		C5A2E9E15985BB9A5A338FCD /* libPods-MemoryLogClient-MemoryLogClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F36FD6641BD6D81442298FE /* libPods-MemoryLogClient-MemoryLogClientTests.a */; };
 /* End PBXBuildFile section */
 
@@ -62,12 +64,14 @@
 		2E25B68DB50A4F9A852C5471 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		414EE04116C044F7B0986515 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		41A663E6BB2F40E0A91F49FB /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		6306557324DC5DB100052A60 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		63E81C2D24DC701C005760AD /* FBSDKLoginKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = FBSDKLoginKit.framework.dSYM; path = ../../../../Documents/FacebookSDK/Carthage/Build/iOS/FBSDKLoginKit.framework.dSYM; sourceTree = "<group>"; };
+		63E81C2E24DC701C005760AD /* FBSDKCoreKit.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = FBSDKCoreKit.framework.dSYM; path = ../../../../Documents/FacebookSDK/Carthage/Build/iOS/FBSDKCoreKit.framework.dSYM; sourceTree = "<group>"; };
 		6FF23A20185246A1AC98A5A4 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MemoryLogClient/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		920AE01196CF291853BA329C /* Pods-MemoryLogClient-MemoryLogClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemoryLogClient-MemoryLogClientTests.release.xcconfig"; path = "Target Support Files/Pods-MemoryLogClient-MemoryLogClientTests/Pods-MemoryLogClient-MemoryLogClientTests.release.xcconfig"; sourceTree = "<group>"; };
 		973C699AE35A47E88368ED40 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		97D59239926949F7974EA04F /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		9DA0797924DAF5FF00F98F75 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A73D6623F5213E78782B8867 /* Pods-MemoryLogClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MemoryLogClient.release.xcconfig"; path = "Target Support Files/Pods-MemoryLogClient/Pods-MemoryLogClient.release.xcconfig"; sourceTree = "<group>"; };
 		AD26EEE216224A3CBE6395D1 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		CF6304427F394098853B3617 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -142,8 +146,8 @@
 				98CBE40824DAF8C7001C44CD /* GoogleService-Info.plist */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
+				6306557324DC5DB100052A60 /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				9DA0797924DAF5FF00F98F75 /* GoogleService-Info.plist */,
 			);
 			name = MemoryLogClient;
 			sourceTree = "<group>";
@@ -151,6 +155,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				63E81C2E24DC701C005760AD /* FBSDKCoreKit.framework.dSYM */,
+				63E81C2D24DC701C005760AD /* FBSDKLoginKit.framework.dSYM */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				0B32E30124374EF66F22F144 /* libPods-MemoryLogClient.a */,
@@ -371,9 +377,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63E81C2F24DC701C005760AD /* FBSDKLoginKit.framework.dSYM in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				9DA0797A24DAF5FF00F98F75 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				63E81C3024DC701C005760AD /* FBSDKCoreKit.framework.dSYM in Resources */,
+				6306557424DC5DB100052A60 /* GoogleService-Info.plist in Resources */,
 				5ED2E02D7C1745CEA873CA7A /* Lobster-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -453,6 +461,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MemoryLogClient-MemoryLogClientTests/Pods-MemoryLogClient-MemoryLogClientTests-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -474,6 +483,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
@@ -515,6 +525,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MemoryLogClient/Pods-MemoryLogClient-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -536,6 +547,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
