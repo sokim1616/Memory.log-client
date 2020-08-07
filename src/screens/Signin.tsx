@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     marginTop: 125,
   },
   textContainer: {
-    borderWidth: 2,
+    borderWidth: 3.5,
     borderColor: 'black',
     width: 100,
     height: 100,

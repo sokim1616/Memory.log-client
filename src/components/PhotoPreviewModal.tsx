@@ -30,7 +30,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
 }) => {
   const [editModeStatus, setEditModeStatus] = useState(false);
   const [photoDescription, setPhotoDescription] = useState(
-    "What's on your mind?",
+    '',
   );
   const {uri} = currentImageData;
   const memoField: Ref = React.createRef();

@@ -193,7 +193,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
                 <Input
                   containerStyle={styles.overlay__textinput__container}
                   inputContainerStyle={styles.overlay__textinput__input}
-                  inputStyle={{fontSize: 25}}
+                  inputStyle={{fontSize: 20}}
                   placeholder="상태 메세지를 입력하세요."
                   multiline={true}
                   maxLength={40}
@@ -208,14 +208,18 @@ const Profile: React.FC<ProfileProps> = ({}) => {
               <View style={styles.overlay__button}>
                 <Button
                   containerStyle={styles.overlay__button__style}
+                  buttonStyle={{borderColor: 'black'}}
                   title="취소"
+                  titleStyle={{color: 'black'}}
                   type="outline"
                   onPress={toggleOverlay}
                 />
                 <Button
                   containerStyle={styles.overlay__button__style}
+                  buttonStyle={{borderColor: 'black'}}
                   title="확인"
-                  type="solid"
+                  titleStyle={{color: 'black'}}
+                  type="outline"
                   onPress={changeStatusMessage}
                 />
               </View>
@@ -292,7 +296,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 10,
   },
-  overlay__title__text: {fontSize: 30, textAlign: 'center'},
+  overlay__title__text: {fontSize: 25, textAlign: 'center'},
   overlay__textinput: {flex: 6},
   overlay__textinput__container: {},
   overlay__textinput__input: {borderBottomColor: 'white'},
