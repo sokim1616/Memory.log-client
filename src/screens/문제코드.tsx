@@ -8,23 +8,24 @@ import FriendSearch from '../screens/FriendSearch';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const FriendList = ({ navigation }) => {
-  const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
-  const [followerList, setFollowerList] = useState([]); // 로그인 사용자의 인싸력 테스트
+  const [userState, setUserState] = useState([]);
+  const [followerList, setFollowerList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [unFollowId, setUnfollowId] = useState('');
+
   const toggleOverlay = (id) => {
     setVisible(!visible);
     setUnfollowId('');
     setUnfollowId(id);
   };
-  const requestUnFollow = (id) => {
+  const requestUnFollow = () => {
     return fetch('http://localhost:4000/follow/ufollow', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ unFollowId }),
       credentials: 'include',
     })
       .then((res) => res.json())

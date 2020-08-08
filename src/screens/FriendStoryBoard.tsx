@@ -1,5 +1,5 @@
-import React, {useState, useCallback} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
 import {
   SafeAreaView,
@@ -11,20 +11,20 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {Avatar} from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 interface HomeTwoProps {
   route;
 }
 
-const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
+const FriendStoryBoard: React.FC<HomeTwoProps> = ({ route }) => {
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);
   const [currentPhoto, setCurrentPhoto] = useState([]);
   const [previewMode, setPreviewMode] = useState(false);
   const [friend, setFriend] = useState({});
-  const {friendId} = route.params;
+  const { friendId } = route.params;
 
   const getFriendInfo = async () => {
     await fetch('http://localhost:4000/user/userinfobyid', {
@@ -34,7 +34,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id: friendId}),
+      body: JSON.stringify({ id: friendId }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -51,7 +51,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id: friendId}),
+      body: JSON.stringify({ id: friendId }),
       credentials: 'include',
     })
       .then((res) => res.json())
@@ -98,15 +98,15 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
           <Avatar
             rounded
             size="large"
-            source={{uri: friend.profilepath}}
+            source={{ uri: friend.profilepath }}
             containerStyle={{
               shadowColor: '#000',
-              shadowOffset: {width: 2.5, height: 2.5},
+              shadowOffset: { width: 2.5, height: 2.5 },
               shadowOpacity: 1,
               shadowRadius: 3,
             }}
           />
-          <View style={{justifyContent: 'center'}}>
+          <View style={{ justifyContent: 'center' }}>
             <Text style={styles.headerText}>너의 추억 저장소..</Text>
           </View>
         </View>
@@ -119,7 +119,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
               <Image
                 resizeMode="cover"
                 style={styles.photo}
-                source={{uri: ele.filepath}}
+                source={{ uri: ele.filepath }}
               />
             </TouchableOpacity>
           ))}

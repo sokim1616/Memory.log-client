@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-native-modal';
 import {
   View,
@@ -9,7 +9,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import {Button} from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -18,7 +18,7 @@ interface PhotoPreviewModalProps {
   currentImageData: string;
   changeButtonsVisibilityStatus: (
     ans: boolean,
-  ) => {buttonsVisibilityStatus: true};
+  ) => { buttonsVisibilityStatus: true };
 }
 
 const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
@@ -30,9 +30,9 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
 }) => {
   const [editModeStatus, setEditModeStatus] = useState(false);
   const [photoDescription, setPhotoDescription] = useState(
-    '',
+    '당신의 Memory.log...',
   );
-  const {uri} = currentImageData;
+  const { uri } = currentImageData;
   const memoField: Ref = React.createRef();
 
   const modalButtonTouchHandler = async (val) => {
@@ -41,6 +41,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
     }
     changeButtonsVisibilityStatus(true);
     handleModalVisibility(false);
+    setPhotoDescription('');
   };
 
   const handleKeyboardIconPress = () => {
@@ -66,7 +67,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           style={styles.backgroundImage}
           resizeMethod="auto"
           resizeMode="cover"
-          source={{uri}}
+          source={{ uri }}
         />
       </View>
       <Text style={styles.headerText}>Memory.log</Text>
@@ -78,7 +79,9 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           resizeMode="contain"
           resizeMethod="auto"
           style={styles.currentImage}
-          source={{uri}}
+          source={{
+            uri,
+          }}
         />
       </View>
       <View
@@ -91,11 +94,11 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
             name={editModeStatus ? 'keyboard-off-outline' : 'keyboard-outline'}
             color={'black'}
             size={35}
-            style={{alignSelf: 'center'}}
+            style={{ alignSelf: 'center' }}
           />
         </View>
         <TextInput
-          placeholder="몰라몰라"
+          placeholder="당신의 Memory.log..."
           ref={memoField}
           multiline={true}
           style={
@@ -118,7 +121,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
             // backgroundColor: 'rgba(255,255,255,0.75)',
           }}
           title="취소"
-          titleStyle={{fontSize: 25, color: 'white'}}
+          titleStyle={{ fontSize: 25, color: 'white' }}
           type="solid"
           onPress={() => modalButtonTouchHandler(null)}
         />
@@ -131,7 +134,7 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
             backgroundColor: 'rgba(78, 161, 211, 0.75)',
           }}
           title="저장"
-          titleStyle={{fontSize: 25}}
+          titleStyle={{ fontSize: 25 }}
           type="solid"
           onPress={() => modalButtonTouchHandler('save')}
         />

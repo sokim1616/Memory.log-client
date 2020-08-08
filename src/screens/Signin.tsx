@@ -1,6 +1,6 @@
 /* eslint-disable no-catch-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   Text,
@@ -11,18 +11,21 @@ import {
 } from 'react-native';
 import Server from '../utils/Server';
 import Toast from '../components/Toast';
-import {Button, Input, Icon, SocialIcon} from 'react-native-elements';
+import { Button, Input, Icon, SocialIcon } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {emailCheck} from '../utils/emailCheck';
-import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
-import {LoginManager, AccessToken} from 'react-native-fbsdk';
+import { emailCheck } from '../utils/emailCheck';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-community/google-signin';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import auth from '@react-native-firebase/auth';
 
 interface LoginProps {
   loginStatus: boolean;
 }
-const Signin: React.FC<LoginProps> = ({loginProps}) => {
-  const {changeLogin, navigation} = loginProps;
+const Signin: React.FC<LoginProps> = ({ loginProps }) => {
+  const { changeLogin, navigation } = loginProps;
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
@@ -58,8 +61,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       });
   };
 
-  const facebookSignup = async ({email, uid, photoURL, displayName}) => {
-    let resp = await fetch(`http://${Server.server}/user/signup`, {
+  const facebookSignup = async ({ email, uid, photoURL, displayName }) => {
+    await fetch(`http://${Server.server}/user/signup`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -71,35 +74,41 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
         username: displayName,
         profilepath: photoURL,
       }),
+    }).then(async (resp) => {
+      if (resp.status === 200) {
+        setToastMessage('페이스북 로그인에 성공하였습니다.');
+        await facebookSignin('fb_' + email, uid);
+      } else if (resp.status === 409) {
+        await facebookSignin('fb_' + email, uid);
+      } else {
+        setToastMessage(
+          '죄송합니다. \n 현재는 페이스북 로그인을 진행할 수 없습니다.',
+        );
+      }
     });
-    if (resp.status === 200) {
-      setToastMessage('페이스북 로그인에 성공하였습니다.');
-      await facebookSignin('fb_' + email, uid);
-    } else if (resp.status === 409) {
-      await facebookSignin('fb_' + email, uid);
-    } else {
-      setToastMessage(
-        '죄송합니다. 현재는 페이스북 로그인을 진행할 수 없습니다.',
-      );
-    }
   };
 
   const facebookSignin = async (email, uid) => {
-    let resp = await fetch(`http://${Server.server}/user/signin`, {
+    await fetch(`http://${Server.server}/user/signin`, {
       method: 'POST',
+      mode: 'cors',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, password: uid}),
+      body: JSON.stringify({ email, password: uid }),
+    }).then((resp) => {
+      if (resp.status === 200) {
+        setToastMessage('로그인에 성공하였습니다.');
+        setTimeout(() => changeLogin(true), 1000);
+      } else {
+        setToastMessage(
+          'Unathorized. Please check your username and password.',
+        );
+      }
     });
-    if (resp.status === 200) {
-      setToastMessage('로그인에 성공하였습니다.');
-      setTimeout(() => changeLogin(true), 1000);
-    } else {
-      setToastMessage('Unathorized. Please check your username and password.');
-    }
   };
+
   const googlesignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -121,7 +130,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
     }
   };
 
-  const googleSinup = async ({email, id, photo, name}) => {
+  const googleSinup = async ({ email, id, photo, name }) => {
     let resp = await fetch(`http://${Server.server}/user/signup`, {
       method: 'POST',
       headers: {
@@ -137,15 +146,15 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
     });
     if (resp.status === 200) {
       setToastMessage('구글 로그인에 성공하였습니다.');
-      await googleSignin({email, id});
+      await googleSignin({ email, id });
     } else if (resp.status === 409) {
-      await googleSignin({email, id});
+      await googleSignin({ email, id });
     } else {
-      setToastMessage('죄송합니다. 현재는 구글로그인을 진행할 수 없습니다.');
+      setToastMessage('죄송합니다. \n 현재는 구글로그인을 진행할 수 없습니다.');
     }
   };
 
-  const googleSignin = async ({email, id}) => {
+  const googleSignin = async ({ email, id }) => {
     let resp = await fetch(`http://${Server.server}/user/signin`, {
       method: 'POST',
       headers: {
@@ -153,7 +162,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({email, password: id}),
+      body: JSON.stringify({ email, password: id }),
     });
     if (resp.status === 200) {
       setToastMessage('로그인에 성공하였습니다.');
@@ -164,7 +173,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
   };
 
   const handleSubmit: () => void = () => {
-    let body = JSON.stringify({email: mail, password});
+    let body = JSON.stringify({ email: mail, password });
     if (!mail.length || !password.length) {
       Alert.alert(
         'Empty Fields',
@@ -173,7 +182,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           text: 'OK',
           onPress: () => console.log('hi'),
         },
-        {cancelable: false},
+        { cancelable: false },
       );
       !mail.length
         ? emailFieldRef.current.focus()
@@ -187,7 +196,7 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           text: 'OK',
           onPress: () => console.log('hi'),
         },
-        {cancelable: false},
+        { cancelable: false },
       );
       passwordFieldRef.current.clear();
       passwordFieldRef.current.focus();
@@ -196,8 +205,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
       Alert.alert(
         'Invalid E-mail Address',
         'Please input a correct e-mail address.',
-        {text: 'OK', onPress: () => console.log('hi')},
-        {cancelable: false},
+        { text: 'OK', onPress: () => console.log('hi') },
+        { cancelable: false },
       );
       return;
     }
@@ -320,14 +329,14 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
           <Button
             style={styles.buttonContainer__buttonTextStyle}
             title="회원가입"
-            titleStyle={{color: 'black'}}
+            titleStyle={{ color: 'black' }}
             type="clear"
             onPress={() => navigation.navigate('Signup')}
           />
           <Button
             style={styles.buttonContainer__buttonTextStyle}
             title="로그인"
-            titleStyle={{color: 'black'}}
+            titleStyle={{ color: 'black' }}
             type="clear"
             onPress={() => {
               handleSubmit();
@@ -341,17 +350,23 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
             button
             type="google"
             onPress={googlesignIn}
+            style={{ backgroundColor: 'rgba(207,68,56,0.5)' }}
           />
           <SocialIcon
             title="Sign In With Facebook"
             button
             type="facebook"
             onPress={onLoginFacebook}
+            style={{ backgroundColor: 'rgba(52,93,166,0.5)' }}
           />
           <LinearGradient
-            colors={['#CA1D7E', '#E35157', '#F2703F']}
-            start={{x: 0.0, y: 1.0}}
-            end={{x: 1.0, y: 1.0}}
+            colors={[
+              'rgba(202, 29, 126, 0.5)',
+              'rgba(227, 81, 87, 0.5)',
+              'rgba(242, 112, 63, 0.5)',
+            ]}
+            start={{ x: 0.0, y: 1.0 }}
+            end={{ x: 1.0, y: 1.0 }}
             style={{
               height: 55,
               width: 400,
@@ -361,8 +376,8 @@ const Signin: React.FC<LoginProps> = ({loginProps}) => {
             }}>
             <SocialIcon
               title="Sign In With Instagram"
-              fontStyle={{height: 50, top: -3, left: -10}}
-              iconStyle={{height: 70, width: 50, top: 2, left: 25}}
+              fontStyle={{ height: 50, top: -3, left: -15 }}
+              iconStyle={{ height: 70, width: 50, top: 2, left: 20 }}
               button
               style={{
                 backgroundColor: 'transparent',
@@ -393,7 +408,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
   },
-  backgroundImage: {flex: 1, height: '110%', resizeMode: 'cover'},
+  backgroundImage: { flex: 1, height: '110%', resizeMode: 'cover' },
   header: {
     flex: 1,
     justifyContent: 'center',
@@ -420,8 +435,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 0,
     marginHorizontal: 50,
-    // backgroundColor: '#3ef',
-    // borderWidth: 3,
   },
   inputLabelFocused: {
     flex: 0.2,
@@ -433,7 +446,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     minWidth: Dimensions.get('window').width - 90,
-    // borderWidth: 3,
   },
   inputLabelBlurred: {
     flex: 0.2,
@@ -445,7 +457,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'transparent',
     minWidth: Dimensions.get('window').width - 90,
-    // borderWidth: 3,
   },
   inputField: {
     flex: 1,
@@ -460,32 +471,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     fontSize: 18,
     minWidth: Dimensions.get('window').width - 90,
-    // borderWidth: 3,
   },
   buttonContainer: {
     flex: 1.5,
-    // width: 300,
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginHorizontal: 50,
-    // backgroundColor: '#ef2',
   },
-  // buttonContainer__buttonStyle: {
-  //   marginTop: 20,
-  //   borderWidth: 0.5,
-  //   borderRadius: 10,
-  //   backgroundColor: 'white',
-  //   borderColor: 'grey',
-  // },
   buttonContainer__buttonTextStyle: {
     width: 100,
     borderWidth: 1,
-    // borderColor: 'rgb(85,135,216)',
     borderColor: 'rgba(0,0,0,0.5)',
     borderRadius: 50,
     backgroundColor: 'rgba(255,255,255,0.25)',
   },
-  socialLogin: {flex: 3},
+  socialLogin: { flex: 3 },
   devLoginButton: {
     position: 'absolute',
     top: 20,

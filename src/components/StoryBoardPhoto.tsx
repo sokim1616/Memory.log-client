@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
-import {StyleSheet, Image, Dimensions, TouchableOpacity} from 'react-native';
+import { StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 
 interface StoryBoardPhotoProps {}
 
@@ -33,7 +33,7 @@ const StoryBoardPhoto: React.FC<StoryBoardPhotoProps> = ({
             ? styles.onDeletePhoto
             : styles.photo
         }
-        source={{uri: photo.filepath}}
+        source={{ uri: photo.filepath }}
       />
       {(deleteMode || shareMode) && photo ? (
         <TouchableOpacity
@@ -63,25 +63,26 @@ const StoryBoardPhoto: React.FC<StoryBoardPhotoProps> = ({
 };
 const styles = StyleSheet.create({
   photoView: {
-    flex: 0.25,
+    flex: 0.5,
     flexDirection: 'row',
     marginVertical: 5,
-    minWidth: Dimensions.get('window').width / 4 - 18,
-    maxWidth: 93,
+    marginHorizontal: 4.5,
+    minWidth: Dimensions.get('window').width / 2 - 9,
+    maxWidth: 198,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2.5},
+    shadowOffset: { width: 0, height: 2.5 },
     shadowOpacity: 1,
     shadowRadius: 3,
   },
   photo: {
     flex: 1,
-    height: Dimensions.get('screen').height / 8 - 12,
+    height: Dimensions.get('screen').height / 4 - 12,
     borderRadius: 5,
     borderColor: 'blue',
   },
   onDeletePhoto: {
     flex: 1,
-    height: Dimensions.get('screen').height / 8 - 12,
+    height: Dimensions.get('screen').height / 4 - 12,
     borderRadius: 5,
     borderColor: 'blue',
     opacity: 0.5,
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     alignSelf: 'center',
     shadowColor: '#000',
-    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOffset: { width: 2.5, height: 2.5 },
     shadowOpacity: 0.3,
     shadowRadius: 1,
   },

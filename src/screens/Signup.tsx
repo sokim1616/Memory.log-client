@@ -41,9 +41,13 @@ const Signup: React.FC<SignupProps> = ({ loginProps }) => {
           {
             text: 'OK',
             onPress: () => {
-              if (!username) usernameFieldRef.current.focus();
-              else if (!email) emailFieldRef.current.focus();
-              else passwordFieldRef.current.focus();
+              if (!username) {
+                usernameFieldRef.current.focus();
+              } else if (!email) {
+                emailFieldRef.current.focus();
+              } else {
+                passwordFieldRef.current.focus();
+              }
             },
           },
         ],
@@ -162,7 +166,7 @@ const Signup: React.FC<SignupProps> = ({ loginProps }) => {
         <View style={styles.inputSection}>
           <View style={styles.inputContainer}>
             <View style={styles.inputLabelFocused}>
-              <Text>{inputInFocus === 'username' ? '이름' : ''}</Text>
+              <Text>{inputInFocus === 'username' ? 'Username' : ''}</Text>
             </View>
             <Input
               ref={usernameFieldRef}
@@ -184,7 +188,7 @@ const Signup: React.FC<SignupProps> = ({ loginProps }) => {
           </View>
           <View style={styles.inputContainer}>
             <View style={styles.inputLabelFocused}>
-              <Text>{inputInFocus === 'email' ? '이메일' : ''}</Text>
+              <Text>{inputInFocus === 'email' ? 'E-mail' : ''}</Text>
             </View>
             <Input
               ref={emailFieldRef}
@@ -211,7 +215,7 @@ const Signup: React.FC<SignupProps> = ({ loginProps }) => {
           </View>
           <View style={styles.inputContainer}>
             <View style={styles.inputLabelFocused}>
-              <Text>{inputInFocus === 'password' ? '패스워드' : ''}</Text>
+              <Text>{inputInFocus === 'password' ? 'Password' : ''}</Text>
             </View>
             <Input
               ref={passwordFieldRef}
@@ -238,11 +242,12 @@ const Signup: React.FC<SignupProps> = ({ loginProps }) => {
               containerStyle={{
                 marginVertical: 20,
                 borderWidth: 1,
-                borderColor: 'rgb(85,135,216)',
+                borderColor: 'rgba(0,0,0,0.5)',
                 borderRadius: 50,
-                backgroundColor: 'rgba(255,255,255,0.25)',
+                backgroundColor: 'rgba(255,255,255,0.5)',
               }}
               title="회원가입"
+              titleStyle={{ color: 'rgba(0, 0, 0, 1)' }}
               type="clear"
               raised
               onPress={handleSubmit}
@@ -253,11 +258,12 @@ const Signup: React.FC<SignupProps> = ({ loginProps }) => {
               containerStyle={{
                 marginVertical: 20,
                 borderWidth: 1,
-                borderColor: 'rgb(85,135,216)',
+                borderColor: 'rgba(0,0,0,0.5)',
                 borderRadius: 50,
                 backgroundColor: 'rgba(255,255,255,0.5)',
               }}
               title="뒤로가기"
+              titleStyle={{ color: 'rgba(0, 0, 0, 1)' }}
               type="clear"
               raised
               onPress={() => navigation.navigate('Signin')}
@@ -308,7 +314,7 @@ const styles = StyleSheet.create({
   inputLabelFocused: {
     height: 20,
     justifyContent: 'center',
-    paddingLeft: 15,
+    paddingLeft: 38,
     fontSize: 14,
     color: 'black',
     minWidth: Dimensions.get('window').width - 90,

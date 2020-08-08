@@ -1,5 +1,5 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import StoryBoardPhoto from '../components/StoryBoardPhoto';
@@ -12,11 +12,9 @@ import {
   Alert,
   Text,
   TouchableOpacity,
-  Button,
   Share,
-  Dimensions,
 } from 'react-native';
-import {Avatar} from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -46,7 +44,9 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
 
   const handleShareIconPress = async () => {
     setSelectionList([]);
-    if (deleteMode) setDeleteMode(false);
+    if (deleteMode) {
+      setDeleteMode(false);
+    }
     setShareMode(!shareMode);
     if (selectionList.length) {
       console.log(selectionList);
@@ -70,13 +70,16 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   };
 
   const handleDeleteIconPress = () => {
-    if (shareMode) setShareMode(false);
-    if (!deleteMode) setDeleteMode(true);
-    else {
+    if (shareMode) {
+      setShareMode(false);
+    }
+    if (!deleteMode) {
+      setDeleteMode(true);
+    } else {
       if (selectionList.length) {
         setSelectionList([]);
         Alert.alert(
-          `사진 삭제`,
+          '사진 삭제',
           `${selectionList.length}장의 사진을 지우시곘습니까 ?`,
           [
             {
@@ -85,9 +88,9 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
                 deletePhotos(selectionList);
               },
             },
-            {text: '아니요'},
+            { text: '아니요' },
           ],
-          {cancelable: false},
+          { cancelable: false },
         );
       }
       setDeleteMode(!deleteMode);
@@ -95,7 +98,9 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   };
 
   const handlePhotoTouch = (ele) => {
-    if (deleteMode || shareMode) return;
+    if (deleteMode || shareMode) {
+      return;
+    }
     ele ? activatePreview(ele) : null;
   };
 
@@ -115,16 +120,21 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
         });
         console.log(result);
         if (result.action === Share.sharedAction) {
-          Alert.alert(`사진 공유!`, `사진이 공유 되었습니다!`, [{text: '예'}], {
-            cancelable: false,
-          });
+          Alert.alert(
+            '사진 공유!',
+            '사진이 공유 되었습니다!',
+            [{ text: '예' }],
+            {
+              cancelable: false,
+            },
+          );
         } else if (result.action === Share.dismissedAction) {
           null;
         } else {
           Alert.alert(
-            `사진 공유!`,
-            `사진이 공유를 실패했습니다.`,
-            [{text: '예'}],
+            '사진 공유!',
+            '사진이 공유를 실패했습니다.',
+            [{ text: '예' }],
             {
               cancelable: false,
             },
@@ -192,7 +202,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
           <Avatar
             rounded
             size="large"
-            source={{uri: userState.profilepath}}
+            source={{ uri: userState.profilepath }}
             containerStyle={styles.avatarContainer}
           />
           <View style={styles.headerTextContainer}>
@@ -261,7 +271,7 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     shadowColor: '#000',
-    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOffset: { width: 2.5, height: 2.5 },
     shadowOpacity: 1,
     shadowRadius: 3,
   },
@@ -291,7 +301,7 @@ const styles = StyleSheet.create({
   },
   shareIconContainer: {
     shadowColor: '#000',
-    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOffset: { width: 2.5, height: 2.5 },
     shadowOpacity: 0.3,
     shadowRadius: 1,
     borderWidth: 3,
@@ -305,7 +315,7 @@ const styles = StyleSheet.create({
     // top: 15,
     // right: 15,
     shadowColor: '#000',
-    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOffset: { width: 2.5, height: 2.5 },
     shadowOpacity: 0.3,
     shadowRadius: 1,
   },

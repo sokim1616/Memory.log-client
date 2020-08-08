@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-native-modal';
 import {
   View,
@@ -46,7 +46,6 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
       setMemoOnFocus(true);
     }
   };
-
   const handleStatusUpdate = async () => {
     currentPhoto.description = memo;
     const res = await fetch(`http://${Server.server}/photo/uboard`, {
@@ -74,7 +73,7 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
             onPress: handleKeyboardIconPress,
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
     } else {
       return Alert.alert(
@@ -91,11 +90,10 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
             style: 'cancel',
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
     }
   };
-
   return (
     <Modal
       animationIn="slideInDown"
@@ -104,11 +102,15 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
       animationOutTiming={500}
       isVisible={previewMode}
       style={styles.modalContainer}>
-      {/* <ImageBackground
-        style={styles.backgroundImage}
-        source={{uri: currentPhoto.filepath}}
-        blurRadius={10}> */}
-      <View style={styles.blurBackground} />
+      <View style={styles.blurBackground}>
+        <Image
+          resizeMode="cover"
+          resizeMethod="auto"
+          blurRadius={5}
+          style={styles.currentImageBackground}
+          source={{ uri: currentPhoto.filepath }}
+        />
+      </View>
       {!memoOnFocus ? (
         <>
           <Text style={styles.headerText}>Memory.log</Text>
@@ -121,10 +123,10 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
               />
             </TouchableOpacity>
             <Image
-              resizeMode="contain"
+              resizeMode="cover"
               resizeMethod="auto"
               style={styles.currentImage}
-              source={{uri: currentPhoto.filepath}}
+              source={{ uri: currentPhoto.filepath }}
             />
           </View>
         </>
@@ -149,7 +151,7 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
                 <TouchableOpacity
                   onPress={handleStatusUpdate}
                   style={styles.saveButton}>
-                  <Text style={{fontSize: 16}}>Save</Text>
+                  <Text style={{ fontSize: 16 }}>Save</Text>
                 </TouchableOpacity>
               ) : null}
             </>
@@ -169,7 +171,6 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
     </Modal>
   );
 };
-
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
@@ -203,11 +204,19 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').height,
   },
+  currentImageBackground: {
+    flex: 1,
+    opacity: 1,
+  },
   imageContainer: {
     flex: 1,
     marginTop: 100,
     margin: 30,
     width: Dimensions.get('screen').width * 0.8,
+    shadowColor: '#000',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
   },
   goBackButtonContainer: {
     position: 'absolute',
@@ -217,7 +226,6 @@ const styles = StyleSheet.create({
     color: 'white',
     zIndex: 1,
     backgroundColor: 'white',
-
     borderRadius: 40,
   },
   goBackButton: {
@@ -227,24 +235,18 @@ const styles = StyleSheet.create({
   currentImage: {
     flex: 1,
     opacity: 1,
-    shadowColor: '#eeeeee',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 3,
+    borderColor: 'grey',
+    borderWidth: 1,
+    borderRadius: 10,
   },
   noteContainer: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'lightyellow',
     width: Dimensions.get('screen').width * 0.8,
-    borderRightColor: 'red',
-    borderRightWidth: 3,
     borderTopLeftRadius: 15,
     marginBottom: 80,
-    shadowColor: 'darkred',
+    shadowColor: 'black',
     shadowOffset: {
       width: 1,
       height: 1,
@@ -257,11 +259,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'lightyellow',
     width: Dimensions.get('screen').width,
-    borderRightColor: 'red',
-    borderRightWidth: 3,
     borderTopLeftRadius: 15,
     marginVertical: 50,
-    shadowColor: 'darkred',
+    shadowColor: 'black',
     shadowOffset: {
       width: 1,
       height: 1,

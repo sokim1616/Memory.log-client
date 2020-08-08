@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -10,7 +10,7 @@ import {
   Animated,
   Linking,
 } from 'react-native';
-import {Button, Overlay, ListItem} from 'react-native-elements';
+import { Button, Overlay, ListItem } from 'react-native-elements';
 import Mailer from 'react-native-mail';
 
 interface AboutProps {}
@@ -21,7 +21,6 @@ const About: React.FC<AboutProps> = () => {
   const [visible4, setVisible4] = useState(false);
   const [visible5, setVisible5] = useState(false);
   const [show, setShow] = useState(false);
-  const [show2, setShow2] = useState(false);
 
   const opacity = useState(new Animated.Value(0))[0];
 
@@ -100,13 +99,13 @@ const About: React.FC<AboutProps> = () => {
               onPress: () => console.log('CANCEL: Email Error Response'),
             },
           ],
-          {cancelable: true},
+          { cancelable: true },
         );
       },
     );
   };
   return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'space-between'}}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'space-between' }}>
       <View
         style={{
           flex: 0.2,
@@ -124,7 +123,7 @@ const About: React.FC<AboutProps> = () => {
         }}>
         <Button
           title="HOW TO USE"
-          titleStyle={{color: '#454552'}}
+          titleStyle={{ color: '#454552' }}
           onPress={escapeToggleModal1}
           raised
           buttonStyle={{
@@ -136,13 +135,12 @@ const About: React.FC<AboutProps> = () => {
           overlayStyle={styles.overlay}
           isVisible={visible1}
           onBackdropPress={escapeToggleModal1}>
-          <View onTouchStart={toggleModal1} style={{flex: 1}}>
+          <View onTouchStart={toggleModal1} style={{ flex: 1 }}>
             <ImageBackground
               source={require('../assets/image/start.png')}
               style={styles.image}>
-              <View style={{flex: 8.5, justifyContent: 'center'}}>
-                {fadeInText()}
-                <Animated.View style={{opacity}}>
+              <View style={{ flex: 8.5, justifyContent: 'center' }}>
+                <Animated.View style={{ opacity }}>
                   <Text>
                     <Text
                       style={{
@@ -153,7 +151,7 @@ const About: React.FC<AboutProps> = () => {
                         lineHeight: 50,
                         textAlign: 'center',
                         textShadowColor: 'black',
-                        textShadowOffset: {width: 0, height: 0},
+                        textShadowOffset: { width: 0, height: 0 },
                         textShadowRadius: 10,
                       }}>
                       Memory.log
@@ -167,7 +165,7 @@ const About: React.FC<AboutProps> = () => {
                         lineHeight: 50,
                         textAlign: 'center',
                         textShadowColor: 'black',
-                        textShadowOffset: {width: 0, height: 0},
+                        textShadowOffset: { width: 0, height: 0 },
                         textShadowRadius: 5,
                       }}>
                       와 함께 {'\n'} 추억을 저장하는 방법😘
@@ -175,7 +173,7 @@ const About: React.FC<AboutProps> = () => {
                   </Text>
                 </Animated.View>
               </View>
-              <View style={{flex: 1.5, justifyContent: 'center'}}>
+              <View style={{ flex: 1.5, justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -197,11 +195,12 @@ const About: React.FC<AboutProps> = () => {
           overlayStyle={styles.overlay}
           isVisible={visible2}
           onBackdropPress={escapeToggleModal2}>
-          <View onTouchStart={toggleModal2} style={{flex: 1}}>
+          <View onTouchStart={toggleModal2} style={{ flex: 1 }}>
             <ImageBackground
               source={require('../assets/image/morning.png')}
               style={styles.image}>
-              <View style={{flex: 3, justifyContent: 'center', marginTop: 30}}>
+              <View
+                style={{ flex: 8.5, justifyContent: 'center', marginTop: 30 }}>
                 <Text
                   style={{
                     fontSize: 30,
@@ -210,7 +209,7 @@ const About: React.FC<AboutProps> = () => {
                     lineHeight: 50,
                     textAlign: 'center',
                     textShadowColor: 'black',
-                    textShadowOffset: {width: 0, height: 0},
+                    textShadowOffset: { width: 0, height: 0 },
                     textShadowRadius: 5,
                   }}>
                   STEP 1
@@ -224,14 +223,13 @@ const About: React.FC<AboutProps> = () => {
                     lineHeight: 50,
                     textAlign: 'center',
                     textShadowColor: 'black',
-                    textShadowOffset: {width: 0, height: 0},
+                    textShadowOffset: { width: 0, height: 0 },
                     textShadowRadius: 5,
                   }}>
                   추억을 저장하고 싶은 {'\n'} 장소로 이동해 볼까요?
                 </Text>
               </View>
-              <View style={{flex: 7, justifyContent: 'center'}} />
-              <View style={{flex: 1.5, justifyContent: 'center'}}>
+              <View style={{ flex: 1.5, justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -252,11 +250,12 @@ const About: React.FC<AboutProps> = () => {
           overlayStyle={styles.overlay}
           isVisible={visible3}
           onBackdropPress={escapeToggleModal3}>
-          <View onTouchStart={toggleModal3} style={{flex: 1}}>
+          <View onTouchStart={toggleModal3} style={{ flex: 1 }}>
             <ImageBackground
               source={require('../assets/image/noon.png')}
               style={styles.image}>
-              <View style={{flex: 4, justifyContent: 'center', marginTop: 15}}>
+              <View
+                style={{ flex: 8.5, justifyContent: 'center', marginTop: 15 }}>
                 <Text
                   style={{
                     fontSize: 30,
@@ -265,7 +264,7 @@ const About: React.FC<AboutProps> = () => {
                     lineHeight: 50,
                     textAlign: 'center',
                     textShadowColor: 'black',
-                    textShadowOffset: {width: 0, height: 0},
+                    textShadowOffset: { width: 0, height: 0 },
                     textShadowRadius: 5,
                   }}>
                   STEP 2
@@ -279,14 +278,13 @@ const About: React.FC<AboutProps> = () => {
                     lineHeight: 50,
                     textAlign: 'center',
                     textShadowColor: 'black',
-                    textShadowOffset: {width: 0, height: 0},
+                    textShadowOffset: { width: 0, height: 0 },
                     textShadowRadius: 5,
                   }}>
-                  여행을 하면서 {'\n'} 소중한 순간을 {'\n'} 담아주세요.
+                  여행을 하며 {'\n'} 소중한 순간을 {'\n'} 담아주세요
                 </Text>
               </View>
-              <View style={{flex: 4.5, justifyContent: 'center'}} />
-              <View style={{flex: 1.5, justifyContent: 'center'}}>
+              <View style={{ flex: 1.5, justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -308,11 +306,12 @@ const About: React.FC<AboutProps> = () => {
           overlayStyle={styles.overlay}
           isVisible={visible4}
           onBackdropPress={escapeToggleModal4}>
-          <View onTouchStart={toggleModal4} style={{flex: 1}}>
+          <View onTouchStart={toggleModal4} style={{ flex: 1 }}>
             <ImageBackground
               source={require('../assets/image/evening.png')}
               style={styles.image}>
-              <View style={{flex: 4, justifyContent: 'center', marginTop: 15}}>
+              <View
+                style={{ flex: 8.5, justifyContent: 'center', marginTop: 15 }}>
                 <Text
                   style={{
                     fontSize: 30,
@@ -321,7 +320,7 @@ const About: React.FC<AboutProps> = () => {
                     lineHeight: 50,
                     textAlign: 'center',
                     textShadowColor: 'black',
-                    textShadowOffset: {width: 0, height: 0},
+                    textShadowOffset: { width: 0, height: 0 },
                     textShadowRadius: 5,
                   }}>
                   STEP 3
@@ -335,14 +334,13 @@ const About: React.FC<AboutProps> = () => {
                     lineHeight: 50,
                     textAlign: 'center',
                     textShadowColor: 'black',
-                    textShadowOffset: {width: 0, height: 0},
+                    textShadowOffset: { width: 0, height: 0 },
                     textShadowRadius: 5,
                   }}>
-                  당신이 느낀 {'\n'} 그 순간의 감정... {'\n'} 글로 남겨주세요.
+                  당신이 느낀 {'\n'} 그 순간의 감정... {'\n'} 글로 남겨주세요
                 </Text>
               </View>
-              <View style={{flex: 4.5, justifyContent: 'center'}} />
-              <View style={{flex: 1.5, justifyContent: 'center'}}>
+              <View style={{ flex: 1.5, justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -364,13 +362,13 @@ const About: React.FC<AboutProps> = () => {
           overlayStyle={styles.overlay}
           isVisible={visible5}
           onBackdropPress={escapeToggleModal5}>
-          <View onTouchStart={escapeToggleModal5} style={{flex: 1}}>
+          <View onTouchStart={escapeToggleModal5} style={{ flex: 1 }}>
             <ImageBackground
               source={require('../assets/image/end.png')}
               style={styles.image}>
-              <View style={{flex: 8.5, justifyContent: 'center'}}>
+              <View style={{ flex: 8.5, justifyContent: 'center' }}>
                 {fadeInText()}
-                <Animated.View style={{opacity}}>
+                <Animated.View style={{ opacity }}>
                   <Text>
                     <Text
                       style={{
@@ -381,7 +379,7 @@ const About: React.FC<AboutProps> = () => {
                         lineHeight: 50,
                         textAlign: 'center',
                         textShadowColor: 'black',
-                        textShadowOffset: {width: 0, height: 0},
+                        textShadowOffset: { width: 0, height: 0 },
                         textShadowRadius: 10,
                       }}>
                       Memory.log
@@ -395,7 +393,7 @@ const About: React.FC<AboutProps> = () => {
                         lineHeight: 50,
                         textAlign: 'center',
                         textShadowColor: 'black',
-                        textShadowOffset: {width: 0, height: 0},
+                        textShadowOffset: { width: 0, height: 0 },
                         textShadowRadius: 5,
                       }}>
                       와 함께 {'\n'} 떠나실 준비 되셨나요?
@@ -403,7 +401,7 @@ const About: React.FC<AboutProps> = () => {
                   </Text>
                 </Animated.View>
               </View>
-              <View style={{flex: 1.5, justifyContent: 'center'}}>
+              <View style={{ flex: 1.5, justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -427,13 +425,13 @@ const About: React.FC<AboutProps> = () => {
           title="Travel-Maker"
           onPress={toggleModal5}
           raised
-          buttonStyle={{backgroundColor: '#4EA1D3'}}
+          buttonStyle={{ backgroundColor: '#4EA1D3' }}
         />
         <Overlay
           overlayStyle={styles.overlay2}
           isVisible={show}
           onBackdropPress={toggleModal5}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
             <View
               style={{
                 flex: 2,
@@ -459,7 +457,9 @@ const About: React.FC<AboutProps> = () => {
                 팀원 소개
               </Text> */}
             </View>
-            <View style={{borderBottomColor: 'black', borderBottomWidth: 2}} />
+            <View
+              style={{ borderBottomColor: 'black', borderBottomWidth: 2 }}
+            />
             <View
               style={{
                 flex: 8,
@@ -471,13 +471,13 @@ const About: React.FC<AboutProps> = () => {
                   size: 'large',
                   containerStyle: {
                     shadowColor: '#000',
-                    shadowOffset: {width: 2.5, height: 2.5},
+                    shadowOffset: { width: 2.5, height: 2.5 },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   },
                 }}
                 title="김소현"
-                titleStyle={{fontWeight: 'bold'}}
+                titleStyle={{ fontWeight: 'bold' }}
                 rightIcon={{
                   name: 'github',
                   type: 'antdesign',
@@ -485,7 +485,7 @@ const About: React.FC<AboutProps> = () => {
                     Linking.openURL('https://github.com/sokim1616'),
                 }}
                 subtitle={`노예상인 ${'\n'}FULL-STACK${'\n'}sokim1616@gmail.com`}
-                subtitleStyle={{paddingTop: 5}}
+                subtitleStyle={{ paddingTop: 5 }}
                 topDivider
                 bottomDivider
               />
@@ -495,13 +495,13 @@ const About: React.FC<AboutProps> = () => {
                   size: 'large',
                   containerStyle: {
                     shadowColor: '#000',
-                    shadowOffset: {width: 2.5, height: 2.5},
+                    shadowOffset: { width: 2.5, height: 2.5 },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   },
                 }}
                 title="김현규"
-                titleStyle={{fontWeight: 'bold'}}
+                titleStyle={{ fontWeight: 'bold' }}
                 rightIcon={{
                   name: 'github',
                   type: 'antdesign',
@@ -521,13 +521,13 @@ const About: React.FC<AboutProps> = () => {
                   size: 'large',
                   containerStyle: {
                     shadowColor: '#000',
-                    shadowOffset: {width: 2.5, height: 2.5},
+                    shadowOffset: { width: 2.5, height: 2.5 },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   },
                 }}
                 title="경두현"
-                titleStyle={{fontWeight: 'bold'}}
+                titleStyle={{ fontWeight: 'bold' }}
                 rightIcon={{
                   name: 'github',
                   type: 'antdesign',
@@ -535,10 +535,10 @@ const About: React.FC<AboutProps> = () => {
                     Linking.openURL('https://github.com/kyung-douhyun'),
                 }}
                 subtitle={
-                  <Text style={{paddingTop: 5, width: 175}}>
+                  <Text style={{ paddingTop: 5, width: 175 }}>
                     <Text>노예2{'\n'}</Text>
                     <Text>FULL-STACK{'\n'}</Text>
-                    <Text style={{fontSize: 13.5}}>
+                    <Text style={{ fontSize: 13.5 }}>
                       douhyun.kyung@gmail.com
                     </Text>
                   </Text>
@@ -551,13 +551,13 @@ const About: React.FC<AboutProps> = () => {
                   size: 'large',
                   containerStyle: {
                     shadowColor: '#000',
-                    shadowOffset: {width: 2.5, height: 2.5},
+                    shadowOffset: { width: 2.5, height: 2.5 },
                     shadowOpacity: 1,
                     shadowRadius: 3,
                   },
                 }}
                 title="변민우"
-                titleStyle={{fontWeight: 'bold'}}
+                titleStyle={{ fontWeight: 'bold' }}
                 rightIcon={{
                   name: 'github',
                   type: 'antdesign',
@@ -578,7 +578,7 @@ const About: React.FC<AboutProps> = () => {
           title="Q&A"
           onPress={handleEmail}
           raised
-          buttonStyle={{backgroundColor: '#454552'}}
+          buttonStyle={{ backgroundColor: '#454552' }}
         />
         <View />
       </View>
@@ -616,7 +616,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.25)',
     borderRadius: 5,
     shadowColor: '#000',
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.8,
     shadowRadius: 10,
   },
@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.8,
     shadowRadius: 10,
   },
@@ -636,7 +636,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.8,
     shadowRadius: 10,
   },
