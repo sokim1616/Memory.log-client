@@ -1,19 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import { View, StyleSheet, Image, Text, Dimensions } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInput } from 'react-native-paper';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import Coords from '../utils/coordsSeed';
+메;
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
@@ -141,8 +134,8 @@ const Map = () => {
         />
         {photoData.map((el: PhotoDataElement, i) => {
           const { latitude, longitude, createdAt, description, filepath } = el;
-          let lat = Coords.coords[i][0];
-          let long = Coords.coords[i][1];
+          let lat = Number(latitude);
+          let long = Number(longitude);
           return (
             <Marker
               onSelect={() =>

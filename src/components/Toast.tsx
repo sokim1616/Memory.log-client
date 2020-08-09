@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 
 interface ToastProps {
@@ -7,7 +7,7 @@ interface ToastProps {
   handlePress: () => void;
 }
 
-const Toast: React.FC<ToastProps> = ({message, handlePress}) => {
+const Toast: React.FC<ToastProps> = ({ message, handlePress }) => {
   return (
     <Modal
       animationIn="bounceInUp"

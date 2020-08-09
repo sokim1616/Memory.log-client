@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';

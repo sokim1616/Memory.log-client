@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Alert,
-  StatusBar,
 } from 'react-native';
 import Server from '../utils/Server';
 import { RNCamera, TakePictureResponse } from 'react-native-camera';

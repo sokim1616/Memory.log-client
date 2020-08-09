@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
   StyleSheet,
-  Button,
   Image,
   ScrollView,
   Dimensions,
@@ -58,7 +57,7 @@ const HomeTwo: React.FC<HomeTwoProps> = (navigation) => {
                 resizeMode="cover"
                 key={i}
                 style={styles.photo}
-                source={{uri: photo.node.image.uri}}
+                source={{ uri: photo.node.image.uri }}
               />
             </View>
           );

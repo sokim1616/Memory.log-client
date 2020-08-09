@@ -484,7 +484,7 @@ const About: React.FC<AboutProps> = () => {
                   onPress: () =>
                     Linking.openURL('https://github.com/sokim1616'),
                 }}
-                subtitle={`노예상인 ${'\n'}FULL-STACK${'\n'}sokim1616@gmail.com`}
+                subtitle={`팀장 ${'\n'}FULL-STACK${'\n'}sokim1616@gmail.com`}
                 subtitleStyle={{ paddingTop: 5 }}
                 topDivider
                 bottomDivider
@@ -508,7 +508,7 @@ const About: React.FC<AboutProps> = () => {
                   onPress: () =>
                     Linking.openURL('https://github.com/khgkimhyungyu'),
                 }}
-                subtitle={`노예1 ${'\n'}FRONT-END${'\n'}yolo.fabian.k@gmail.com`}
+                subtitle={`팀원1 ${'\n'}FRONT-END${'\n'}yolo.fabian.k@gmail.com`}
                 subtitleStyle={{
                   paddingTop: 5,
                   width: 175,
@@ -536,7 +536,7 @@ const About: React.FC<AboutProps> = () => {
                 }}
                 subtitle={
                   <Text style={{ paddingTop: 5, width: 175 }}>
-                    <Text>노예2{'\n'}</Text>
+                    <Text>팀원 2{'\n'}</Text>
                     <Text>FULL-STACK{'\n'}</Text>
                     <Text style={{ fontSize: 13.5 }}>
                       douhyun.kyung@gmail.com
@@ -564,7 +564,7 @@ const About: React.FC<AboutProps> = () => {
                   onPress: () =>
                     Linking.openURL('https://github.com/bombamong'),
                 }}
-                subtitle={`노예3${'\n'}FRONT-END${'\n'}bmwismw@gmail.com`}
+                subtitle={`팀원 3${'\n'}FRONT-END${'\n'}bmwismw@gmail.com`}
                 subtitleStyle={{
                   paddingTop: 5,
                   width: 175,
