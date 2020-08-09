@@ -38,7 +38,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({ route }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setFriend(res);
       });
   };

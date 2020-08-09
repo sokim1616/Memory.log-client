@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
-import {connect} from 'react-redux';
-import {StyleSheet} from 'react-native';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { StyleSheet } from 'react-native';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -14,7 +14,7 @@ import ConfigStackContainer from './src/containers/ConfigStackContainer';
 import StoryBoardStack from './src/stacks/StoryBoardStack';
 import LoginStack from './src/stacks/LoginStack';
 import ListStack from './src/stacks/ListStack';
-import {GoogleSignin} from '@react-native-community/google-signin';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 const googleSigninConfigure = async () => {
   await GoogleSignin.configure({
@@ -30,7 +30,7 @@ interface AppProps {
   loginStatus: boolean;
 }
 
-const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
+const App: React.FC<AppProps> = ({ loginStatus, buttonsVisibilityStatus }) => {
   useEffect(() => {
     googleSigninConfigure();
   }, []);
@@ -56,7 +56,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               options={{
                 // tabBarColor: '#ad9d9d',
                 tabBarLabel: 'list',
-                tabBarIcon: ({color}) => (
+                tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons
                     name="format-list-bulleted"
                     color={color}
@@ -71,7 +71,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               options={{
                 // tabBarColor: 'lightblue',
                 tabBarLabel: 'Map',
-                tabBarIcon: ({color}) => (
+                tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons name="map" color={color} size={26} />
                 ),
               }}
@@ -81,7 +81,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               component={HomeStackContainer}
               options={{
                 tabBarColor: 'black',
-                tabBarIcon: ({color}) => (
+                tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons
                     style={styles.mainButton}
                     name="camera"
@@ -97,7 +97,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               options={{
                 // tabBarColor: '#ad9d9d',
                 tabBarLabel: 'StoryBoard',
-                tabBarIcon: ({color}) => (
+                tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons
                     name="image"
                     color={color}
@@ -112,7 +112,7 @@ const App: React.FC<AppProps> = ({loginStatus, buttonsVisibilityStatus}) => {
               options={{
                 // tabBarColor: '#838383',
                 tabBarLabel: 'Config',
-                tabBarIcon: ({color}) => (
+                tabBarIcon: ({ color }) => (
                   <MaterialCommunityIcons name="cog" color={color} size={26} />
                 ),
               }}
@@ -139,15 +139,15 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = (state: {
-  loginReducer: {loginStatus: boolean};
-  cameraReducer: {buttonsVisibilityStatus: boolean};
+  loginReducer: { loginStatus: boolean };
+  cameraReducer: { buttonsVisibilityStatus: boolean };
 }) => ({
   loginStatus: state.loginReducer.loginStatus,
   buttonsVisibilityStatus: state.cameraReducer.buttonsVisibilityStatus,
 });
 
 const mapDispatchToProps = (
-  dispatch: Dispatch<{type: string; loginStatus: boolean}>,
+  dispatch: Dispatch<{ type: string; loginStatus: boolean }>,
 ) => {
   return {
     changeLogin: (status: boolean) => dispatch(changeUserLoginStatus(status)),

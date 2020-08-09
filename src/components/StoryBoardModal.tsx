@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
-  ImageBackground,
 } from 'react-native';
 import Server from '../utils/Server';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -147,6 +146,9 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
                   style={styles.keyboardButton}
                 />
               </TouchableOpacity>
+              <Text style={styles.maxLength}>
+                {memo ? `${memo.length} / 90` : '0 / 90'}
+              </Text>
               {memo !== currentPhoto.description ? (
                 <TouchableOpacity
                   onPress={handleStatusUpdate}
@@ -164,6 +166,7 @@ const StoryBoardwModal: React.FC<StoryBoardModalProps> = ({
           onFocus={() => setMemoOnFocus(true)}
           defaultValue={currentPhoto.description}
           multiline={true}
+          maxLength={90}
           style={styles.noteRightSide}
         />
       </KeyboardAvoidingView>
@@ -343,7 +346,9 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     alignSelf: 'center',
-    marginVertical: 20,
+    marginVertical: -50,
+    width: 50,
+    height: 25,
     padding: 3,
     borderWidth: 1,
     borderRadius: 15,
@@ -355,6 +360,12 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 3,
+  },
+  maxLength: {
+    alignSelf: 'center',
+    marginVertical: 20,
+    padding: 3,
+    paddingBottom: 59,
   },
 });
 

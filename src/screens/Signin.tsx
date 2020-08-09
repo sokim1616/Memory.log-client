@@ -168,7 +168,9 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       setToastMessage('로그인에 성공하였습니다.');
       setTimeout(() => changeLogin(true), 1000);
     } else {
-      setToastMessage('Unathorized. Please check your username and password.');
+      setToastMessage(
+        '이메일 혹은 비밀번호가 일치하지 않습니다. 다시 한번 확인 후 시도해 주시기 바랍니다.',
+      );
     }
   };
 
@@ -176,8 +178,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
     let body = JSON.stringify({ email: mail, password });
     if (!mail.length || !password.length) {
       Alert.alert(
-        'Empty Fields',
-        `이메일과 비밀번호를 확인 후,${'\n'}다시 시도해 주시기 바랍니다.`,
+        `이메일 혹은 비밀번호를 확인 후,${'\n'}다시 시도해 주시기 바랍니다.`,
         {
           text: 'OK',
           onPress: () => console.log('hi'),
@@ -190,8 +191,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       return;
     } else if (password.length < 8) {
       Alert.alert(
-        'Invalid Password',
-        'Password must be at least 8 characters.',
+        '이메일 혹은 비밀번호가 \n 일치하지 않습니다.',
         {
           text: 'OK',
           onPress: () => console.log('hi'),
@@ -203,15 +203,14 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       return;
     } else if (!mail.match(emailCheck)) {
       Alert.alert(
-        'Invalid E-mail Address',
-        'Please input a correct e-mail address.',
+        '이메일 혹은 비밀번호가 일치하지 않습니다.',
         { text: 'OK', onPress: () => console.log('hi') },
         { cancelable: false },
       );
       return;
     }
     blurAll();
-    console.log(mail, password);
+    // console.log(mail, password);
     fetch('http://localhost:4000/user/signin', {
       method: 'POST',
       mode: 'cors',
@@ -222,13 +221,13 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       },
       body,
     }).then((resp) => {
-      console.log(resp.status);
+      // console.log(resp.status);
       if (resp.status === 200) {
         setToastMessage('로그인에 성공하였습니다.');
         setTimeout(() => changeLogin(true), 1000);
       } else {
         setToastMessage(
-          'Unathorized. Please check your username and password.',
+          '이메일 혹은 비밀번호가 일치하지 않습니다. \n 다시 시도해 주시기 바랍니다.',
         );
       }
     });

@@ -23,7 +23,7 @@ const HomeTwo: React.FC<HomeTwoProps> = (navigation) => {
         include: ['location'],
       });
       for (let photo of camPhotos.edges) {
-        console.log(photo.node.location);
+        // console.log(photo.node.location);
       }
       getPhotos(camPhotos.edges);
     } catch (e) {
