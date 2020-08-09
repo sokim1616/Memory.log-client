@@ -6,7 +6,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInput } from 'react-native-paper';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-메;
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
