@@ -3,12 +3,11 @@
 # Memory_log-client
 
 <details>
-  <summary>Splash_Screen
+  <summary>Splash_Screen</summary>
   <img src="https://user-images.githubusercontent.com/46562138/89759034-3f911600-db24-11ea-8630-b945900e3254.gif" />
-  </summary>
 </details>
 
-![ezgif com-resize](https://user-images.githubusercontent.com/46562138/89758867-cc879f80-db23-11ea-91cf-5258158ae0f4.gif)
+
 
 
 # Commit rules:
