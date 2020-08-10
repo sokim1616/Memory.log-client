@@ -4,7 +4,7 @@
 
 <details>
   <summary>Splash_Screen</summary>
-  <img src="https://user-images.githubusercontent.com/46562138/89759034-3f911600-db24-11ea-8630-b945900e3254.gif" />
+  <img src="https://user-images.githubusercontent.com/46562138/89759663-9fd48780-db25-11ea-9f7f-8977f8988669.gif" />
 </details>
 
 
