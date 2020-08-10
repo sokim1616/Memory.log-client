@@ -2,7 +2,7 @@
 
 # Memory_log-client
 
-![ezgif com-resize](https://user-images.githubusercontent.com/46562138/89758414-b0cfc980-db22-11ea-8730-03a2b92c07bd.gif)
+<Img src="https://memory-log.s3.ap-northeast-2.amazonaws.com/gif/share.gif" />
 
 # Commit rules:
 
