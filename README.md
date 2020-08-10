@@ -2,7 +2,7 @@
 
 # Memory_log-client
 
-![resize camera](https://user-images.githubusercontent.com/46562138/89758222-4028ad00-db22-11ea-8dd1-7138f0e2986e.gif)
+![ezgif com-resize](https://user-images.githubusercontent.com/46562138/89758414-b0cfc980-db22-11ea-8730-03a2b92c07bd.gif)
 
 # Commit rules:
 
