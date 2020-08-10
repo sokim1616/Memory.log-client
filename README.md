@@ -6,6 +6,41 @@
   <summary>Splash_Screen</summary>
   <img src="https://user-images.githubusercontent.com/46562138/89759663-9fd48780-db25-11ea-9f7f-8977f8988669.gif" />
 </details>
+<details>
+  <summary>회원가입</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89759901-212c1a00-db26-11ea-851a-b7b241db3e15.gif" />
+</details>
+<details>
+  <summary>로그인</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89760071-8a139200-db26-11ea-8563-347f236199d7.gif" />
+</details>
+<details>
+  <summary>구글 로그인</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89760154-b7604000-db26-11ea-85ea-cf0ba5db6b6d.gif" />
+</details>
+<details>
+  <summary>페이스북 로그인</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89760237-e8407500-db26-11ea-86de-961bd5e46307.gif" />
+</details>
+<details>
+  <summary>카메라</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89760445-5b49eb80-db27-11ea-93ab-2a86912ee464.gif" />
+</details>
+<details>
+  <summary>추억저장소</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89760445-5b49eb80-db27-11ea-93ab-2a86912ee464.gif" />
+</details>
+<details>
+  <summary>추억저장소 공유기능</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89760933-50dc2180-db28-11ea-903c-40808327e170.gif" />
+</details><details>
+  <summary>추억저장소 삭제기능</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89761969-7833ee00-db2a-11ea-909c-81b96b192d12.gif" />
+</details>
+</details><details>
+  <summary>지도</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89761718-ffcd2d00-db29-11ea-97f3-ae9379482e15.gif" />
+</details>
 
 
 
