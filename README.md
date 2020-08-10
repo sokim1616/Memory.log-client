@@ -2,6 +2,8 @@
 
 # Memory_log-client
 
+![resize camera](https://user-images.githubusercontent.com/46562138/89758222-4028ad00-db22-11ea-8dd1-7138f0e2986e.gif)
+
 # Commit rules:
 
 1. PR 형식 - 
