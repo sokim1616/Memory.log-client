@@ -2,7 +2,8 @@
 
 # Memory_log-client
 
-<Img src="https://memory-log.s3.ap-northeast-2.amazonaws.com/gif/share.gif" />
+![image](https://user-images.githubusercontent.com/46562138/89758615-35224c80-db23-11ea-8fb1-d559e5577b59.png)
+
 
 # Commit rules:
 
