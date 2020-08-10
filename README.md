@@ -1,8 +1,7 @@
 ![](https://img.shields.io/badge/Memory.log-Mobile-black?style=for-the-badge)
 
 # Memory_log-client
-
-![image](https://user-images.githubusercontent.com/46562138/89758615-35224c80-db23-11ea-8fb1-d559e5577b59.png)
+![ezgif com-resize](https://user-images.githubusercontent.com/46562138/89758867-cc879f80-db23-11ea-91cf-5258158ae0f4.gif)
 
 
 # Commit rules:
