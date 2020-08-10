@@ -41,7 +41,34 @@
   <summary>지도</summary>
   <img src="https://user-images.githubusercontent.com/46562138/89761718-ffcd2d00-db29-11ea-97f3-ae9379482e15.gif" />
 </details>
-
+</details><details>
+  <summary>친구 검색</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89762193-e7114700-db2a-11ea-8037-987ad7ce1e05.gif" />
+</details>
+</details><details>
+  <summary>친구 삭제</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89762258-0c05ba00-db2b-11ea-8b54-d6a8d0f5b44a.gif" />
+</details>
+</details><details>
+  <summary>친구의 스토리보드</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89762354-36577780-db2b-11ea-9fdc-7d06a6f0fad4.gif" />
+</details>
+</details><details>
+  <summary>설정 수정</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89762444-6bfc6080-db2b-11ea-97be-eb0dd66a1f51.gif" />
+</details>
+</details><details>
+  <summary>앱 사용방법</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89762571-a82fc100-db2b-11ea-83d7-96c99c25d7d9.gif" />
+</details>
+</details><details>
+  <summary>팀 소개</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89762630-c39acc00-db2b-11ea-9027-c9b669fe37c9.gif" />
+</details>
+</details><details>
+  <summary>로그아웃</summary>
+  <img src="https://user-images.githubusercontent.com/46562138/89762690-e2995e00-db2b-11ea-8d99-2a5a6da4c50e.gif" />
+</details>
 
 
 
