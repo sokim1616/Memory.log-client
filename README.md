@@ -24,7 +24,7 @@
   <img src="https://user-images.githubusercontent.com/46562138/89760237-e8407500-db26-11ea-86de-961bd5e46307.gif" />
 </details>
 <details>
-  <summary>카메라</summary>
+  <summary>카메라 촬영 및 스토리 기록</summary>
   <img src="https://user-images.githubusercontent.com/46562138/89760445-5b49eb80-db27-11ea-93ab-2a86912ee464.gif" />
 </details>
 <details>
@@ -39,7 +39,7 @@
   <img src="https://user-images.githubusercontent.com/46562138/89761969-7833ee00-db2a-11ea-909c-81b96b192d12.gif" />
 </details>
 </details><details>
-  <summary>지도</summary>
+  <summary>지도 및 이미지 확인</summary>
   <img src="https://user-images.githubusercontent.com/46562138/89761718-ffcd2d00-db29-11ea-97f3-ae9379482e15.gif" />
 </details>
 </details><details>
