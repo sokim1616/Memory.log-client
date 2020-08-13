@@ -5,6 +5,7 @@ import Profile from '../components/Profile';
 import {Button} from 'react-native-elements';
 import About from '../components/About';
 import Server from '../utils/Server';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 interface ConfigHomeProps {}
 
@@ -12,12 +13,11 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
   const {changeLogin} = loginProps;
 
   const requestSignout: () => void = async () => {
-    console.log(Server.server);
     let url = `http://${Server.server}/user/signout`;
     let options = {
       method: 'POST',
-      // mode: 'cors',
-      // credentials: 'include',
+      mode: 'cors',
+      credentials: 'include',
     };
     await fetch(url, options).then((res) => {
       if (res.status === 200 || res.status === 400) {
@@ -30,6 +30,7 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <Text style={styles.title}>내 프로필</Text>
       <View style={styles.divideline} />
       <View style={styles.upperView}>
@@ -47,7 +48,7 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
           raised
           containerStyle={{marginTop: 30}}
           buttonStyle={{
-            backgroundColor: 'rgba(255,0,0,0.75)',
+            backgroundColor: '#E85A71',
           }}
         />
       </View>

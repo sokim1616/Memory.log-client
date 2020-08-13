@@ -1,36 +1,34 @@
-import React, {useCallback, useState} from 'react';
-import {StyleSheet, View, Text, ScrollView, SafeAreaView} from 'react-native';
-import {ListItem, Button, Overlay} from 'react-native-elements';
+/* eslint-disable react-native/no-inline-styles */
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { ListItem, Button, Overlay } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
-import FriendStoryBoard from '../screens/FriendStoryBoard';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
-const FriendList = ({navigation}) => {
-  const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
-  const [followerList, setFollowerList] = useState([]); // 로그인 사용자의 인싸력 테스트
+const FriendList = ({ navigation }) => {
+  const [userState, setUserState] = useState([]);
+  const [followerList, setFollowerList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [unFollowId, setUnfollowId] = useState('');
   const toggleOverlay = (id) => {
     setVisible(!visible);
-    console.log(id);
     setUnfollowId('');
     setUnfollowId(id);
   };
   const requestUnFollow = (id) => {
-    console.log('pressed :', id);
     return fetch('http://localhost:4000/follow/ufollow', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id}),
+      body: JSON.stringify({ id }),
       credentials: 'include',
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('로그인유저팔로우리스트 :', res);
         getFollowerList();
         toggleOverlay();
       })
@@ -47,7 +45,6 @@ const FriendList = ({navigation}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('로그인유저정보 :', res);
         setUserState(res);
       })
       .catch((err) => console.error(err));
@@ -63,7 +60,6 @@ const FriendList = ({navigation}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('팔로워정보 :', res);
         setFollowerList(res);
       })
       .catch((err) => console.error(err));
@@ -81,6 +77,7 @@ const FriendList = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* 위뷰시작 */}
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <Text style={styles.upperView__text}>내 프로필</Text>
       <View style={styles.divideline} />
       <View style={styles.upperView}>
@@ -88,11 +85,11 @@ const FriendList = ({navigation}) => {
           <ListItem
             key={i}
             leftAvatar={{
-              source: {uri: 'https://picsum.photos/300/300'},
+              source: { uri: ele.profilepath },
               size: 'large',
               containerStyle: {
                 shadowColor: '#000',
-                shadowOffset: {width: 2.5, height: 2.5},
+                shadowOffset: { width: 2.5, height: 2.5 },
                 shadowOpacity: 1,
                 shadowRadius: 3,
               },
@@ -124,11 +121,11 @@ const FriendList = ({navigation}) => {
             <ListItem
               key={i}
               leftAvatar={{
-                source: {uri: 'https://picsum.photos/300/300'},
+                source: { uri: ele.profilepath },
                 size: 'large',
                 containerStyle: {
                   shadowColor: '#000',
-                  shadowOffset: {width: 2.5, height: 2.5},
+                  shadowOffset: { width: 2.5, height: 2.5 },
                   shadowOpacity: 1,
                   shadowRadius: 3,
                 },
@@ -146,7 +143,7 @@ const FriendList = ({navigation}) => {
                 name: 'ios-person-remove-sharp',
                 type: 'ionicon',
                 size: 30,
-                containerStyle: {marginRight: 5},
+                containerStyle: { marginRight: 5 },
                 onPress: () => toggleOverlay(ele.id),
               }}
               bottomDivider
@@ -166,14 +163,26 @@ const FriendList = ({navigation}) => {
           </View>
           <View style={styles.overlayStyle__lower}>
             <Button
-              style={styles.overlayStyle__lower__button}
+              containerStyle={styles.overlayStyle__lower__button}
+              buttonStyle={{
+                borderColor: '#878787',
+                borderRadius: 20,
+                backgroundColor: '#878787',
+              }}
               title="취소"
+              titleStyle={{ color: 'white' }}
               type="outline"
               onPress={toggleOverlay}
             />
             <Button
-              style={styles.overlayStyle__lower__button}
+              containerStyle={styles.overlayStyle__lower__button}
+              buttonStyle={{
+                borderColor: '#E85A71',
+                borderRadius: 20,
+                backgroundColor: '#E85A71',
+              }}
               title="확인"
+              titleStyle={{ color: 'white' }}
               type="outline"
               onPress={() => requestUnFollow(unFollowId)}
             />
@@ -197,57 +206,48 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   upperView: {
-    flex: 2,
+    flex: 1.5,
     justifyContent: 'center',
     marginTop: 0,
     marginBottom: 0,
-    // backgroundColor: '#3EA944',
   },
   upperView__text: {
     fontSize: 30,
-    // fontWeight: 'bold',
     marginLeft: 20,
     marginTop: 10,
   },
   upperView__title: {
     position: 'relative',
-    fontSize: 30,
-    bottom: 40,
-    // backgroundColor: '#3ef',
+    fontSize: 25,
+    bottom: 30,
   },
   upperView__subtitle: {
     position: 'absolute',
     fontSize: 18,
-    bottom: -50,
-    width: 290,
+    bottom: -60,
+    width: 250,
     height: 80,
     lineHeight: 25,
-    // backgroundColor: '#f39c12',
   },
   midView: {
     flex: 0.5,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // backgroundColor: '#9FA93E',
   },
   midView__text: {
     fontSize: 30,
-    // fontWeight: 'bold',
     marginLeft: 20,
-    // backgroundColor: '#C70039',
   },
   midView__icon: {
     marginRight: 20,
     marginTop: 1,
-    // backgroundColor: '#3E5DA9',
   },
   lowerView: {
-    flex: 7.5,
-    // backgroundColor: '#3EA9A1',
+    flex: 8,
   },
   lowerView__title: {
     position: 'absolute',
-    fontSize: 30,
+    fontSize: 25,
     bottom: 7,
   },
   lowerView__subtitle: {
@@ -255,13 +255,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     bottom: -40,
     height: 40,
-    // backgroundColor: '#3ed',
   },
   overlayStyle: {
     backgroundColor: '#ffffff',
     borderRadius: 10,
     height: 200,
     width: 300,
+    shadowColor: '#000',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
   },
   overlayStyle__body: {
     flex: 1,

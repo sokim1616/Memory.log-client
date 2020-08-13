@@ -1,5 +1,5 @@
-import React, {useState, useCallback} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
 import {
   SafeAreaView,
@@ -11,17 +11,37 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import { Avatar } from 'react-native-elements';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 interface HomeTwoProps {
   route;
 }
 
-const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
+const FriendStoryBoard: React.FC<HomeTwoProps> = ({ route }) => {
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);
-  const [currentPhoto, setCurrentPhoto] = useState({});
+  const [currentPhoto, setCurrentPhoto] = useState([]);
   const [previewMode, setPreviewMode] = useState(false);
-  const {friendId} = route.params;
+  const [friend, setFriend] = useState({});
+  const { friendId } = route.params;
+
+  const getFriendInfo = async () => {
+    await fetch('http://localhost:4000/user/userinfobyid', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: friendId }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        // console.log(res);
+        setFriend(res);
+      });
+  };
 
   const fetchPhotos = async () => {
     await fetch('http://localhost:4000/photo/fboard', {
@@ -31,7 +51,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id: friendId}),
+      body: JSON.stringify({ id: friendId }),
       credentials: 'include',
     })
       .then((res) => res.json())
@@ -58,8 +78,15 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
     }, [dataLength]),
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      getFriendInfo();
+    }, [friend.length]),
+  );
+
   return (
     <>
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <StoryBoardModal
         editable={false}
         setPreviewMode={setPreviewMode}
@@ -68,7 +95,20 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
       />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>너의 추억 저장소..</Text>
+          <Avatar
+            rounded
+            size="large"
+            source={{ uri: friend.profilepath }}
+            containerStyle={{
+              shadowColor: '#000',
+              shadowOffset: { width: 2.5, height: 2.5 },
+              shadowOpacity: 1,
+              shadowRadius: 3,
+            }}
+          />
+          <View style={{ justifyContent: 'center' }}>
+            <Text style={styles.headerText}>너의 추억 저장소..</Text>
+          </View>
         </View>
         <ScrollView contentContainerStyle={styles.photoScrollContainer}>
           {data.map((ele, i) => (
@@ -79,7 +119,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({route}) => {
               <Image
                 resizeMode="cover"
                 style={styles.photo}
-                source={{uri: ele.filepath}}
+                source={{ uri: ele.filepath }}
               />
             </TouchableOpacity>
           ))}
@@ -94,7 +134,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerContainer: {
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     borderBottomWidth: 0.5,
     borderBottomColor: 'grey',
     paddingVertical: 10,
@@ -102,9 +143,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   headerText: {
-    fontFamily: 'Lobster-Regular',
+    // fontFamily: 'Lobster-Regular',
     fontSize: 30,
+    paddingLeft: 20,
+    // fontWeight: 'bold',
   },
+
   photoScrollView: {
     flex: 1,
   },
@@ -120,7 +164,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     minWidth: Dimensions.get('window').width / 4 - 18,
     maxWidth: 93,
-    shadowColor: '#ff5555',
+    shadowColor: 'black',
     shadowOffset: {
       width: 1,
       height: 1,

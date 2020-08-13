@@ -1,17 +1,11 @@
-import React, {useState, useCallback} from 'react';
-import MapView, {Marker, Callout} from 'react-native-maps';
+import React, { useState, useCallback } from 'react';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import {
-  View,
-  StyleSheet,
-  StatusBar,
-  Image,
-  Text,
-  Dimensions,
-} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import { View, StyleSheet, Image, Text, Dimensions } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
@@ -72,7 +66,7 @@ const Map = () => {
   const getCurrentLocation = async () => {
     Geolocation.getCurrentPosition(
       (position) => {
-        const {latitude, longitude} = position.coords;
+        const { latitude, longitude } = position.coords;
         setLocation({
           latitude,
           longitude,
@@ -87,7 +81,7 @@ const Map = () => {
       (error) => {
         console.log(error.code, error.message);
       },
-      {timeout: 3000},
+      { timeout: 3000 },
     );
   };
 
@@ -110,14 +104,13 @@ const Map = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
       <MapView
         showsScale={true}
         showsBuildings={true}
         mapType={mapType}
         showsCompass={true}
-        compassOffset={{x: -10, y: 0}}
-        style={{flex: 1}}
+        compassOffset={{ x: -10, y: 0 }}
+        style={{ flex: 1 }}
         initialRegion={{
           latitude: location.latitude,
           longitude: location.longitude,
@@ -125,18 +118,23 @@ const Map = () => {
           longitudeDelta: 0.0421,
         }}
         region={autoLocationStatus ? region : undefined}>
+        <FocusAwareStatusBar
+          barStyle={
+            mapType === 'mutedStandard' ? 'dark-content' : 'light-content'
+          }
+        />
         <Marker
           pinColor="blue"
-          style={{zIndex: 999}}
+          style={{ zIndex: 999 }}
           coordinate={{
             latitude: location.latitude,
             longitude: location.longitude,
           }}
         />
         {photoData.map((el: PhotoDataElement, i) => {
-          const {latitude, longitude, createdAt, description, filepath} = el;
-          let lat = Number(latitude) + i * 10;
-          let long = Number(longitude) + i * 10;
+          const { latitude, longitude, createdAt, description, filepath } = el;
+          let lat = Number(latitude);
+          let long = Number(longitude);
           return (
             <Marker
               onSelect={() =>
@@ -163,7 +161,7 @@ const Map = () => {
                 }>
                 {calloutReverse ? (
                   <>
-                    <Text style={styles.dateText}>{`Date: ${trimDate(
+                    <Text style={styles.dateText}>{`${trimDate(
                       createdAt,
                     )}`}</Text>
                     <TextInput
@@ -174,7 +172,10 @@ const Map = () => {
                     </TextInput>
                   </>
                 ) : (
-                  <Image style={styles.calloutImage} source={{uri: filepath}} />
+                  <Image
+                    style={styles.calloutImage}
+                    source={{ uri: filepath }}
+                  />
                 )}
               </Callout>
             </Marker>
@@ -236,26 +237,23 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width * 0.6,
     height: Dimensions.get('screen').height * 0.3,
     borderRadius: 10,
-    backgroundColor: '#33DDFF',
+    backgroundColor: '#4EA1D3',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 3,
-      height: 2,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 3.84,
+    shadowColor: '#000',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
   },
   dateText: {
     margin: 10,
     fontSize: 20,
-    fontWeight: 'bold',
-    // fontFamily: 'Lobster-Regular',
     color: 'black',
+    alignSelf: 'center',
   },
   descriptionTextView: {
     flex: 1,
+    borderRadius: 10,
     backgroundColor: 'white',
     width: Dimensions.get('screen').width * 0.6,
     borderTopColor: 'black',
@@ -266,7 +264,6 @@ const styles = StyleSheet.create({
   descriptionText: {
     margin: 10,
     fontSize: 20,
-    // fontFamily: 'Lobster-Regular',
     color: 'black',
   },
   changeMapTypeButtonContainer: {

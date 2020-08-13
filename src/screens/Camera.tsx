@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,13 +7,13 @@ import {
   Alert,
 } from 'react-native';
 import Server from '../utils/Server';
-import {RNCamera, TakePictureResponse} from 'react-native-camera';
+import { RNCamera, TakePictureResponse } from 'react-native-camera';
 import CameraRoll from '@react-native-community/cameraroll';
-import {StatusBar} from 'react-native';
 import Geolocation, {
   GeolocationResponse,
 } from '@react-native-community/geolocation';
 import PhotoPreviewModal from '../components/PhotoPreviewModal';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -22,8 +22,8 @@ interface CameraProps {
   camProps: {};
 }
 
-const Camera: React.FC<CameraProps> = ({camProps}) => {
-  const {changeButtonsVisibilityStatus} = camProps;
+const Camera: React.FC<CameraProps> = ({ camProps }) => {
+  const { changeButtonsVisibilityStatus } = camProps;
   let camera: RNCamera;
   const [flashStatus, setFlashStatus] = useState(
     RNCamera.Constants.FlashMode.off,
@@ -85,10 +85,10 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
   };
 
   const savePicture: (data: TakePictureResponse) => boolean = async (
-    {uri},
+    { uri },
     description,
   ) => {
-    await CameraRoll.save(uri, {album: 'MemoryLog'});
+    await CameraRoll.save(uri, { album: 'MemoryLog' });
     let photo = await CameraRoll.getPhotos({
       first: 1,
       groupTypes: 'Album',
@@ -107,6 +107,7 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
     };
     let response = await fetch(url, options);
     alertSaveSucess(response.status);
+
     return true;
   };
 
@@ -115,15 +116,15 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
       return Alert.alert(
         'Picture upload success!',
         'Check out your storyboard!',
-        {text: 'OK', onPress: () => 'OK'},
-        {cancelable: false},
+        { text: 'OK', onPress: () => 'OK' },
+        { cancelable: false },
       );
     } else {
       return Alert.alert(
         'Picture upload failed',
         "I'm sorry😭",
-        {text: 'OK', onPress: () => 'OK'},
-        {cancelable: false},
+        { text: 'OK', onPress: () => 'OK' },
+        { cancelable: false },
       );
     }
   };
@@ -159,15 +160,14 @@ const Camera: React.FC<CameraProps> = ({camProps}) => {
   return (
     <View
       style={styles.container}
-      onTouchEnd={({nativeEvent}) => {
+      onTouchEnd={({ nativeEvent }) => {
         setAutoFocusPointOfInterest({
           x: nativeEvent.pageX,
           y: nativeEvent.pageY,
         });
       }}>
-      <View style={styles.headerContainer}>
-        <StatusBar barStyle="light-content" />
-      </View>
+      <FocusAwareStatusBar barStyle="light-content" />
+      <View style={styles.headerContainer} />
       {previewMode ? null : (
         <View style={styles.cameraContainer}>
           <RNCamera

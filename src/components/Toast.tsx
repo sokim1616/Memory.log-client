@@ -1,39 +1,45 @@
 import React from 'react';
-import {Dimensions, TouchableOpacity, Text, StyleSheet} from 'react-native';
-import {} from 'react-native-gesture-handler';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import Modal from 'react-native-modal';
 
 interface ToastProps {
   message: string;
   handlePress: () => void;
 }
 
-const Toast: React.FC<ToastProps> = ({message, handlePress}) => {
+const Toast: React.FC<ToastProps> = ({ message, handlePress }) => {
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.toastContainer}>
-      <Text style={styles.tostMessage}>{message}</Text>
-    </TouchableOpacity>
+    <Modal
+      animationIn="bounceInUp"
+      animationInTiming={500}
+      animationOut="bounceOutDown"
+      animationOutTiming={500}
+      backdropColor="transparent"
+      isVisible={message ? true : false}>
+      <TouchableOpacity onPress={handlePress} style={styles.toastContainer}>
+        <Text style={styles.tostMessage}>{message}</Text>
+      </TouchableOpacity>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   toastContainer: {
-    flex: 0.3,
-    minWidth: Dimensions.get('window').width * 0.8,
-    maxWidth: Dimensions.get('window').width * 0.9,
-    minHeight: Dimensions.get('window').height * 0.08,
     position: 'absolute',
-    // borderWidth: 0.5,
-    borderRadius: 40,
+    borderRadius: 50,
     bottom: 60,
+    width: 350,
+    height: 80,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightblue',
+    alignSelf: 'center',
+    backgroundColor: 'rgba(36,69,83,0.75)',
     paddingHorizontal: 20,
   },
   tostMessage: {
-    color: 'black',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: 'rgb(255,255,255)',
+    fontSize: 18,
+    fontWeight: '400',
+    textAlign: 'center',
   },
 });
 

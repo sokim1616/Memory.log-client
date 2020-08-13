@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
-import {SearchBar, ListItem, Overlay, Button} from 'react-native-elements';
-import {createStackNavigator} from '@react-navigation/stack';
-
+/* eslint-disable react-native/no-inline-styles */
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
+import { SearchBar, ListItem, Overlay, Button } from 'react-native-elements';
+import { createStackNavigator } from '@react-navigation/stack';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import FriendList from '../screens/FriendList';
 
 const Stack = createStackNavigator();
 
-const FriendSearch = ({navigation}) => {
+const FriendSearch = ({ navigation }) => {
   const [search, setSearch] = useState('');
   const [list, setList] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -77,12 +78,13 @@ const FriendSearch = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <FocusAwareStatusBar barStyle={'light-content'} />
       <View style={styles.upperView}>
         <Text style={styles.upperView__title}>친구 찾기</Text>
         <View style={styles.upperView__lower}>
           <SearchBar
             containerStyle={styles.upperView__lower__search}
-            placeholder="친구의 e-mail을 입력해 주세요."
+            placeholder="친구의 E-mail을 입력해 주세요."
             onChangeText={updateSearch}
             value={search}
             lightTheme={true}
@@ -91,9 +93,10 @@ const FriendSearch = ({navigation}) => {
             autoCapitalize="none"
           />
           <Button
-            style={styles.upperView__lower__button}
+            buttonStyle={styles.upperView__lower__button}
             title="검색"
-            type="solid"
+            titleStyle={{ color: 'white' }}
+            type="outline"
             onPress={() => {
               onPressSearchIcon();
             }}
@@ -108,8 +111,14 @@ const FriendSearch = ({navigation}) => {
             <ListItem
               key={i}
               leftAvatar={{
-                source: {uri: 'https://picsum.photos/400/400'},
+                source: { uri: ele.profilepath },
                 size: 'large',
+                containerStyle: {
+                  shadowColor: '#000',
+                  shadowOffset: { width: 2.5, height: 2.5 },
+                  shadowOpacity: 1,
+                  shadowRadius: 3,
+                },
               }}
               containerStyle={styles.lowerView__friend}
               title={ele.username}
@@ -138,13 +147,25 @@ const FriendSearch = ({navigation}) => {
             <View style={styles.overlayStyle__lower}>
               <Button
                 containerStyle={styles.overlayStyle__lower__button}
+                buttonStyle={{
+                  borderColor: '#E85A71',
+                  backgroundColor: '#E85A71',
+                  borderRadius: 20,
+                }}
                 title="취소"
+                titleStyle={{ color: 'white' }}
                 type="outline"
                 onPress={toggleOverlay}
               />
               <Button
                 containerStyle={styles.overlayStyle__lower__button}
+                buttonStyle={{
+                  borderColor: '#4EA1D3',
+                  backgroundColor: '#4EA1D3',
+                  borderRadius: 20,
+                }}
                 title="확인"
+                titleStyle={{ color: 'white' }}
                 type="outline"
                 onPress={onPressFollowIcon}
               />
@@ -178,9 +199,12 @@ const styles = StyleSheet.create({
     marginRight: 50,
   },
   upperView__lower__button: {
-    marginTop: 25,
-    marginRight: 44,
-    // backgroundColor: '#D3D3D3',
+    marginTop: 24,
+    marginRight: 45,
+    backgroundColor: '#454552',
+    borderColor: '#454552',
+    borderWidth: 1,
+    borderRadius: 10,
   },
   midView: {
     borderBottomColor: 'black',
@@ -209,13 +233,15 @@ const styles = StyleSheet.create({
   },
   lowerView__friend__username: {
     position: 'absolute',
-    fontSize: 30,
-    bottom: 10,
+    fontSize: 25,
+    bottom: 15,
   },
   lowerView__friend__subtitle: {
     position: 'absolute',
-    fontSize: 18,
-    bottom: -30,
+    fontSize: 16,
+    height: 55,
+    bottom: -50,
+    width: 180,
   },
   overlayStyle: {
     backgroundColor: '#ffffff',
@@ -223,7 +249,7 @@ const styles = StyleSheet.create({
     height: 200,
     width: 300,
     shadowColor: '#000',
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.8,
     shadowRadius: 10,
   },
@@ -238,9 +264,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingTop: 25,
     lineHeight: 40,
-    // textShadowColor: '#808080',
-    // textShadowOffset: {width: 2, height: 2},
-    // textShadowRadius: 4,
   },
   overlayStyle__lower: {
     flex: 3,

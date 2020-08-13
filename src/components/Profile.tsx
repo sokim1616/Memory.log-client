@@ -1,7 +1,7 @@
-import React, {useCallback, useState} from 'react';
-import {Text, View, SafeAreaView, StyleSheet, Alert} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Text, View, SafeAreaView, StyleSheet, Alert } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import Server from '../utils/Server';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
@@ -19,11 +19,19 @@ interface ProfileProps {}
 const Profile: React.FC<ProfileProps> = ({}) => {
   const [imageSource, setImageSource] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const [statusName, setStatusName] = useState('');
   const [userState, setUserState] = useState({});
-  const [visible, setVisible] = useState(false);
-  const toggleOverlay = () => {
-    setVisible(!visible);
+  const [visibleStatus, setVisibleStatus] = useState(false);
+  const [visibleName, setVisibleName] = useState(false);
+
+  const toggleStatus = () => {
+    setVisibleStatus(!visibleStatus);
   };
+
+  const toggleName = () => {
+    setVisibleName(!visibleName);
+  };
+
   const options = {
     title: 'Load Photo',
     storageOptions: {
@@ -42,7 +50,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('로그인유저정보 :', res[0]);
         setUserState(res[0]);
         setImageSource(res[0].profilepath);
       })
@@ -54,7 +61,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     }, [userState.length]),
   );
   const changeStatusMessage = () => {
-    console.log(statusMessage);
     return fetch(`http://${Server.server}/user/status`, {
       method: 'POST',
       headers: {
@@ -68,13 +74,39 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     })
       .then((res) => res.json())
       .then(() => {
-        toggleOverlay();
+        toggleStatus();
         getUserInfo();
       });
   };
+
+  const changeUserName = () => {
+    // console.log(statusName);
+    return fetch(`http://${Server.server}/user/username`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: statusName,
+      }),
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then(() => {
+        toggleName();
+        getUserInfo();
+      });
+  };
+
   const handleTextInput = (message) => {
     setStatusMessage(message);
   };
+
+  const handleNameInput = (name) => {
+    setStatusName(name);
+  };
+
   const pickImage = () => {
     return new Promise((resolve, reject) => {
       ImagePicker.launchImageLibrary(options, (response) => {
@@ -85,7 +117,6 @@ const Profile: React.FC<ProfileProps> = ({}) => {
           console.log('ImagePicker Error: ', response.error);
           reject(false);
         } else {
-          console.log(response);
           setImageSource(response.origURL);
           resolve(response);
         }
@@ -95,7 +126,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
 
   const postImage = async () => {
     try {
-      let {uri, fileName, origURL} = await pickImage();
+      let { uri, fileName, origURL } = await pickImage();
       let formData = createForm(origURL, fileName);
       let url = `http://${Server.server}/user/profile`;
       let options = {
@@ -118,15 +149,15 @@ const Profile: React.FC<ProfileProps> = ({}) => {
     if (status === 200) {
       return Alert.alert(
         'Profile updated!',
-        {text: 'OK', onPress: () => 'OK'},
-        {cancelable: false},
+        { text: 'OK', onPress: () => 'OK' },
+        { cancelable: false },
       );
     } else {
       return Alert.alert(
         'Picture upload failed',
         'Please retry later!',
-        {text: 'OK', onPress: () => 'OK'},
-        {cancelable: false},
+        { text: 'OK', onPress: () => 'OK' },
+        { cancelable: false },
       );
     }
   };
@@ -151,18 +182,27 @@ const Profile: React.FC<ProfileProps> = ({}) => {
             containerStyle={styles.upperview__left__photo}
             size={95}
             rounded={true}
-            source={{
-              uri: imageSource,
-            }}>
-            <Accessory onTouchEnd={postImage} size={25} />
-          </Avatar>
+            source={imageSource ? { uri: imageSource } : null}
+          />
+          <Accessory onTouchEnd={postImage} size={25} />
         </View>
       </View>
       <View style={styles.upperview__right}>
-        <View style={styles.upperview__right__username}>
-          <Text style={styles.upperview__right__username__text}>
-            {userState.username}
-          </Text>
+        <View style={styles.upperview__right__upper}>
+          <View style={styles.upperview__right__username}>
+            <Text style={styles.upperview__right__username__text}>
+              {userState.username}
+            </Text>
+          </View>
+          <View style={styles.upperview__right__username__right}>
+            <Icon
+              style={styles.upperview__right__username__right__icon}
+              name="pencil-outline"
+              type="material-community"
+              size={20}
+              onPress={toggleName}
+            />
+          </View>
         </View>
         <View style={styles.upperview__right__email}>
           <Text style={styles.upperview__right__email__text}>
@@ -181,13 +221,16 @@ const Profile: React.FC<ProfileProps> = ({}) => {
               name="pencil-outline"
               type="material-community"
               size={20}
-              onPress={toggleOverlay}
+              onPress={toggleStatus}
             />
           </View>
+
+          {/* ----------------------------상태 메세지 변경 오버레이 시작---------------------------- */}
+
           <Overlay
             overlayStyle={styles.upperview__right__message__overlay}
-            isVisible={visible}
-            onBackdropPress={toggleOverlay}>
+            isVisible={visibleStatus}
+            onBackdropPress={toggleStatus}>
             <View style={styles.overlay}>
               <View style={styles.overlay__title}>
                 <Text style={styles.overlay__title__text}>
@@ -196,9 +239,9 @@ const Profile: React.FC<ProfileProps> = ({}) => {
               </View>
               <View style={styles.overlay__textinput}>
                 <Input
-                  containerStyle={styles.overlay__textinput__container}
+                  containerStyle={styles.overlay__message_textinput__container}
                   inputContainerStyle={styles.overlay__textinput__input}
-                  inputStyle={{fontSize: 25}}
+                  inputStyle={{ fontSize: 20 }}
                   placeholder="상태 메세지를 입력하세요."
                   multiline={true}
                   maxLength={40}
@@ -213,15 +256,82 @@ const Profile: React.FC<ProfileProps> = ({}) => {
               <View style={styles.overlay__button}>
                 <Button
                   containerStyle={styles.overlay__button__style}
+                  buttonStyle={{
+                    borderColor: '#E85A71',
+                    backgroundColor: '#E85A71',
+                    borderRadius: 20,
+                  }}
                   title="취소"
+                  titleStyle={{ color: 'white' }}
                   type="outline"
-                  onPress={toggleOverlay}
+                  onPress={toggleStatus}
                 />
                 <Button
                   containerStyle={styles.overlay__button__style}
+                  buttonStyle={{
+                    borderColor: '#4EA1D3',
+                    backgroundColor: '#4EA1D3',
+                    borderRadius: 20,
+                  }}
                   title="확인"
-                  type="solid"
+                  titleStyle={{ color: 'white' }}
+                  type="outline"
                   onPress={changeStatusMessage}
+                />
+              </View>
+            </View>
+          </Overlay>
+
+          {/* ----------------------------유저 이름 변경 오버레이 시작---------------------------- */}
+
+          <Overlay
+            overlayStyle={styles.upperview__right__message__overlay}
+            isVisible={visibleName}
+            onBackdropPress={toggleName}>
+            <View style={styles.overlay}>
+              <View style={styles.overlay__title}>
+                <Text style={styles.overlay__title__text}>유저 이름 변경</Text>
+              </View>
+              <View style={styles.overlay__textinput}>
+                <Input
+                  containerStyle={styles.overlay__username_textinput__container}
+                  inputContainerStyle={styles.overlay__textinput__input}
+                  inputStyle={{ fontSize: 25 }}
+                  placeholder="새로운 이름를 입력하세요."
+                  multiline={true}
+                  maxLength={7}
+                  onChangeText={handleNameInput}
+                  value={statusName}
+                />
+              </View>
+              <Text style={styles.overlay__textinput__legnth}>
+                {statusName ? `${statusName.length} / 7` : '0 / 7'}
+              </Text>
+              <View style={styles.overlay__textinput__line} />
+              <View style={styles.overlay__button}>
+                <Button
+                  containerStyle={styles.overlay__button__style}
+                  buttonStyle={{
+                    borderColor: '#E85A71',
+                    backgroundColor: '#E85A71',
+                    borderRadius: 20,
+                  }}
+                  title="취소"
+                  titleStyle={{ color: 'white' }}
+                  type="outline"
+                  onPress={toggleName}
+                />
+                <Button
+                  containerStyle={styles.overlay__button__style}
+                  buttonStyle={{
+                    borderColor: '#4EA1D3',
+                    backgroundColor: '#4EA1D3',
+                    borderRadius: 20,
+                  }}
+                  title="확인"
+                  titleStyle={{ color: 'white' }}
+                  type="solid"
+                  onPress={changeUserName}
                 />
               </View>
             </View>
@@ -244,7 +354,7 @@ const styles = StyleSheet.create({
 
   upperview__left__photo: {
     shadowColor: '#000',
-    shadowOffset: {width: 2.5, height: 2.5},
+    shadowOffset: { width: 2.5, height: 2.5 },
     shadowOpacity: 1,
     shadowRadius: 3,
     marginLeft: 0,
@@ -253,16 +363,28 @@ const styles = StyleSheet.create({
   upperview__right: {
     flex: 7,
   },
-  upperview__right__username: {
+  upperview__right__upper: {
     flex: 3,
-    flexDirection: 'column',
+    flexDirection: 'row',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
     marginRight: 20,
+    // backgroundColor: '#3ef',
+  },
+  upperview__right__username: {
+    flex: 7,
     justifyContent: 'center',
   },
   upperview__right__username__text: {
     fontSize: 30,
+  },
+  upperview__right__username__right: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  upperview__right__username__right__icon: {
+    marginTop: 5,
   },
   upperview__right__message: {
     flex: 5,
@@ -272,10 +394,10 @@ const styles = StyleSheet.create({
     flex: 8,
   },
   upperview__right__message__left__text: {
-    fontSize: 18,
+    fontSize: 16,
     marginTop: 5,
     height: 60,
-    width: 250,
+    width: 225,
     lineHeight: 28,
     // backgroundColor: '#16a085',
   },
@@ -289,18 +411,32 @@ const styles = StyleSheet.create({
     height: 300,
     width: 300,
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
   },
-  overlay: {flex: 1},
+  overlay: {
+    flex: 1,
+  },
   overlay__title: {
     flex: 2,
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginTop: 10,
   },
-  overlay__title__text: {fontSize: 30, textAlign: 'center'},
-  overlay__textinput: {flex: 6},
-  overlay__textinput__container: {},
-  overlay__textinput__input: {borderBottomColor: 'white'},
+  overlay__title__text: { fontSize: 25, textAlign: 'center' },
+  overlay__textinput: { flex: 6, justifyContent: 'center' },
+
+  overlay__username_textinput__container: {
+    height: 50,
+    top: 18,
+  },
+  overlay__message_textinput__container: {
+    // height: 50,
+    top: 18,
+  },
+  overlay__textinput__input: { borderBottomColor: 'white' },
   overlay__textinput__legnth: {
     fontSize: 18,
     textAlign: 'right',
@@ -317,7 +453,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginBottom: 15,
   },
-  overlay__button__style: {width: 100},
+  overlay__button__style: { width: 100 },
   upperview__right__email: {
     flex: 2,
   },
