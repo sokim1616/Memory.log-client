@@ -157,8 +157,8 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
       .then((res) => res.json())
       .then((res) => {
         let resLength = res.length;
-        if (resLength % 4 !== 0) {
-          for (let i = 0; i < 4 - (resLength % 4); i++) {
+        if (resLength % 2 !== 0) {
+          for (let i = 0; i < 2 - (resLength % 2); i++) {
             res.push('');
           }
         }

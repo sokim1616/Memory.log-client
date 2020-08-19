@@ -12,6 +12,7 @@ import Toast from '../components/Toast';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Input, Icon, Button } from 'react-native-elements';
 import { emailCheck } from '../utils/emailCheck';
+import Server from '../utils/Server';
 
 interface SignupProps {
   loginProps: {
@@ -107,7 +108,7 @@ const Signup: React.FC<SignupProps> = ({ loginProps }) => {
   };
 
   const submitSignUp = async (body) => {
-    let resp = await fetch('http://localhost:4000/user/signup', {
+    let resp = await fetch(`http://${Server.server}/user/signup`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

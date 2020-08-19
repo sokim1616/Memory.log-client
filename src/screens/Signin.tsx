@@ -34,16 +34,42 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
 
+  const guestSignin = () => {
+    let body = JSON.stringify({
+      email: 'guest@memorylog.com',
+      password: '123123123',
+    });
+    fetch(`http://${Server.server}/user/signin`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body,
+    }).then((resp) => {
+      console.log(resp.status);
+      if (resp.status === 200) {
+        setToastMessage('Guest 로그인에 성공하였습니다.');
+        setTimeout(() => changeLogin(true), 1000);
+      } else {
+        setToastMessage(
+          'Unathorized. Please check your username and password.',
+        );
+      }
+    });
+  };
+
   const onLoginFacebook = async () => {
     await LoginManager.logInWithPermissions(['public_profile', 'email'])
       .then((result) => {
         if (result.isCancelled) {
           return Promise.reject(new Error('User cancelled the login process'));
         }
-
-        console.log(
-          `Login success with permissions: ${result.grantedPermissions.toString()}`,
-        );
+        // console.log(
+        //   `Login success with permissions: ${result.grantedPermissions.toString()}`,
+        // );
         return AccessToken.getCurrentAccessToken();
       })
       .then((data) => {
@@ -53,11 +79,10 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
         return auth().signInWithCredential(credential);
       })
       .then((currentUser) => {
-        console.log(currentUser);
         facebookSignup(currentUser.user);
       })
       .catch((error) => {
-        console.log(`Facebook login fail with error: ${error}`);
+        // console.log(`Facebook login fail with error: ${error}`);
       });
   };
 
@@ -211,8 +236,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       return;
     }
     blurAll();
-    console.log(mail, password);
-    fetch('http://localhost:4000/user/signin', {
+    fetch(`http://${Server.server}/user/signin`, {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -359,33 +383,14 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
             onPress={onLoginFacebook}
             style={{ backgroundColor: 'rgba(52,93,166,0.5)' }}
           />
-          <LinearGradient
-            colors={[
-              'rgba(202, 29, 126, 0.5)',
-              'rgba(227, 81, 87, 0.5)',
-              'rgba(242, 112, 63, 0.5)',
-            ]}
-            start={{ x: 0.0, y: 1.0 }}
-            end={{ x: 1.0, y: 1.0 }}
+          <SocialIcon
+            title="Sign as Guest"
+            button
             style={{
-              height: 55,
-              width: 400,
-              left: 7,
-              top: 7.5,
-              borderRadius: 50,
-            }}>
-            <SocialIcon
-              title="Sign In With Instagram"
-              fontStyle={{ height: 50, top: -3, left: -15 }}
-              iconStyle={{ height: 70, width: 50, top: 2, left: 20 }}
-              button
-              style={{
-                backgroundColor: 'transparent',
-              }}
-              type="instagram"
-              // onPress={signIn}
-            />
-          </LinearGradient>
+              backgroundColor: 'rgba(0,0,0,0.5)',
+            }}
+            onPress={guestSignin}
+          />
         </View>
         {toastMessage ? (
           <Toast
