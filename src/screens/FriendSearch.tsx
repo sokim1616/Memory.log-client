@@ -4,7 +4,6 @@ import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
 import { SearchBar, ListItem, Overlay, Button } from 'react-native-elements';
 import { createStackNavigator } from '@react-navigation/stack';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
-import FriendList from '../screens/FriendList';
 
 const Stack = createStackNavigator();
 
@@ -26,7 +25,7 @@ const FriendSearch = ({ navigation }) => {
   };
 
   const onPressFollowIcon = () => {
-    return fetch('http://localhost:4000/follow/rfollow', {
+    return fetch(`http://${Server.server}/follow/rfollow`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
