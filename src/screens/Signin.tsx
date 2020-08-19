@@ -12,7 +12,6 @@ import {
 import Server from '../utils/Server';
 import Toast from '../components/Toast';
 import { Button, Input, Icon, SocialIcon } from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
 import { emailCheck } from '../utils/emailCheck';
 import {
   GoogleSignin,
@@ -358,33 +357,14 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
             onPress={onLoginFacebook}
             style={{ backgroundColor: 'rgba(52,93,166,0.5)' }}
           />
-          <LinearGradient
-            colors={[
-              'rgba(202, 29, 126, 0.5)',
-              'rgba(227, 81, 87, 0.5)',
-              'rgba(242, 112, 63, 0.5)',
-            ]}
-            start={{ x: 0.0, y: 1.0 }}
-            end={{ x: 1.0, y: 1.0 }}
-            style={{
-              height: 55,
-              width: 400,
-              left: 7,
-              top: 7.5,
-              borderRadius: 50,
-            }}>
-            <SocialIcon
-              title="Sign In With Instagram"
-              fontStyle={{ height: 50, top: -3, left: -15 }}
-              iconStyle={{ height: 70, width: 50, top: 2, left: 20 }}
-              button
-              style={{
-                backgroundColor: 'transparent',
-              }}
-              type="instagram"
-              // onPress={signIn}
-            />
-          </LinearGradient>
+          <SocialIcon
+            title="면접관님을 위한 비회원으로 시작하기😃"
+            button
+            light
+            // onPress={onLoginFacebook}
+            fontStyle={{ color: 'black' }}
+            style={{ height: 50, backgroundColor: 'rgba(255,255,255,0.5)' }}
+          />
         </View>
         {toastMessage ? (
           <Toast

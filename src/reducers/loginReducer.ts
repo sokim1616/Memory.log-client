@@ -1,5 +1,5 @@
-import {Reducer} from 'react';
-import {CHANGE_USER_LOGIN_STATUS} from '../actions';
+import { Reducer } from 'react';
+import { CHANGE_USER_LOGIN_STATUS } from '../actions';
 
 interface State {
   loginStatus: boolean;
@@ -11,7 +11,7 @@ interface Action {
 }
 
 const initialState = {
-  loginStatus: false,
+  loginStatus: true,
 };
 
 const loginReducer: Reducer<State, Action> = (state = initialState, action) => {
