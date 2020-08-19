@@ -6,6 +6,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextInput } from 'react-native-paper';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import Server from '../utils/Server';
 MaterialCommunityIcons.loadFont();
 
 interface ILocation {
@@ -37,7 +38,7 @@ const Map = () => {
   });
 
   const fetchPhotos = async () => {
-    await fetch('http://localhost:4000/photo/sboard', {
+    await fetch(`http://${Server.server}/photo/sboard`, {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',

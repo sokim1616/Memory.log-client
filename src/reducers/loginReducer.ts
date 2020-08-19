@@ -6,7 +6,6 @@ interface State {
 }
 
 interface Action {
-  type: string;
   loginStatus: boolean;
 }
 

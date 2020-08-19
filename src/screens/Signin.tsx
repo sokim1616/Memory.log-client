@@ -33,16 +33,42 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
 
+  const guestSignin = () => {
+    let body = JSON.stringify({
+      email: 'guest@memorylog.com',
+      password: '123123123',
+    });
+    fetch(`http://${Server.server}/user/signin`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body,
+    }).then((resp) => {
+      console.log(resp.status);
+      if (resp.status === 200) {
+        setToastMessage('Guest 로그인에 성공하였습니다.');
+        setTimeout(() => changeLogin(true), 1000);
+      } else {
+        setToastMessage(
+          'Unathorized. Please check your username and password.',
+        );
+      }
+    });
+  };
+
   const onLoginFacebook = async () => {
     await LoginManager.logInWithPermissions(['public_profile', 'email'])
       .then((result) => {
         if (result.isCancelled) {
           return Promise.reject(new Error('User cancelled the login process'));
         }
-
-        console.log(
-          `Login success with permissions: ${result.grantedPermissions.toString()}`,
-        );
+        // console.log(
+        //   `Login success with permissions: ${result.grantedPermissions.toString()}`,
+        // );
         return AccessToken.getCurrentAccessToken();
       })
       .then((data) => {
@@ -52,11 +78,10 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
         return auth().signInWithCredential(credential);
       })
       .then((currentUser) => {
-        console.log(currentUser);
         facebookSignup(currentUser.user);
       })
       .catch((error) => {
-        console.log(`Facebook login fail with error: ${error}`);
+        // console.log(`Facebook login fail with error: ${error}`);
       });
   };
 
@@ -209,8 +234,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       return;
     }
     blurAll();
-    // console.log(mail, password);
-    fetch('http://localhost:4000/user/signin', {
+    fetch(`http://${Server.server}/user/signin`, {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet } from 'react-native';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -138,6 +137,7 @@ const styles = StyleSheet.create({
     height: 60,
   },
 });
+
 const mapStateToProps = (state: {
   loginReducer: { loginStatus: boolean };
   cameraReducer: { buttonsVisibilityStatus: boolean };
