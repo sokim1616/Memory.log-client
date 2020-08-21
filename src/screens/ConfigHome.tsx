@@ -1,16 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Text, View, StyleSheet, SafeAreaView} from 'react-native';
+import { Text, View, StyleSheet, SafeAreaView } from 'react-native';
 import Profile from '../components/Profile';
-import {Button} from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import About from '../components/About';
 import Server from '../utils/Server';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 interface ConfigHomeProps {}
 
-const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
-  const {changeLogin} = loginProps;
+const ConfigHome: React.FC<ConfigHomeProps> = ({ loginProps }) => {
+  const { changeLogin, setType } = loginProps;
 
   const requestSignout: () => void = async () => {
     let url = `http://${Server.server}/user/signout`;
@@ -21,6 +21,7 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
     };
     await fetch(url, options).then((res) => {
       if (res.status === 200 || res.status === 400) {
+        setType(false);
         changeLogin(false);
       } else {
         throw new Error('bad signout request');
@@ -46,7 +47,7 @@ const ConfigHome: React.FC<ConfigHomeProps> = ({loginProps}) => {
           onPress={requestSignout}
           title="LOGOUT"
           raised
-          containerStyle={{marginTop: 30}}
+          containerStyle={{ marginTop: 30 }}
           buttonStyle={{
             backgroundColor: '#E85A71',
           }}
