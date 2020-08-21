@@ -21,7 +21,8 @@ MaterialCommunityIcons.loadFont();
 
 interface HomeTwoProps {}
 
-const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
+const StoryBoard: React.FC<HomeTwoProps> = ({ loginProps }) => {
+  const { isGuest } = loginProps;
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);
   const [currentPhoto, setCurrentPhoto] = useState({});
@@ -209,7 +210,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
           width: '100%',
           backgroundColor: 'rgba(255,255,255,0.1)',
         }}
-        isVisible={visible}>
+        isVisible={visible && isGuest}>
         <View style={{ flex: 1 }}>
           <View
             style={{
