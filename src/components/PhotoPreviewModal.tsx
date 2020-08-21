@@ -9,7 +9,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Overlay, Icon } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -32,6 +32,11 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
   const [photoDescription, setPhotoDescription] = useState(
     '당신의 Memory.log...',
   );
+  const [visible, setVisible] = useState(true);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
   const { uri } = currentImageData;
   const memoField: Ref = React.createRef();
 
@@ -62,6 +67,63 @@ const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
       animationOutTiming={500}
       isVisible={visibility}
       style={styles.modalContainer}>
+      {/* ----------비회원 오버레이(모달창) 시작---------- */}
+      <Overlay
+        overlayStyle={{
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+        }}
+        isVisible={visible}>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1.5,
+              flexDirection: 'row-reverse',
+              marginTop: 50,
+            }}>
+            <Icon
+              size={40}
+              onPress={toggleOverlay}
+              name="cancel"
+              type="material"
+              color="#ffffff"
+            />
+          </View>
+          <View
+            style={{
+              flex: 0.5,
+              width: 280,
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {'이 사진을 찍을 때,\n들었던 생각이나\n느꼈던 감정을 적어보세요.'}
+            </Text>
+          </View>
+          <View style={{ flex: 1 }} />
+          <View
+            style={{
+              flex: 0.35,
+              width: 320,
+              alignSelf: 'flex-end',
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {'저장 버튼을 누른 뒤,\n추억저장소에서 확인해보세요.'}
+            </Text>
+          </View>
+          <View style={{ flex: 0.7 }} />
+        </View>
+      </Overlay>
+      {/* ----------비회원 오버레이(모달창) 끝---------- */}
       <View style={styles.blurBackground}>
         <Image
           style={styles.backgroundImage}

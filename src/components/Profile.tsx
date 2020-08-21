@@ -80,7 +80,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
   };
 
   const changeUserName = () => {
-    console.log(statusName);
+    // console.log(statusName);
     return fetch(`http://${Server.server}/user/username`, {
       method: 'POST',
       headers: {

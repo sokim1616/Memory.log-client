@@ -11,8 +11,13 @@ import {
 } from 'react-native';
 import Server from '../utils/Server';
 import Toast from '../components/Toast';
-import { Button, Input, Icon, SocialIcon } from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
+import {
+  Button,
+  Input,
+  Icon,
+  SocialIcon,
+  Overlay,
+} from 'react-native-elements';
 import { emailCheck } from '../utils/emailCheck';
 import {
   GoogleSignin,
@@ -30,9 +35,14 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
+  const [visible, setVisible] = useState(true);
 
   let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const guestSignin = () => {
     let body = JSON.stringify({
@@ -193,7 +203,9 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       setToastMessage('로그인에 성공하였습니다.');
       setTimeout(() => changeLogin(true), 1000);
     } else {
-      setToastMessage('Unathorized. Please check your username and password.');
+      setToastMessage(
+        '이메일 혹은 비밀번호가 일치하지 않습니다. 다시 한번 확인 후 시도해 주시기 바랍니다.',
+      );
     }
   };
 
@@ -201,8 +213,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
     let body = JSON.stringify({ email: mail, password });
     if (!mail.length || !password.length) {
       Alert.alert(
-        'Empty Fields',
-        `이메일과 비밀번호를 확인 후,${'\n'}다시 시도해 주시기 바랍니다.`,
+        `이메일 혹은 비밀번호를 확인 후,${'\n'}다시 시도해 주시기 바랍니다.`,
         {
           text: 'OK',
           onPress: () => console.log('hi'),
@@ -215,8 +226,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       return;
     } else if (password.length < 8) {
       Alert.alert(
-        'Invalid Password',
-        'Password must be at least 8 characters.',
+        '이메일 혹은 비밀번호가 \n 일치하지 않습니다.',
         {
           text: 'OK',
           onPress: () => console.log('hi'),
@@ -228,8 +238,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       return;
     } else if (!mail.match(emailCheck)) {
       Alert.alert(
-        'Invalid E-mail Address',
-        'Please input a correct e-mail address.',
+        '이메일 혹은 비밀번호가 일치하지 않습니다.',
         { text: 'OK', onPress: () => console.log('hi') },
         { cancelable: false },
       );
@@ -246,13 +255,13 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       },
       body,
     }).then((resp) => {
-      console.log(resp.status);
+      // console.log(resp.status);
       if (resp.status === 200) {
         setToastMessage('로그인에 성공하였습니다.');
         setTimeout(() => changeLogin(true), 1000);
       } else {
         setToastMessage(
-          'Unathorized. Please check your username and password.',
+          '이메일 혹은 비밀번호가 일치하지 않습니다. \n 다시 시도해 주시기 바랍니다.',
         );
       }
     });
@@ -275,6 +284,47 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   };
   return (
     <View onTouchStart={blurAll} style={styles.container}>
+      {/* ----------비회원 오버레이(모달창) 시작---------- */}
+      <Overlay
+        overlayStyle={{
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+        }}
+        isVisible={visible}>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 6.5,
+              flexDirection: 'row-reverse',
+              marginTop: 50,
+            }}>
+            <Icon
+              size={40}
+              onPress={toggleOverlay}
+              name="cancel"
+              type="material"
+              color="#ffffff"
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              width: 280,
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {'회원가입 전,\n앱을 한번 사용해보세요!!!\n👇👇👇👇👇👇👇👇👇'}
+            </Text>
+          </View>
+          <View style={{ flex: 1.3 }} />
+        </View>
+      </Overlay>
+      {/* ----------비회원 오버레이(모달창) 끝---------- */}
       <ImageBackground
         source={require('../assets/image/morning.png')}
         style={styles.backgroundImage}
@@ -384,12 +434,12 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
             style={{ backgroundColor: 'rgba(52,93,166,0.5)' }}
           />
           <SocialIcon
-            title="Sign as Guest"
+            title="면접관님을 위한 비회원으로 시작하기😃"
             button
-            style={{
-              backgroundColor: 'rgba(0,0,0,0.5)',
-            }}
+            light
             onPress={guestSignin}
+            fontStyle={{ color: 'black' }}
+            style={{ height: 50, backgroundColor: 'rgba(255,255,255,0.5)' }}
           />
         </View>
         {toastMessage ? (

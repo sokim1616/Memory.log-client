@@ -9,8 +9,8 @@ import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Server from '../utils/Server';
 
 const FriendList = ({ navigation }) => {
-  const [userState, setUserState] = useState([]); // 로그인 사용자의 정보
-  const [followerList, setFollowerList] = useState([]); // 로그인 사용자의 인싸력 테스트
+  const [userState, setUserState] = useState([]);
+  const [followerList, setFollowerList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [unFollowId, setUnfollowId] = useState('');
   const toggleOverlay = (id) => {
