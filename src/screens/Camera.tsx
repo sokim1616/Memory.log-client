@@ -27,7 +27,6 @@ interface CameraProps {
 
 const Camera: React.FC<CameraProps> = ({ camProps }) => {
   const { changeButtonsVisibilityStatus, isGuest } = camProps;
-  console.log(isGuest);
   let camera: RNCamera;
   const [flashStatus, setFlashStatus] = useState(
     RNCamera.Constants.FlashMode.off,
