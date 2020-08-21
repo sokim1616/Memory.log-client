@@ -59,8 +59,6 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       },
       body,
     }).then((resp) => {
-      console.log(resp.status);
-      console.log(isGuest);
       if (resp.status === 200) {
         setToastMessage('Guest 로그인에 성공하였습니다.');
         setTimeout(() => changeLogin(true), 1000);

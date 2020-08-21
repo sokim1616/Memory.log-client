@@ -55,9 +55,6 @@ const StoryBoard: React.FC<HomeTwoProps> = ({ loginProps }) => {
       setDeleteMode(false);
     }
     setShareMode(!shareMode);
-    if (selectionList.length) {
-      console.log(selectionList);
-    }
   };
 
   const deletePhotos = async (photos) => {
@@ -125,7 +122,6 @@ const StoryBoard: React.FC<HomeTwoProps> = ({ loginProps }) => {
         const result = await Share.share({
           url: path,
         });
-        console.log(result);
         if (result.action === Share.sharedAction) {
           Alert.alert(
             '사진 공유!',
