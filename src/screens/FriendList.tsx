@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import FriendSearch from '../screens/FriendSearch';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import Server from '../utils/Server';
 
 const FriendList = ({ navigation }) => {
   const [userState, setUserState] = useState([]);
@@ -18,7 +19,7 @@ const FriendList = ({ navigation }) => {
     setUnfollowId(id);
   };
   const requestUnFollow = (id) => {
-    return fetch('http://localhost:4000/follow/ufollow', {
+    return fetch(`http://${Server.server}/follow/ufollow`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -35,7 +36,7 @@ const FriendList = ({ navigation }) => {
       .catch((err) => console.error(err));
   };
   const getUserInfo = () => {
-    return fetch('http://localhost:4000/user/logininfo', {
+    return fetch(`http://${Server.server}/user/logininfo`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -50,7 +51,7 @@ const FriendList = ({ navigation }) => {
       .catch((err) => console.error(err));
   };
   const getFollowerList = () => {
-    return fetch('http://localhost:4000/follow/friend', {
+    return fetch(`http://${Server.server}/follow/friend`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

@@ -11,8 +11,13 @@ import {
 } from 'react-native';
 import Server from '../utils/Server';
 import Toast from '../components/Toast';
-import { Button, Input, Icon, SocialIcon } from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
+import {
+  Button,
+  Input,
+  Icon,
+  SocialIcon,
+  Overlay,
+} from 'react-native-elements';
 import { emailCheck } from '../utils/emailCheck';
 import {
   GoogleSignin,
@@ -30,9 +35,41 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
+  const [visible, setVisible] = useState(true);
 
   let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  const guestSignin = () => {
+    let body = JSON.stringify({
+      email: 'guest@memorylog.com',
+      password: '123123123',
+    });
+    fetch(`http://${Server.server}/user/signin`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body,
+    }).then((resp) => {
+      console.log(resp.status);
+      if (resp.status === 200) {
+        setToastMessage('Guest 로그인에 성공하였습니다.');
+        setTimeout(() => changeLogin(true), 1000);
+      } else {
+        setToastMessage(
+          'Unathorized. Please check your username and password.',
+        );
+      }
+    });
+  };
 
   const onLoginFacebook = async () => {
     await LoginManager.logInWithPermissions(['public_profile', 'email'])
@@ -40,10 +77,9 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
         if (result.isCancelled) {
           return Promise.reject(new Error('User cancelled the login process'));
         }
-
-        console.log(
-          `Login success with permissions: ${result.grantedPermissions.toString()}`,
-        );
+        // console.log(
+        //   `Login success with permissions: ${result.grantedPermissions.toString()}`,
+        // );
         return AccessToken.getCurrentAccessToken();
       })
       .then((data) => {
@@ -53,11 +89,10 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
         return auth().signInWithCredential(credential);
       })
       .then((currentUser) => {
-        console.log(currentUser);
         facebookSignup(currentUser.user);
       })
       .catch((error) => {
-        console.log(`Facebook login fail with error: ${error}`);
+        // console.log(`Facebook login fail with error: ${error}`);
       });
   };
 
@@ -210,8 +245,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       return;
     }
     blurAll();
-    // console.log(mail, password);
-    fetch('http://localhost:4000/user/signin', {
+    fetch(`http://${Server.server}/user/signin`, {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -250,6 +284,47 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   };
   return (
     <View onTouchStart={blurAll} style={styles.container}>
+      {/* ----------비회원 오버레이(모달창) 시작---------- */}
+      <Overlay
+        overlayStyle={{
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+        }}
+        isVisible={visible}>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 6.5,
+              flexDirection: 'row-reverse',
+              marginTop: 50,
+            }}>
+            <Icon
+              size={40}
+              onPress={toggleOverlay}
+              name="cancel"
+              type="material"
+              color="#ffffff"
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              width: 280,
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {'회원가입 전,\n앱을 한번 사용해보세요!!!\n👇👇👇👇👇👇👇👇👇'}
+            </Text>
+          </View>
+          <View style={{ flex: 1.3 }} />
+        </View>
+      </Overlay>
+      {/* ----------비회원 오버레이(모달창) 끝---------- */}
       <ImageBackground
         source={require('../assets/image/morning.png')}
         style={styles.backgroundImage}
@@ -358,33 +433,14 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
             onPress={onLoginFacebook}
             style={{ backgroundColor: 'rgba(52,93,166,0.5)' }}
           />
-          <LinearGradient
-            colors={[
-              'rgba(202, 29, 126, 0.5)',
-              'rgba(227, 81, 87, 0.5)',
-              'rgba(242, 112, 63, 0.5)',
-            ]}
-            start={{ x: 0.0, y: 1.0 }}
-            end={{ x: 1.0, y: 1.0 }}
-            style={{
-              height: 55,
-              width: 400,
-              left: 7,
-              top: 7.5,
-              borderRadius: 50,
-            }}>
-            <SocialIcon
-              title="Sign In With Instagram"
-              fontStyle={{ height: 50, top: -3, left: -15 }}
-              iconStyle={{ height: 70, width: 50, top: 2, left: 20 }}
-              button
-              style={{
-                backgroundColor: 'transparent',
-              }}
-              type="instagram"
-              // onPress={signIn}
-            />
-          </LinearGradient>
+          <SocialIcon
+            title="면접관님을 위한 비회원으로 시작하기😃"
+            button
+            light
+            onPress={guestSignin}
+            fontStyle={{ color: 'black' }}
+            style={{ height: 50, backgroundColor: 'rgba(255,255,255,0.5)' }}
+          />
         </View>
         {toastMessage ? (
           <Toast

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import StoryBoardModal from '../components/StoryBoardModal';
@@ -14,7 +15,7 @@ import {
   TouchableOpacity,
   Share,
 } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { Avatar, Overlay, Icon } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 MaterialCommunityIcons.loadFont();
 
@@ -29,6 +30,11 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectionList, setSelectionList] = useState([]);
   const [shareMode, setShareMode] = useState(false);
+  const [visible, setVisible] = useState(true);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -157,8 +163,8 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
       .then((res) => res.json())
       .then((res) => {
         let resLength = res.length;
-        if (resLength % 4 !== 0) {
-          for (let i = 0; i < 4 - (resLength % 4); i++) {
+        if (resLength % 2 !== 0) {
+          for (let i = 0; i < 2 - (resLength % 2); i++) {
             res.push('');
           }
         }
@@ -196,6 +202,63 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
         previewMode={previewMode}
         currentPhoto={currentPhoto}
       />
+      {/* ----------비회원 오버레이(모달창) 시작---------- */}
+      <Overlay
+        overlayStyle={{
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+        }}
+        isVisible={visible}>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row-reverse',
+              marginTop: 50,
+            }}>
+            <Icon
+              size={40}
+              onPress={toggleOverlay}
+              name="cancel"
+              type="material"
+              color="#ffffff"
+            />
+          </View>
+          <View
+            style={{
+              flex: 0.5,
+              width: 280,
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {'방금 찍은 사진이\n추억저장소에 저장 됐어요.'}
+            </Text>
+          </View>
+          <View style={{ flex: 2 }} />
+          <View
+            style={{
+              flex: 0.5,
+              width: 310,
+              alignSelf: 'center',
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {'이 사진의 추억을 보고 싶으면\n클릭을 해보세요.'}
+            </Text>
+          </View>
+          <View style={{ flex: 2 }} />
+        </View>
+      </Overlay>
+      {/* ----------비회원 오버레이(모달창) 끝---------- */}
       <FocusAwareStatusBar barStyle={'light-content'} />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>

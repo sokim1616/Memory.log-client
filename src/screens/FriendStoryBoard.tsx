@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import Server from '../utils/Server';
 
 interface HomeTwoProps {
   route;
@@ -27,7 +28,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({ route }) => {
   const { friendId } = route.params;
 
   const getFriendInfo = async () => {
-    await fetch('http://localhost:4000/user/userinfobyid', {
+    await fetch(`http://${Server.server}/user/userinfobyid`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -44,7 +45,7 @@ const FriendStoryBoard: React.FC<HomeTwoProps> = ({ route }) => {
   };
 
   const fetchPhotos = async () => {
-    await fetch('http://localhost:4000/photo/fboard', {
+    await fetch(`http://${Server.server}/photo/fboard`, {
       method: 'POST',
       mode: 'cors',
       headers: {

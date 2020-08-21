@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import {
   View,
@@ -8,6 +9,7 @@ import {
 } from 'react-native';
 import Server from '../utils/Server';
 import { RNCamera, TakePictureResponse } from 'react-native-camera';
+import { Overlay, Icon, Text } from 'react-native-elements';
 import CameraRoll from '@react-native-community/cameraroll';
 import Geolocation, {
   GeolocationResponse,
@@ -44,6 +46,11 @@ const Camera: React.FC<CameraProps> = ({ camProps }) => {
     longitude: 0,
     speed: 0,
   });
+  const [visible, setVisible] = useState(true);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const getLocation = async () => {
     return new Promise((resolve, reject) => {
@@ -166,6 +173,65 @@ const Camera: React.FC<CameraProps> = ({ camProps }) => {
           y: nativeEvent.pageY,
         });
       }}>
+      {/* ----------비회원 오버레이(모달창) 시작---------- */}
+      <Overlay
+        overlayStyle={{
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+        }}
+        isVisible={visible}>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 0.5,
+              flexDirection: 'row-reverse',
+              marginTop: 50,
+            }}>
+            <Icon
+              size={40}
+              onPress={toggleOverlay}
+              name="cancel"
+              type="material"
+              color="#ffffff"
+            />
+          </View>
+          <View
+            style={{
+              flex: 0.8,
+              width: 280,
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {
+                '가장 감성적인 사진이\n보여질 수 있는 1:1 비율에\n캡쳐할 장면을 담아주세요.'
+              }
+            </Text>
+          </View>
+          <View style={{ flex: 3 }} />
+          <View
+            style={{
+              flex: 0.6,
+              width: 300,
+              alignSelf: 'center',
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {'추억저장소에 저장 될 장면을\n캡쳐해주세요.'}
+            </Text>
+          </View>
+          <View style={{ flex: 2 }} />
+        </View>
+      </Overlay>
+      {/* ----------비회원 오버레이(모달창) 끝---------- */}
       <FocusAwareStatusBar barStyle="light-content" />
       <View style={styles.headerContainer} />
       {previewMode ? null : (
