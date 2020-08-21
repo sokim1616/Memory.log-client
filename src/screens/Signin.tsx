@@ -11,7 +11,13 @@ import {
 } from 'react-native';
 import Server from '../utils/Server';
 import Toast from '../components/Toast';
-import { Button, Input, Icon, SocialIcon } from 'react-native-elements';
+import {
+  Button,
+  Input,
+  Icon,
+  SocialIcon,
+  Overlay,
+} from 'react-native-elements';
 import { emailCheck } from '../utils/emailCheck';
 import {
   GoogleSignin,
@@ -29,9 +35,14 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
   const [toastMessage, setToastMessage] = useState('');
+  const [visible, setVisible] = useState(true);
 
   let emailFieldRef: Ref = React.createRef();
   let passwordFieldRef: Ref = React.createRef();
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const guestSignin = () => {
     let body = JSON.stringify({
@@ -273,6 +284,47 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
   };
   return (
     <View onTouchStart={blurAll} style={styles.container}>
+      {/* ----------비회원 오버레이(모달창) 시작---------- */}
+      <Overlay
+        overlayStyle={{
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'rgba(255,255,255,0.1)',
+        }}
+        isVisible={visible}>
+        <View style={{ flex: 1 }}>
+          <View
+            style={{
+              flex: 6.5,
+              flexDirection: 'row-reverse',
+              marginTop: 50,
+            }}>
+            <Icon
+              size={40}
+              onPress={toggleOverlay}
+              name="cancel"
+              type="material"
+              color="#ffffff"
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              width: 280,
+              backgroundColor: 'rgba(255,255,255,0.75)',
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: 'rgba(255,255,255,0.75)',
+            }}>
+            <Text style={{ fontSize: 25 }}>
+              {'회원가입 전,\n앱을 한번 사용해보세요!!!\n👇👇👇👇👇👇👇👇👇'}
+            </Text>
+          </View>
+          <View style={{ flex: 1.3 }} />
+        </View>
+      </Overlay>
+      {/* ----------비회원 오버레이(모달창) 끝---------- */}
       <ImageBackground
         source={require('../assets/image/morning.png')}
         style={styles.backgroundImage}
@@ -385,7 +437,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
             title="면접관님을 위한 비회원으로 시작하기😃"
             button
             light
-            // onPress={onLoginFacebook}
+            onPress={guestSignin}
             fontStyle={{ color: 'black' }}
             style={{ height: 50, backgroundColor: 'rgba(255,255,255,0.5)' }}
           />
