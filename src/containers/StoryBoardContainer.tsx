@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Signin from '../screens/Signin';
+import StoryBoard from '../screens/StoryBoard';
 import { changeUserLoginStatus, changeUserType } from '../actions';
 
-const SigninContainer = (loginProps) => {
-  return <Signin loginProps={loginProps} />;
+const StoryBoardContainer = (loginProps) => {
+  return <StoryBoard loginProps={loginProps} />;
 };
 
 const mapStateToProps: MapStateToProps = (state) => ({
@@ -15,8 +15,11 @@ const mapStateToProps: MapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     changeLogin: (status) => dispatch(changeUserLoginStatus(status)),
-    setType: (status) => dispatch(changeUserType(status)),
+    setType: (status) => changeUserType(status),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SigninContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(StoryBoardContainer);

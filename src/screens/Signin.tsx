@@ -30,7 +30,7 @@ interface LoginProps {
   loginStatus: boolean;
 }
 const Signin: React.FC<LoginProps> = ({ loginProps }) => {
-  const { changeLogin, navigation } = loginProps;
+  const { isGuest, setType, changeLogin, navigation } = loginProps;
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [inputInFocus, setInputInFocus] = useState('');
@@ -60,6 +60,7 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
       body,
     }).then((resp) => {
       console.log(resp.status);
+      console.log(isGuest);
       if (resp.status === 200) {
         setToastMessage('Guest 로그인에 성공하였습니다.');
         setTimeout(() => changeLogin(true), 1000);
@@ -434,10 +435,13 @@ const Signin: React.FC<LoginProps> = ({ loginProps }) => {
             style={{ backgroundColor: 'rgba(52,93,166,0.5)' }}
           />
           <SocialIcon
-            title="면접관님을 위한 비회원으로 시작하기😃"
+            title="비회원으로 시작하기😃"
             button
             light
-            onPress={guestSignin}
+            onPress={() => {
+              setType(true);
+              guestSignin();
+            }}
             fontStyle={{ color: 'black' }}
             style={{ height: 50, backgroundColor: 'rgba(255,255,255,0.5)' }}
           />
