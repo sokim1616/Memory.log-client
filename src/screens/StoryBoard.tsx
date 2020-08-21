@@ -21,7 +21,8 @@ MaterialCommunityIcons.loadFont();
 
 interface HomeTwoProps {}
 
-const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
+const StoryBoard: React.FC<HomeTwoProps> = ({ loginProps }) => {
+  const { isGuest } = loginProps;
   const [data, setData] = useState([]);
   const [dataLength, setDataLength] = useState([]);
   const [currentPhoto, setCurrentPhoto] = useState({});
@@ -54,9 +55,6 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
       setDeleteMode(false);
     }
     setShareMode(!shareMode);
-    if (selectionList.length) {
-      console.log(selectionList);
-    }
   };
 
   const deletePhotos = async (photos) => {
@@ -124,7 +122,6 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
         const result = await Share.share({
           url: path,
         });
-        console.log(result);
         if (result.action === Share.sharedAction) {
           Alert.alert(
             '사진 공유!',
@@ -209,7 +206,7 @@ const StoryBoard: React.FC<HomeTwoProps> = ({}) => {
           width: '100%',
           backgroundColor: 'rgba(255,255,255,0.1)',
         }}
-        isVisible={visible}>
+        isVisible={visible && isGuest}>
         <View style={{ flex: 1 }}>
           <View
             style={{

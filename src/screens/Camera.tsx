@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   StyleSheet,
@@ -25,14 +26,16 @@ interface CameraProps {
 }
 
 const Camera: React.FC<CameraProps> = ({ camProps }) => {
-  const { changeButtonsVisibilityStatus } = camProps;
+  const { changeButtonsVisibilityStatus, isGuest } = camProps;
   let camera: RNCamera;
   const [flashStatus, setFlashStatus] = useState(
     RNCamera.Constants.FlashMode.off,
   );
+
   const [cameraType, toggleCameraType] = useState(RNCamera.Constants.Type.back);
   const [previewMode, setPreviewMode] = useState(false);
   const [currentImageData, setCurrentImageData] = useState({});
+  const [visible, setVisible] = useState(true);
   const [pointOfInterest, setAutoFocusPointOfInterest] = useState({
     x: 0.5,
     y: 0.5,
@@ -47,6 +50,10 @@ const Camera: React.FC<CameraProps> = ({ camProps }) => {
     speed: 0,
   });
   const [visible, setVisible] = useState(true);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -179,8 +186,9 @@ const Camera: React.FC<CameraProps> = ({ camProps }) => {
           height: '100%',
           width: '100%',
           backgroundColor: 'rgba(255,255,255,0.1)',
+          zIndex: 998,
         }}
-        isVisible={visible}>
+        isVisible={visible && isGuest}>
         <View style={{ flex: 1 }}>
           <View
             style={{

@@ -1,6 +1,6 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import StoryBoard from '../screens/StoryBoard';
+import { createStackNavigator } from '@react-navigation/stack';
+import StoryBoardContainer from '../containers/StoryBoardContainer';
 
 const StoryBoardStackNav = createStackNavigator();
 
@@ -21,7 +21,10 @@ const StoryBoardStack: React.FC<HomeTwoProps> = () => {
           fontSize: 24,
         },
       }}>
-      <StoryBoardStackNav.Screen name="StoryBoard" component={StoryBoard} />
+      <StoryBoardStackNav.Screen
+        name="StoryBoard"
+        component={StoryBoardContainer}
+      />
     </StoryBoardStackNav.Navigator>
   );
 };
