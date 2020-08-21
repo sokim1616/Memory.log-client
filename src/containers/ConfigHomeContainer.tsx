@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ConfigHome from '../screens/ConfigHome';
-import { changeUserLoginStatus } from '../actions';
+import { changeUserLoginStatus, changeUserType } from '../actions';
 
 const ConfigHomeContainer = (loginProps) => {
   return <ConfigHome loginProps={loginProps} />;
