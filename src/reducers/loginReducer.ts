@@ -1,6 +1,7 @@
 import { Reducer } from 'react';
 import { CHANGE_USER_LOGIN_STATUS, CHANGE_USER_TYPE } from '../actions';
 
+
 interface State {
   loginStatus: boolean;
   isGuest: boolean;

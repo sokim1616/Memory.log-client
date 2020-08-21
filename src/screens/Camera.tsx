@@ -49,6 +49,11 @@ const Camera: React.FC<CameraProps> = ({ camProps }) => {
     longitude: 0,
     speed: 0,
   });
+  const [visible, setVisible] = useState(true);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const toggleOverlay = () => {
     setVisible(!visible);
