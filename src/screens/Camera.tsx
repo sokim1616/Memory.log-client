@@ -1,6 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   StyleSheet,
@@ -49,11 +48,6 @@ const Camera: React.FC<CameraProps> = ({ camProps }) => {
     longitude: 0,
     speed: 0,
   });
-  const [visible, setVisible] = useState(true);
-
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
 
   const toggleOverlay = () => {
     setVisible(!visible);
